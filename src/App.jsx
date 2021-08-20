@@ -15,21 +15,53 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import PropTypes from 'prop-types';
 
 import Login from './pages/login';
 import Home from './pages/home';
 import { setPaletteType } from './state/slices/settings';
+import MarkerSelection from './pages/marker';
+
+function RestrictedRoute({ children, isLoggedIn, ...rest }) {
+  return (
+    <Route
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...rest}
+      render={
+        () => (isLoggedIn ? (children) : (<Redirect to="/login" />))
+      }
+    />
+  );
+}
+RestrictedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+};
+
+function LoginRoute({ isLoggedIn, ...rest }) {
+  return (
+    <Route
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...rest}
+      render={
+        () => (isLoggedIn ? (<Redirect to="/home" />) : (<Login />))
+      }
+    />
+  );
+}
+LoginRoute.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+};
 
 function Routes() {
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   return (
     <Router>
       <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/home">
-          <Home />
-        </Route>
+        <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
+        <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
+        <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
         <Redirect exact from="/" to="home" />
       </Switch>
     </Router>

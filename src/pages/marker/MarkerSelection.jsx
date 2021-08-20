@@ -1,16 +1,16 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 
 import TopMenu from '../../components/TopMenu';
 import PaletteTypeButton from '../../components/PaletteTypeButton';
-import NextPageButton from '../../components/NextPageButton';
 
-function Home() {
+function MarkerSelection() {
   return (
     <TopMenu>
       <PaletteTypeButton />
-      <NextPageButton redirectTo="/marcador">Criar Cena</NextPageButton>
+      <Button variant="contained">Prosseguir</Button>
     </TopMenu>
   );
 }
 
-export default Home;
+export default MarkerSelection;

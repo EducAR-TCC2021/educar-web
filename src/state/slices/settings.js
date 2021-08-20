@@ -16,5 +16,8 @@ const settings = createSlice({
 });
 
 const { actions, reducer } = settings;
-export const { setPaletteType, togglePaletteType } = actions;
+export const {
+  setPaletteType,
+  togglePaletteType,
+} = actions;
 export default reducer;
