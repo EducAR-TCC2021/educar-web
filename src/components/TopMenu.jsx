@@ -22,7 +22,7 @@ function TopMenu({ children }) {
         <Typography variant="h6" className={classes.title}>
           EducAR
         </Typography>
-        <div>{ children }</div>
+        { children }
       </Toolbar>
     </AppBar>
   );
