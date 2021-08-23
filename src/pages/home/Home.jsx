@@ -48,6 +48,7 @@ function Home() {
     thumbnail: 'https://source.unsplash.com/random',
     name: `Minha Cena ${i}`,
     description: 'Uma cena de exemplo.',
+    id: i,
   }));
 
   return (
@@ -63,7 +64,7 @@ function Home() {
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
           {cards.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
+            <Grid item key={card.id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
