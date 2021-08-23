@@ -1,15 +1,19 @@
+import React from 'react';
+import TopMenu from "../../components/TopMenu";
+import SideMenu from './SideMenu';
 
-function Editor(){
-    return (
-        <div>
-            <Toolbar></Toolbar>
-            <SideMenu>
 
-            </SideMenu>
-            <EditorViewport />
-            <SideMenu>
+export default function Editor() {
+  return (
+    <div>
+      <TopMenu />
+      <SideMenu>
 
-            </SideMenu>
-        </div>
-    )
+      </SideMenu>
+      <EditorViewport />
+      <SideMenu>
+
+      </SideMenu>
+    </div>
+  );
 }
