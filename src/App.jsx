@@ -16,6 +16,7 @@ import PropTypes from 'prop-types';
 import Login from './pages/login';
 import Home from './pages/home';
 import MarkerSelection from './pages/marker';
+import Editor from './pages/editor';
 
 function RestrictedRoute({ children, isLoggedIn, ...rest }) {
   return (
@@ -57,6 +58,7 @@ function Routes() {
         <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
         <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
         <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
+        <RestrictedRoute isLoggedIn={isLoggedIn} path="/editor"><Editor /></RestrictedRoute>
         <Redirect to="home" />
       </Switch>
     </Router>

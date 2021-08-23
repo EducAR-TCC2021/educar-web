@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
   makeStyles,
+  Link,
 } from '@material-ui/core';
 
 import TopMenu from '../../components/TopMenu';
@@ -81,7 +82,9 @@ function Home() {
                 </CardContent>
                 <CardActions>
                   <Button size="small" color="primary">
-                    Editar
+                    <Link href="/editor">
+                      Editar
+                    </Link>
                   </Button>
                 </CardActions>
               </Card>
