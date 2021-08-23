@@ -57,7 +57,7 @@ function Routes() {
         <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
         <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
         <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
-        <Redirect exact from="/" to="home" />
+        <Redirect to="home" />
       </Switch>
     </Router>
   );
