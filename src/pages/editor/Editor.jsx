@@ -8,7 +8,6 @@ const useStyles = makeStyles(() => ({
   horizontal: {
     display: 'flex',
     flexDirection: 'row',
-    overflow: 'auto',
     height: 'calc(100vh - 48px )',
   },
 }));
