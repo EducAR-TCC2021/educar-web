@@ -1,15 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
-import {
-  useSelector,
-  useStore,
-} from 'react-redux';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useSelector } from 'react-redux';
 import {
   createTheme,
   ThemeProvider,
@@ -19,7 +15,6 @@ import PropTypes from 'prop-types';
 
 import Login from './pages/login';
 import Home from './pages/home';
-import { setPaletteType } from './state/slices/settings';
 import MarkerSelection from './pages/marker';
 
 function RestrictedRoute({ children, isLoggedIn, ...rest }) {
@@ -62,7 +57,7 @@ function Routes() {
         <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
         <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
         <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
-        <Redirect exact from="/" to="home" />
+        <Redirect to="home" />
       </Switch>
     </Router>
   );
@@ -70,8 +65,6 @@ function Routes() {
 
 function App() {
   const paletteType = useSelector((state) => state.settings.paletteType);
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const store = useStore();
 
   const theme = useMemo(
     () => createTheme(
@@ -82,10 +75,6 @@ function App() {
       },
     ), [paletteType],
   );
-
-  useEffect(() => {
-    store.dispatch(setPaletteType(prefersDarkMode ? 'dark' : 'light'));
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
