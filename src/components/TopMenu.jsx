@@ -14,21 +14,26 @@ const useStyles = makeStyles({
   },
 });
 
-function TopMenu({ children }) {
+function TopMenu({ children, hideLogo }) {
   const classes = useStyles();
   return (
     <AppBar position="static">
       <Toolbar variant="dense">
-        <Typography variant="h6" className={classes.title}>
-          EducAR
-        </Typography>
+        {
+          (!hideLogo)
+            ? <Typography variant="h6" className={classes.title}> EducAR </Typography> : null
+        }
         { children }
       </Toolbar>
     </AppBar>
   );
 }
+TopMenu.defaultProps = {
+  hideLogo: false,
+};
 TopMenu.propTypes = {
   children: PropTypes.node.isRequired,
+  hideLogo: false,
 };
 
 export default TopMenu;
