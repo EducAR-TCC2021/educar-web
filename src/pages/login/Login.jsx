@@ -7,7 +7,7 @@ import LoginCard from './LoginCard';
 
 const useStyles = makeStyles({
   loginCard: {
-    marginTop: '40px',
+    marginTop: '100px',
   },
 });
 

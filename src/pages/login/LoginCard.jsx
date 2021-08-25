@@ -4,12 +4,8 @@ import {
   Card,
   CardContent,
   Typography,
-  TextField,
-  Button,
-  Link,
 } from '@material-ui/core';
-import { useStore } from 'react-redux';
-import { userLoggedIn } from '../../state/slices/user';
+import SketchfabLoginButton from './SketchfabLoginButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,11 +31,6 @@ const useStyles = makeStyles((theme) => ({
 
 function LoginCard() {
   const classes = useStyles();
-  const store = useStore();
-
-  const userLogIn = () => {
-    store.dispatch(userLoggedIn());
-  };
 
   return (
     <Card
@@ -51,43 +42,7 @@ function LoginCard() {
           Login
         </Typography>
         <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Senha"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={userLogIn}
-          >
-            Entrar
-          </Button>
-          <Link href="/" variant="body2">
-            <Typography className={classes.title}>
-              Criar Conta
-            </Typography>
-          </Link>
+          <SketchfabLoginButton />
         </form>
       </CardContent>
     </Card>

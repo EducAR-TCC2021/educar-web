@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
@@ -49,19 +48,50 @@ LoginRoute.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
 };
 
+function getAccessToken() {
+  const url = new URL(window.location);
+  const hashParams = url.hash.split('&');
+  let token = null;
+  hashParams.forEach((param) => {
+    if (param.indexOf('access_token') !== -1) {
+      token = param.replace('#access_token=', '');
+    }
+  });
+  return token;
+}
+
 function Routes() {
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.user.accessToken !== null);
+
+  // TODO: move this logic to SketchfabLoginButton when we change our Redirect Uri
+  useEffect(() => {
+    if (window.opener) {
+      const accessToken = getAccessToken();
+      if (accessToken !== null) {
+        window.opener.postMessage({ accessToken, source: window.name });
+        window.close();
+      }
+    }
+  });
 
   return (
-    <Router>
-      <Switch>
-        <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
-        <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
-        <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
-        <RestrictedRoute isLoggedIn={isLoggedIn} path="/editor"><Editor /></RestrictedRoute>
-        <Redirect to="home" />
-      </Switch>
-    </Router>
+    <Switch>
+      <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
+      <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
+      <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
+      <RestrictedRoute isLoggedIn={isLoggedIn} path="/editor"><Editor /></RestrictedRoute>
+      <Route
+        path="/"
+        component={({ location }) => (
+          <Redirect
+            to={{
+              ...location,
+              pathname: '/home',
+            }}
+          />
+        )}
+      />
+    </Switch>
   );
 }
 
