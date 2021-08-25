@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core';
 
 import {
-  setValidTrigger,
-  setInvalidTrigger,
+  editorActions,
+  editorSelectors,
 } from '../../state/slices/editor';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,17 +24,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TriggerPreview() {
+function MarkerPreview() {
   const classes = useStyles();
   const store = useStore();
-  const src = useSelector((state) => state.editor.trigger.src);
+  const src = useSelector(editorSelectors.markerSrcSelector);
 
   const handleValidImage = () => {
-    store.dispatch(setValidTrigger());
+    store.dispatch(editorActions.setValidMarker());
   };
 
   const handleInvalidImage = () => {
-    store.dispatch(setInvalidTrigger());
+    store.dispatch(editorActions.setInvalidMarker());
   };
 
   return (
@@ -50,4 +50,4 @@ function TriggerPreview() {
   );
 }
 
-export default TriggerPreview;
+export default MarkerPreview;

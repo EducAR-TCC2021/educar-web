@@ -10,8 +10,8 @@ import TopMenu from '../../components/TopMenu';
 import PaletteTypeButton from '../../components/PaletteTypeButton';
 import ProfileDropdown from '../../components/ProfileDropdown';
 import PageTitle from '../../components/PageTitle';
-import { setTriggerSrc } from '../../state/slices/editor';
-import TriggerPreview from './TriggerPreview';
+import { editorSelectors, editorActions } from '../../state/slices/editor';
+import MarkerPreview from './MarkerPreview';
 import NextPageButton from '../../components/NextPageButton';
 
 const useStyles = makeStyles({
@@ -24,11 +24,11 @@ function MarkerSelection() {
   const store = useStore();
   const classes = useStyles();
 
-  const isValidTriggerSrc = useSelector((state) => state.editor.trigger.isValid);
-  const triggerSrcValue = useSelector((state) => state.editor.trigger.src);
+  const isValidMarkerSrc = useSelector(editorSelectors.markerIsValidSelector);
+  const markerSrcValue = useSelector(editorSelectors.markerSrcSelector);
 
   const handleChange = (v) => {
-    store.dispatch(setTriggerSrc(v));
+    store.dispatch(editorActions.setMarkerSrc(v));
   };
 
   return (
@@ -36,7 +36,7 @@ function MarkerSelection() {
       <TopMenu>
         <PaletteTypeButton />
         <ProfileDropdown />
-        <NextPageButton redirectTo="/editor" disabled={!isValidTriggerSrc}>Prosseguir</NextPageButton>
+        <NextPageButton redirectTo="/editor" disabled={!isValidMarkerSrc}>Prosseguir</NextPageButton>
       </TopMenu>
       <PageTitle title="Selecionar Marcador" />
       <Container maxWidth="md" className={classes.content}>
@@ -45,14 +45,14 @@ function MarkerSelection() {
           margin="normal"
           required
           fullWidth
-          id="triggerSrc"
+          id="markerSrc"
           label="Link da imagem"
-          name="triggerSrc"
+          name="markerSrc"
           autoFocus
           onChange={(e) => handleChange(e.target.value)}
-          value={triggerSrcValue}
+          value={markerSrcValue}
         />
-        <TriggerPreview />
+        <MarkerPreview />
       </Container>
     </>
   );

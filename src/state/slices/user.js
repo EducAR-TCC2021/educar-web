@@ -5,6 +5,7 @@ const settings = createSlice({
   name: 'user',
   initialState: {
     accessToken: null,
+    scenes: [],
   },
   reducers: {
     userLoggedIn(state, action) {
@@ -12,6 +13,9 @@ const settings = createSlice({
     },
     userLoggedOff(state) {
       state.accessToken = null;
+    },
+    setScenes(state, action) {
+      state.scenes = action.payload;
     },
   },
 });
