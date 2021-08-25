@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles, Tooltip } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   iconTool: {
@@ -9,23 +8,31 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function IconTool({ toolName, icon }) {
+function IconTool({ toolName, icon, onClickCallback }) {
   const classes = useStyles();
 
   return (
-    <Button
-      className={classes.iconTool}
-      variant="text"
-      color="default"
-      startIcon={icon}
-    >
-      {toolName}
-    </Button>
+    <Tooltip title={toolName}>
+      <IconButton
+        className={classes.iconTool}
+        aria-label={toolName}
+        color="default"
+        onClick={onClickCallback}
+      >
+        {icon}
+      </IconButton>
+    </Tooltip>
   );
 }
+
+IconTool.defaultProps = {
+  onClickCallback: () => null,
+};
+
 IconTool.propTypes = {
   toolName: PropTypes.node.isRequired,
   icon: PropTypes.node.isRequired,
+  onClickCallback: PropTypes.func,
 };
 
 export default IconTool;

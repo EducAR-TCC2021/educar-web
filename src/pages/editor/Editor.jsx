@@ -6,6 +6,7 @@ import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
 import EditorViewport from './EditorViewport';
 import IconTool from './IconTool';
+import OverlayMenu from './OverlayMenu';
 import SceneTextField from './SceneTextField';
 import SideMenu from './SideMenu';
 import SideSubMenu from './SideSubMenu';
@@ -51,9 +52,9 @@ export default function Editor() {
       <TopMenu hideLogo>
         <div className={classes.toolbar}>
           <div className={classes.toolbarLeft}>
-            <IconTool toolName="" icon={<OpenWith />} />
-            <IconTool toolName="" icon={<Cached />} />
-            <IconTool toolName="" icon={<Height />} />
+            <IconTool toolName="Translação" icon={<OpenWith />} />
+            <IconTool toolName="Rotação" icon={<Cached />} />
+            <IconTool toolName="Escala" icon={<Height />} />
           </div>
           <div className={classes.toolbarCenter}>
             <SceneTextField />
@@ -66,7 +67,7 @@ export default function Editor() {
       </TopMenu>
       <Box className={classes.horizontal}>
         <SideMenu>
-          <SideSubMenu title="Overlays" />
+          <OverlayMenu />
           <SideSubMenu title="Adicionar um Link" />
         </SideMenu>
         <EditorViewport />
