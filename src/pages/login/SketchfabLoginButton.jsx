@@ -32,6 +32,11 @@ function getAccessToken() {
   return token;
 }
 
+function getError() {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  return urlSearchParams.get('error') || null;
+}
+
 function SketchfabLoginButton() {
   const classes = useStyles();
   const [windowReference, setWindowReference] = useState(null);
@@ -40,8 +45,11 @@ function SketchfabLoginButton() {
   useEffect(() => {
     if (window.opener) {
       const accessToken = getAccessToken();
+      const error = getError();
       if (accessToken !== null) {
         window.opener.postMessage({ accessToken, source: window.name });
+        window.close();
+      } else if (error !== null) {
         window.close();
       }
     }
