@@ -7,8 +7,10 @@ import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(() => ({
   menu: {
-    backgroundColor: 'grey',
     flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#121316',
   },
 }));
 
