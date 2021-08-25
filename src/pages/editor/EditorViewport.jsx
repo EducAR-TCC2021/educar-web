@@ -4,7 +4,7 @@ import Scene from './Scene';
 
 const useStyles = makeStyles(() => ({
   viewport: {
-    backgroundColor: 'white',
+    backgroundColor: '#282c34',
     flex: 3,
   },
 }));
