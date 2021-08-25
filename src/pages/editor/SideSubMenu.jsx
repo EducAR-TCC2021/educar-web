@@ -2,11 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Divider, makeStyles } from '@material-ui/core';
 
+const BORDER_RADIUS = 3;
+
 const useStyles = makeStyles(() => ({
   container: {
+    borderRadius: BORDER_RADIUS,
     backgroundColor: '#505050',
   },
   title: {
+    borderTopRightRadius: BORDER_RADIUS,
+    borderTopLeftRadius: BORDER_RADIUS,
     display: 'flex',
     color: 'white',
     justifyContent: 'center',
