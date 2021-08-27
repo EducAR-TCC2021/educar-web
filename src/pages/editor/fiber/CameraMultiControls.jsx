@@ -1,39 +1,50 @@
-import React, { useRef, useEffect } from 'react';
-import { OrbitControls, TransformControls } from '@react-three/drei';
-import { useSelector } from 'react-redux';
-import { editorSelectors } from '../../../state/slices/editor';
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
+import React, { useEffect } from 'react';
+import { TransformControls } from '@react-three/drei';
+import PropTypes from 'prop-types';
 
-function CameraMultiControls() {
-  const orbit = useRef();
-  const controlMode = useSelector(editorSelectors.selectControlMode);
-  const transform = props.controlRef;
-
+function CameraMultiControls({
+  orbitRef,
+  transformRef,
+  controlMode,
+  children,
+}) {
+  /*
   const callbackWrapper = (event) => {
     props.callback(props.modelRef.current.matrixWorld);
   };
+  */
+  // eslint-disable-next-line no-console
+  console.log(controlMode);
 
+  // Desabilita o controle de câmera orbital durante
+  // utilização do controle de transform.
   useEffect(() => {
-    if (transform.current) {
-      const controls = transform.current;
+    if (transformRef.current) {
+      const controls = transformRef.current;
       controls.setMode(controlMode);
-      const callback = (event) => (orbit.current.enabled = !event.value);
+      const callback = (event) => (orbitRef.current.enabled = !event.value);
       controls.addEventListener('dragging-changed', callback);
-      controls.addEventListener('mouseUp', callbackWrapper);
       return () => {
         controls.removeEventListener('dragging-changed', callback);
-        controls.removeEventListener('mouseUp', callbackWrapper);
       };
     }
   });
 
   return (
-    <>
-      <TransformControls ref={transform}>
-        {props.children}
-      </TransformControls>
-      <OrbitControls ref={orbit} />
-    </>
+    <TransformControls ref={transformRef}>
+      {children}
+    </TransformControls>
   );
 }
+CameraMultiControls.propTypes = {
+  orbitRef: PropTypes.element.isRequired,
+  transformRef: PropTypes.element.isRequired,
+  controlMode: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default CameraMultiControls;

@@ -4,6 +4,7 @@ import React, {
   useState,
   useMemo,
 } from 'react';
+import PropTypes from 'prop-types';
 import { Sphere } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
@@ -23,10 +24,9 @@ const Fallback = () => (
  * @param {*} props
  * @returns
  */
-function Model({ path }) {
+function Model({ path, modelRef }) {
   const [gltf, setGltf] = useState();
   const [loading, setLoading] = useState(true);
-  const { modelRef } = props;
 
   function onLoad(gltfObj) {
     setGltf(gltfObj);
@@ -46,10 +46,14 @@ function Model({ path }) {
   return (gltf && !loading)
     ? (
       <Suspense fallback={<div />}>
-        <primitive ref={props.modelRef} name="3dmodel" object={gltf.scene} />
+        <primitive ref={modelRef} name="3dmodel" object={gltf.scene} />
       </Suspense>
     )
     : <Fallback />;
 }
+Model.propTypes = {
+  path: PropTypes.string.isRequired,
+  modelRef: PropTypes.element.isRequired,
+};
 
 export default Model;

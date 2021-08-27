@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Enums
 const modesEnum = {
-  TRANSLATE: "translate",
-  ROTATE: "rotate",
-  SCALE: "scale",
+  TRANSLATE: 'translate',
+  ROTATE: 'rotate',
+  SCALE: 'scale',
 };
 
 const initialState = {
@@ -20,6 +20,26 @@ const initialState = {
       position: {
         x: 0.1,
         y: 0.15,
+        z: 0,
+      },
+      rotation: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      scale: {
+        x: 0.1,
+        y: 0.1,
+        z: 0.1,
+      },
+      type: 'model',
+      url: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
+    },
+    {
+      name: 'Model 2',
+      position: {
+        x: 0,
+        y: 0,
         z: 0,
       },
       rotation: {
@@ -119,7 +139,7 @@ const selectOverlays = (state) => state.editor.overlays;
 
 const selectOverlaySelection = (state) => state.editor.overlay_selection;
 
-const selectControlMode = (state) => state.controlMode;
+const selectControlMode = (state) => state.editor.controlMode;
 
 const editorSelectors = {
   selectMarkerSrc,
