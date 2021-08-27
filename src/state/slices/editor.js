@@ -69,6 +69,7 @@ const initialState = {
   ],
 };
 
+// Slice
 const editor = createSlice({
   name: 'editor',
   initialState,
@@ -91,13 +92,22 @@ const editor = createSlice({
   },
 });
 
-const editorSelectors = {
-  overlaysSelector: (state) => state.editor.overlays,
-  markerSrcSelector: (state) => state.editor.marker.src,
-  markerIsValidSelector: (state) => state.editor.marker.isValid,
-};
-
+// Actions
 const editorActions = Object(editor.actions);
 
+// Selectors
+const selectMarkerSrc = (state) => state.editor.marker.src;
+
+const selectMarkerIsValid = (state) => state.editor.marker.isValid;
+
+const selectOverlays = (state) => state.editor.overlays;
+
+const editorSelectors = {
+  selectMarkerSrc,
+  selectMarkerIsValid,
+  selectOverlays,
+};
+
+// Exports
 export { editorActions, editorSelectors };
 export default editor.reducer;

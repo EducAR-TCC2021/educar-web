@@ -1,9 +1,9 @@
-import { Box, IconButton, makeStyles } from '@material-ui/core';
-import { Add, Remove } from '@material-ui/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import SideSubMenu from './SideSubMenu';
+import { Box, IconButton, makeStyles } from '@material-ui/core';
+import { Add, Remove } from '@material-ui/icons';
 
+import SideSubMenu from './SideSubMenu';
 import { editorSelectors } from '../../state/slices/editor';
 
 const useStyles = makeStyles(() => ({
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
 
 function OverlayMenu() {
   const classes = useStyles();
-  const overlays = useSelector(editorSelectors.overlaysSelector);
+  const overlays = useSelector(editorSelectors.selectOverlays);
 
   return (
     <SideSubMenu

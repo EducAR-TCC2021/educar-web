@@ -7,7 +7,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { useStore } from 'react-redux';
-import { userLoggedIn } from '../../state/slices/user';
+import { accountActions } from '../../state/slices/account';
 
 const CLIENT_ID = 'Qj6hQl5K04dccP4SsGykPq4Pyp8kTYkny5gAqBBY';
 const SKETCHFAB_URL = `https://sketchfab.com/oauth2/authorize/?response_type=token&client_id=${CLIENT_ID}`;
@@ -62,7 +62,7 @@ function SketchfabLoginButton() {
     const { data } = event;
     if (data.source === 'Sketchfab OAuth2 Login') {
       window.removeEventListener('message', receiveMessage, false);
-      store.dispatch(userLoggedIn(data.accessToken));
+      store.dispatch(accountActions.userLoggedIn(data.accessToken));
     }
   };
 

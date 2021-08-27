@@ -4,8 +4,9 @@ import {
   Brightness7,
 } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
-import { useSelector, useStore } from 'react-redux';
-import { togglePaletteType } from '../state/slices/settings';
+import { useStore, useSelector } from 'react-redux';
+
+import { settingsActions, settingsSelectors } from '../state/slices/settings';
 
 function renderIcon(paletteType) {
   switch (paletteType) {
@@ -16,10 +17,10 @@ function renderIcon(paletteType) {
 }
 
 function PaletteTypeButton() {
-  const paletteType = useSelector((state) => state.settings.paletteType);
+  const paletteType = useSelector(settingsSelectors.selectPaletteType);
   const store = useStore();
 
-  const clicked = () => store.dispatch(togglePaletteType());
+  const clicked = () => store.dispatch(settingsActions.togglePaletteType());
 
   return (
     <IconButton onClick={clicked} aria-label="Toggle light/dark theme">

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+// Slice
 const settings = createSlice({
   name: 'settings',
   initialState: {
@@ -17,9 +18,15 @@ const settings = createSlice({
   },
 });
 
-const { actions, reducer } = settings;
-export const {
-  setPaletteType,
-  togglePaletteType,
-} = actions;
-export default reducer;
+// Actions
+const settingsActions = Object(settings.actions);
+
+// Selectors
+const selectPaletteType = (state) => state.settings.paletteType;
+
+const settingsSelectors = {
+  selectPaletteType,
+};
+
+export { settingsActions, settingsSelectors };
+export default settings.reducer;
