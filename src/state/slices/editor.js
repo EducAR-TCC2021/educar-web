@@ -1,11 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Enums
+const modesEnum = {
+  TRANSLATE: "translate",
+  ROTATE: "rotate",
+  SCALE: "scale",
+};
+
 const initialState = {
   marker: {
     src: '',
     isValid: false,
   },
   overlay_selection: [0],
+  controlMode: modesEnum.TRANSLATE,
   overlays: [
     {
       name: 'Model',
@@ -87,6 +95,12 @@ const editor = createSlice({
     setOverlaysFromScene(state, action) {
       state.overlays = action.payload.overlays;
     },
+    setOverlaySelection(state, action) {
+      state.overlay_selection = action.payload;
+    },
+    setControlMode(state, action) {
+      state.controlMode = action.payload;
+    },
     clearEditorState() {
       return initialState;
     },
@@ -105,13 +119,17 @@ const selectOverlays = (state) => state.editor.overlays;
 
 const selectOverlaySelection = (state) => state.editor.overlay_selection;
 
+const selectControlMode = (state) => state.controlMode;
+
 const editorSelectors = {
   selectMarkerSrc,
   selectMarkerIsValid,
   selectOverlays,
   selectOverlaySelection,
+  selectControlMode,
 };
 
 // Exports
 export { editorActions, editorSelectors };
+export { modesEnum };
 export default editor.reducer;
