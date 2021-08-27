@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { useStore } from 'react-redux';
 
-import { userLoggedOff } from '../state/slices/user';
+import { accountActions } from '../state/slices/account';
 
 function ProfileDropdown() {
   const store = useStore();
@@ -22,7 +22,7 @@ function ProfileDropdown() {
   };
 
   const handleLogout = () => {
-    store.dispatch(userLoggedOff());
+    store.dispatch(accountActions.userLoggedOff());
     handleClose();
   };
 

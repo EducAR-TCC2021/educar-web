@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useStore } from 'react-redux';
+import { useStore, useSelector } from 'react-redux';
 import {
   makeStyles,
   Container,
@@ -24,8 +24,8 @@ function MarkerSelection() {
   const store = useStore();
   const classes = useStyles();
 
-  const isValidMarkerSrc = useSelector(editorSelectors.markerIsValidSelector);
-  const markerSrcValue = useSelector(editorSelectors.markerSrcSelector);
+  const isValidMarkerSrc = useSelector(editorSelectors.selectMarkerIsValid);
+  const markerSrcValue = useSelector(editorSelectors.selectMarkerSrc);
 
   const handleChange = (v) => {
     store.dispatch(editorActions.setMarkerSrc(v));

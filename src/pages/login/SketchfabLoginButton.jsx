@@ -7,7 +7,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { useStore } from 'react-redux';
-import { userLoggedIn } from '../../state/slices/user';
+import { accountActions } from '../../state/slices/account';
 
 const CLIENT_ID = 'Qj6hQl5K04dccP4SsGykPq4Pyp8kTYkny5gAqBBY';
 const SKETCHFAB_URL = `https://sketchfab.com/oauth2/authorize/?response_type=token&client_id=${CLIENT_ID}`;
@@ -32,6 +32,11 @@ function getAccessToken() {
   return token;
 }
 
+function getError() {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  return urlSearchParams.get('error') || null;
+}
+
 function SketchfabLoginButton() {
   const classes = useStyles();
   const [windowReference, setWindowReference] = useState(null);
@@ -40,8 +45,11 @@ function SketchfabLoginButton() {
   useEffect(() => {
     if (window.opener) {
       const accessToken = getAccessToken();
+      const error = getError();
       if (accessToken !== null) {
         window.opener.postMessage({ accessToken, source: window.name });
+        window.close();
+      } else if (error !== null) {
         window.close();
       }
     }
@@ -54,7 +62,7 @@ function SketchfabLoginButton() {
     const { data } = event;
     if (data.source === 'Sketchfab OAuth2 Login') {
       window.removeEventListener('message', receiveMessage, false);
-      store.dispatch(userLoggedIn(data.accessToken));
+      store.dispatch(accountActions.userLoggedIn(data.accessToken));
     }
   };
 

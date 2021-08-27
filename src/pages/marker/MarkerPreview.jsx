@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 function MarkerPreview() {
   const classes = useStyles();
   const store = useStore();
-  const src = useSelector(editorSelectors.markerSrcSelector);
+  const src = useSelector(editorSelectors.selectMarkerSrc);
 
   const handleValidImage = () => {
     store.dispatch(editorActions.setValidMarker());

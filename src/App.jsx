@@ -4,18 +4,20 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import {
   createTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import Login from './pages/login';
 import Home from './pages/home';
 import MarkerSelection from './pages/marker';
 import Editor from './pages/editor';
+import { accountSelectors } from './state/slices/account';
+import { settingsSelectors } from './state/slices/settings';
 
 function RestrictedRoute({ children, isLoggedIn, ...rest }) {
   return (
@@ -49,7 +51,7 @@ LoginRoute.propTypes = {
 };
 
 function Routes() {
-  const isLoggedIn = useSelector((state) => state.user.accessToken !== null);
+  const isLoggedIn = useSelector(accountSelectors.selectAccessToken);
 
   return (
     <Switch>
@@ -73,7 +75,7 @@ function Routes() {
 }
 
 function App() {
-  const paletteType = useSelector((state) => state.settings.paletteType);
+  const paletteType = useSelector(settingsSelectors.selectPaletteType);
 
   const theme = useMemo(
     () => createTheme(
