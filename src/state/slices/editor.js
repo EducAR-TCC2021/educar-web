@@ -5,6 +5,7 @@ const initialState = {
     src: '',
     isValid: false,
   },
+  overlay_selection: [0],
   overlays: [
     {
       name: 'Model',
@@ -102,10 +103,13 @@ const selectMarkerIsValid = (state) => state.editor.marker.isValid;
 
 const selectOverlays = (state) => state.editor.overlays;
 
+const selectOverlaySelection = (state) => state.editor.overlay_selection;
+
 const editorSelectors = {
   selectMarkerSrc,
   selectMarkerIsValid,
   selectOverlays,
+  selectOverlaySelection,
 };
 
 // Exports
