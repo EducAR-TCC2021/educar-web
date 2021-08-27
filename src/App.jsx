@@ -1,22 +1,23 @@
 import React, { useMemo } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import {
   createTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import Login from './pages/login';
 import Home from './pages/home';
 import MarkerSelection from './pages/marker';
 import Editor from './pages/editor';
+import { accountSelectors } from './state/slices/account';
+import { settingsSelectors } from './state/slices/settings';
 
 function RestrictedRoute({ children, isLoggedIn, ...rest }) {
   return (
@@ -50,23 +51,31 @@ LoginRoute.propTypes = {
 };
 
 function Routes() {
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const isLoggedIn = useSelector(accountSelectors.selectAccessToken);
 
   return (
-    <Router>
-      <Switch>
-        <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
-        <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
-        <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
-        <RestrictedRoute isLoggedIn={isLoggedIn} path="/editor"><Editor /></RestrictedRoute>
-        <Redirect to="home" />
-      </Switch>
-    </Router>
+    <Switch>
+      <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
+      <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
+      <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
+      <RestrictedRoute isLoggedIn={isLoggedIn} path="/editor"><Editor /></RestrictedRoute>
+      <Route
+        path="/"
+        component={({ location }) => (
+          <Redirect
+            to={{
+              ...location,
+              pathname: '/home',
+            }}
+          />
+        )}
+      />
+    </Switch>
   );
 }
 
 function App() {
-  const paletteType = useSelector((state) => state.settings.paletteType);
+  const paletteType = useSelector(settingsSelectors.selectPaletteType);
 
   const theme = useMemo(
     () => createTheme(

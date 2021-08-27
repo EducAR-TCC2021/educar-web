@@ -16,6 +16,7 @@ import TopMenu from '../../components/TopMenu';
 import PaletteTypeButton from '../../components/PaletteTypeButton';
 import NextPageButton from '../../components/NextPageButton';
 import ProfileDropdown from '../../components/ProfileDropdown';
+import PageTitle from '../../components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -24,11 +25,6 @@ const useStyles = makeStyles((theme) => ({
     height: '75vh',
     overflowY: 'scroll',
     border: '1px solid grey',
-  },
-  pageTitle: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-    padding: '0',
   },
   card: {
     height: '100%',
@@ -59,9 +55,7 @@ function Home() {
         <ProfileDropdown />
         <NextPageButton redirectTo="/marcador">Criar Cena</NextPageButton>
       </TopMenu>
-      <Container className={classes.pageTitle} maxWidth="md">
-        <Typography variant="h5" component="h1">Minhas Cenas</Typography>
-      </Container>
+      <PageTitle title="Minhas Cenas" />
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
           {cards.map((card) => (
