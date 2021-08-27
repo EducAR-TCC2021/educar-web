@@ -2,24 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
-import { editorSelectors } from '../../state/slices/editor';
+import { useSelector, useStore } from 'react-redux';
+import { editorActions, editorSelectors } from '../../state/slices/editor';
 
 const useStyles = makeStyles(() => ({
   selected: {
+    marginTop: 4,
     backgroundColor: '#7070A7',
   },
   normal: {
+    marginTop: 4,
     backgroundColor: '#505050',
   },
 }));
 
 function OverlayMenuItem({ id, nome }) {
-  const selected = useSelector(editorSelectors.selectOverlaySelection);
   const classes = useStyles();
-  const style = (id in selected) ? classes.selected : classes.normal;
+  const selected = useSelector(editorSelectors.selectOverlaySelection);
+  const style = (selected.includes(id)) ? classes.selected : classes.normal;
+  const store = useStore();
+
+  const handleClick = () => {
+    const payload = [id];
+    store.dispatch(editorActions.setOverlaySelection(payload));
+  };
+
   return (
-    <Button className={style}>{nome}</Button>
+    <Button
+      className={style}
+      variant="contained"
+      onClick={handleClick}
+      disableElevation
+    >
+      {nome}
+    </Button>
   );
 }
 
