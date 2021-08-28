@@ -9,7 +9,7 @@ const modesEnum = {
 
 const initialState = {
   marker: {
-    src: '',
+    src: 'https://static.dw.com/image/37030280_101.jpg',
     isValid: false,
   },
   overlay_selection: [0],
