@@ -1,14 +1,15 @@
+/* eslint-disable react/jsx-indent */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { useSelector } from 'react-redux';
-import Model from './Model';
+import { OrbitControls, useContextBridge } from '@react-three/drei';
+import { useSelector, Provider, useStore } from 'react-redux';
 import { editorSelectors } from '../../../state/slices/editor';
 import CameraMultiControls from './CameraMultiControls';
 import Image from './Image';
+import Asset from './Asset';
 
 export default function Scene() {
   const overlays = useSelector(editorSelectors.selectOverlays);
@@ -29,35 +30,36 @@ export default function Scene() {
 
   return (
     <Canvas>
-      <ambientLight />
-      <pointLight position={[10, 10, 10]} />
-      {
-        overlays.map((overlay, index) => {
-          const { type, url } = overlay;
+        <ambientLight />
+        <pointLight position={[10, 10, 10]} />
+        {
+          overlays.map((overlay, index) => {
+            const { type, url } = overlay;
 
-          switch (type) {
-            case 'model':
-              return ((index === selection)
-                ? (
-                  <CameraMultiControls
-                    orbitRef={orbitRef}
-                    transformRef={transformRef}
-                    controlMode={controlMode}
-                  >
-                    <Model modelRef={modelRef} path={url} />
-                  </CameraMultiControls>
-                )
-                : <Model modelRef={null} path={url} />
-              );
-            default:
-              return null;
-          }
-        })
-      }
-      <Suspense fallback={null}>
-        <Image src={markerSrc} />
-      </Suspense>
-      <OrbitControls ref={orbitRef} />
+            return ((index === selection)
+              ? (
+                <CameraMultiControls
+                  orbitRef={orbitRef}
+                  transformRef={transformRef}
+                  controlMode={controlMode}
+                >
+                  <Suspense fallback={null}>
+                    <Asset type={type} ref={modelRef} url={url} />
+                  </Suspense>
+                </CameraMultiControls>
+              )
+              : (
+                <Suspense fallback={null}>
+                  <Asset type={type} ref={null} url={url} />
+                </Suspense>
+              )
+            );
+          })
+        }
+        <Suspense fallback={null}>
+          <Image url={markerSrc} ref={null} />
+        </Suspense>
+        <OrbitControls ref={orbitRef} />
     </Canvas>
 
   );

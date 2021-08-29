@@ -6,6 +6,11 @@ const modesEnum = {
   ROTATE: 'rotate',
   SCALE: 'scale',
 };
+const typeEnums = {
+  MODEL: 'model',
+  VIDEO: 'video',
+  IMAGE: 'image',
+};
 
 const initialState = {
   marker: {
@@ -32,7 +37,7 @@ const initialState = {
         y: 0.1,
         z: 0.1,
       },
-      type: 'model',
+      type: typeEnums.MODEL,
       url: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
     },
     {
@@ -52,7 +57,7 @@ const initialState = {
         y: 0.1,
         z: 0.1,
       },
-      type: 'model',
+      type: typeEnums.MODEL,
       url: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
     },
     {
@@ -72,7 +77,7 @@ const initialState = {
         y: 0.2,
         z: 1,
       },
-      type: 'video',
+      type: typeEnums.VIDEO,
       url: 'https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_1mb.mp4',
     },
     {
@@ -151,5 +156,5 @@ const editorSelectors = {
 
 // Exports
 export { editorActions, editorSelectors };
-export { modesEnum };
+export { modesEnum, typeEnums };
 export default editor.reducer;
