@@ -126,6 +126,9 @@ const editor = createSlice({
     setControlMode(state, action) {
       state.controlMode = action.payload;
     },
+    setOverlayTransform(state, action) {
+      state.overlays[action.payload.id] = action.payload.overylay;
+    },
     clearEditorState() {
       return initialState;
     },

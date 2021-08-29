@@ -10,6 +10,7 @@ import { editorSelectors } from '../../../state/slices/editor';
 import CameraMultiControls from './CameraMultiControls';
 import Image from './Image';
 import Asset from './Asset';
+import store from '../../../state/store';
 
 export default function Scene() {
   const overlays = useSelector(editorSelectors.selectOverlays);
@@ -30,6 +31,7 @@ export default function Scene() {
 
   return (
     <Canvas>
+      <Provider store={store}>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         {
@@ -60,6 +62,7 @@ export default function Scene() {
           <Image url={markerSrc} ref={null} />
         </Suspense>
         <OrbitControls ref={orbitRef} />
+      </Provider>
     </Canvas>
 
   );
