@@ -5,6 +5,7 @@ import { Add, Remove } from '@material-ui/icons';
 
 import SideSubMenu from './SideSubMenu';
 import { editorSelectors } from '../../state/slices/editor';
+import OverlayMenuItem from './OverlayMenuItem';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -32,7 +33,7 @@ function OverlayMenu() {
         </Box>
       )}
     >
-      {overlays.map((overlay) => <Box>{ overlay.name }</Box>)}
+      {overlays.map((overlay, index) => <OverlayMenuItem id={index} nome={`Overlay ${index}`} />)}
     </SideSubMenu>
   );
 }

@@ -9,8 +9,10 @@ import {
   Typography,
   Button,
   makeStyles,
-  Link,
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { useStore } from 'react-redux';
+import { editorActions } from '../../state/slices/editor';
 
 const useStyles = makeStyles({
   card: {
@@ -26,27 +28,32 @@ const useStyles = makeStyles({
   },
 });
 
-function SceneCard({ id, thumbnail, name }) {
+function SceneCard({ scene, id }) {
   const classes = useStyles();
+  const store = useStore();
+  const history = useHistory();
+
+  const editOnClick = () => {
+    store.dispatch(editorActions.setStateFromScene(scene));
+    history.push('/editor');
+  };
 
   return (
     <Grid item key={id} xs={12} sm={6} md={4}>
       <Card className={classes.card}>
         <CardMedia
           className={classes.cardMedia}
-          image={thumbnail}
+          image={scene.trigger}
           title="Thumbnail"
         />
         <CardContent className={classes.cardContent}>
           <Typography gutterBottom variant="h5" component="h2">
-            {name}
+            {scene.name}
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
-            <Link href="/editor">
-              Editar
-            </Link>
+          <Button size="small" color="primary" onClick={editOnClick}>
+            Editar
           </Button>
         </CardActions>
       </Card>
@@ -55,8 +62,11 @@ function SceneCard({ id, thumbnail, name }) {
 }
 SceneCard.propTypes = {
   id: PropTypes.number.isRequired,
-  thumbnail: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  scene: PropTypes.shape({
+    name: PropTypes.string,
+    trigger: PropTypes.string,
+    overlays: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
 };
 
 export default SceneCard;

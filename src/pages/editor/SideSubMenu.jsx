@@ -19,6 +19,8 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#404040',
   },
   body: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   footer: {
   },

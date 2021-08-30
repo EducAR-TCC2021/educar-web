@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
+  CircularProgress,
   Container,
   Grid,
   makeStyles,
@@ -21,12 +21,18 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     paddingBottom: theme.spacing(6),
   },
+  loading: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
 }));
 
 function Home() {
   const classes = useStyles();
-  const sceneCards = useSelector(scenesSelectors.selectSceneCards);
-  const [{ isPending, status }, refresh] = useRequest(getScenes);
+  const scenes = useSelector(scenesSelectors.selectScenes);
+  const [{ isPending }] = useRequest(getScenes);
 
   return (
     <>
@@ -38,9 +44,10 @@ function Home() {
       <PageTitle title="Minhas Cenas" />
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
-          {sceneCards.map((card) => (
-            <SceneCard id={card.id} name={card.name} thumbnail={card.thumbnail} />
-          ))}
+          {isPending ? <div className={classes.loading}><CircularProgress /></div>
+            : scenes.map((scene, idx) => (
+              <SceneCard scene={scene} id={idx} />
+            ))}
         </Grid>
       </Container>
     </>
