@@ -33,7 +33,7 @@ TopMenu.defaultProps = {
 };
 TopMenu.propTypes = {
   children: PropTypes.node.isRequired,
-  hideLogo: false,
+  hideLogo: PropTypes.bool,
 };
 
 export default TopMenu;

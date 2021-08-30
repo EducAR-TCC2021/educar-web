@@ -4,13 +4,13 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   createTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import Login from './pages/login';
 import Home from './pages/home';
@@ -51,7 +51,7 @@ LoginRoute.propTypes = {
 };
 
 function Routes() {
-  const isLoggedIn = useSelector(accountSelectors.selectAccessToken);
+  const isLoggedIn = useSelector(accountSelectors.selectAccessToken) !== '';
 
   return (
     <Switch>
