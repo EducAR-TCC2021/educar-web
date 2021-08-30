@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, makeStyles } from '@material-ui/core';
-import Scene from './Scene';
+import Scene from './fiber/Scene';
 
 const useStyles = makeStyles(() => ({
   viewport: {

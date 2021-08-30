@@ -1,10 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Enums
+const modesEnum = {
+  TRANSLATE: 'translate',
+  ROTATE: 'rotate',
+  SCALE: 'scale',
+};
+const typeEnums = {
+  MODEL: 'model',
+  VIDEO: 'video',
+  IMAGE: 'image',
+};
+
 const initialState = {
   marker: {
-    src: '',
+    src: 'https://static.dw.com/image/37030280_101.jpg',
     isValid: false,
   },
+  overlay_selection: [0],
+  controlMode: modesEnum.TRANSLATE,
   overlays: [
     {
       name: 'Model',
@@ -23,7 +37,27 @@ const initialState = {
         y: 0.1,
         z: 0.1,
       },
-      type: 'model',
+      type: typeEnums.MODEL,
+      url: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
+    },
+    {
+      name: 'Model 2',
+      position: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      rotation: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      scale: {
+        x: 0.1,
+        y: 0.1,
+        z: 0.1,
+      },
+      type: typeEnums.MODEL,
       url: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
     },
     {
@@ -43,7 +77,7 @@ const initialState = {
         y: 0.2,
         z: 1,
       },
-      type: 'video',
+      type: typeEnums.VIDEO,
       url: 'https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_1mb.mp4',
     },
     {
@@ -86,6 +120,15 @@ const editor = createSlice({
     setOverlaysFromScene(state, action) {
       state.overlays = action.payload.overlays;
     },
+    setOverlaySelection(state, action) {
+      state.overlay_selection = action.payload;
+    },
+    setControlMode(state, action) {
+      state.controlMode = action.payload;
+    },
+    setOverlayTransform(state, action) {
+      state.overlays[action.payload.id] = action.payload.overylay;
+    },
     clearEditorState() {
       return initialState;
     },
@@ -102,12 +145,19 @@ const selectMarkerIsValid = (state) => state.editor.marker.isValid;
 
 const selectOverlays = (state) => state.editor.overlays;
 
+const selectOverlaySelection = (state) => state.editor.overlay_selection;
+
+const selectControlMode = (state) => state.editor.controlMode;
+
 const editorSelectors = {
   selectMarkerSrc,
   selectMarkerIsValid,
   selectOverlays,
+  selectOverlaySelection,
+  selectControlMode,
 };
 
 // Exports
 export { editorActions, editorSelectors };
+export { modesEnum, typeEnums };
 export default editor.reducer;
