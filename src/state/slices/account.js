@@ -5,7 +5,6 @@ const account = createSlice({
   name: 'account',
   initialState: {
     accessToken: null,
-    scenes: [],
   },
   reducers: {
     userLoggedIn(state, action) {
@@ -27,11 +26,8 @@ const accountActions = Object(account.actions);
 
 const selectAccessToken = (state) => state.account.accessToken;
 
-const selectScenes = (state) => state.account.scenes;
-
 const accountSelectors = {
   selectAccessToken,
-  selectScenes,
 };
 
 // Exports

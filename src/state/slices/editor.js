@@ -13,94 +13,12 @@ const typeEnums = {
 };
 
 const initialState = {
-  marker: {
-    src: 'https://static.dw.com/image/37030280_101.jpg',
-    isValid: false,
-  },
+  marker: {},
   overlay_selection: [0],
   controlMode: modesEnum.TRANSLATE,
-  overlays: [
-    {
-      name: 'Model',
-      position: {
-        x: 0.1,
-        y: 0.15,
-        z: 0,
-      },
-      rotation: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      scale: {
-        x: 0.1,
-        y: 0.1,
-        z: 0.1,
-      },
-      type: typeEnums.MODEL,
-      url: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
-    },
-    {
-      name: 'Model 2',
-      position: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      rotation: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      scale: {
-        x: 0.1,
-        y: 0.1,
-        z: 0.1,
-      },
-      type: typeEnums.MODEL,
-      url: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb',
-    },
-    {
-      name: 'Video',
-      position: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      rotation: {
-        x: 90,
-        y: 0,
-        z: 0,
-      },
-      scale: {
-        x: 0.2,
-        y: 0.2,
-        z: 1,
-      },
-      type: typeEnums.VIDEO,
-      url: 'https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_1mb.mp4',
-    },
-    {
-      name: 'Image',
-      position: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      rotation: {
-        x: 90,
-        y: 0,
-        z: 0,
-      },
-      scale: {
-        x: 0.2,
-        y: 0.2,
-        z: 1,
-      },
-      type: 'image',
-      url: 'https://static.dw.com/image/37030280_101.jpg',
-    },
-  ],
+  overlays: [],
+  isNewScene: true,
+  name: '',
 };
 
 // Slice
@@ -117,8 +35,24 @@ const editor = createSlice({
     setInvalidMarker(state) {
       state.marker.isValid = false;
     },
-    setOverlaysFromScene(state, action) {
-      state.overlays = action.payload.overlays;
+    setStateFromScene(state, action) {
+      const scene = action.payload;
+      return {
+        ...initialState,
+        overlays: scene.overlays,
+        trigger: scene.trigger,
+        isNewScene: false,
+        name: scene.name,
+      };
+    },
+    setOverlaySelection(state, action) {
+      state.overlay_selection = action.payload;
+    },
+    setControlMode(state, action) {
+      state.controlMode = action.payload;
+    },
+    setOverlayTransform(state, action) {
+      state.overlays[action.payload.id] = action.payload.overylay;
     },
     setOverlaySelection(state, action) {
       state.overlay_selection = action.payload;
