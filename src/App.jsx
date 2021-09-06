@@ -51,7 +51,7 @@ LoginRoute.propTypes = {
 };
 
 function Routes() {
-  const isLoggedIn = useSelector(accountSelectors.selectAccessToken) !== '';
+  const isLoggedIn = useSelector(accountSelectors.selectAccessToken) !== null;
 
   return (
     <Switch>
