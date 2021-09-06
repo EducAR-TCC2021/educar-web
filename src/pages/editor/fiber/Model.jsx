@@ -16,7 +16,8 @@ const Fallback = () => (
 );
 
 // Modelo 3D
-function Model({ url, ref }) {
+const Model = React.forwardRef((props, fwdRef) => {
+  const { url } = props;
   const [gltf, setGltf] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -26,26 +27,29 @@ function Model({ url, ref }) {
   }
 
   useMemo(() => { new GLTFLoader().load(url, onLoad); }, [url]);
+  // const { scene } = useGLTF(url);
+  // const copiedScene = useMemo(() => scene.clone(), [scene]);
+
+  // onLoad(scene);
 
   useEffect(() => {
-    if (ref && ref.current) {
+    if (fwdRef && fwdRef.current) {
       setLoading(true);
-      ref.current.clear();
+      fwdRef.current.clear();
     }
-  }, [ref, url]);
+  }, [fwdRef, url]);
 
   // Enquanto o modelo carrega, exibir modelo de Fallback
   return (gltf && !loading)
     ? (
       <Suspense fallback={<div />}>
-        <primitive ref={ref} name="3dmodel" object={gltf.scene} />
+        <primitive ref={fwdRef} name="3dmodel" object={gltf.scene} />
       </Suspense>
     )
     : <Fallback />;
-}
+});
 Model.propTypes = {
   url: PropTypes.string.isRequired,
-  ref: PropTypes.element.isRequired,
 };
 
 export default Model;

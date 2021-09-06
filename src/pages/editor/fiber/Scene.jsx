@@ -42,8 +42,8 @@ export default function Scene() {
               ? (
                 <CameraMultiControls
                   orbitRef={orbitRef}
-                  transformRef={transformRef}
                   controlMode={controlMode}
+                  ref={transformRef}
                 >
                   <Suspense fallback={null}>
                     <Asset type={type} ref={modelRef} url={url} />
@@ -59,7 +59,7 @@ export default function Scene() {
           })
         }
         <Suspense fallback={null}>
-          <Image url={markerSrc} ref={null} />
+          <Image url={markerSrc} fwdRef={null} />
         </Suspense>
         <OrbitControls ref={orbitRef} />
       </Provider>

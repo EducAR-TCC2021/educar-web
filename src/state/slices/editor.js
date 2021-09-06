@@ -13,7 +13,10 @@ const typeEnums = {
 };
 
 const initialState = {
-  marker: {},
+  trigger: {
+    src: '',
+    isValid: false,
+  },
   overlay_selection: [0],
   controlMode: modesEnum.TRANSLATE,
   overlays: [],
@@ -27,32 +30,26 @@ const editor = createSlice({
   initialState,
   reducers: {
     setMarkerSrc(state, action) {
-      state.marker.src = action.payload;
+      state.trigger.src = action.payload;
     },
     setValidMarker(state) {
-      state.marker.isValid = true;
+      state.trigger.isValid = true;
     },
     setInvalidMarker(state) {
-      state.marker.isValid = false;
+      state.trigger.isValid = false;
     },
     setStateFromScene(state, action) {
       const scene = action.payload;
       return {
         ...initialState,
         overlays: scene.overlays,
-        trigger: scene.trigger,
+        trigger: {
+          src: scene.trigger,
+          isValid: true,
+        },
         isNewScene: false,
         name: scene.name,
       };
-    },
-    setOverlaySelection(state, action) {
-      state.overlay_selection = action.payload;
-    },
-    setControlMode(state, action) {
-      state.controlMode = action.payload;
-    },
-    setOverlayTransform(state, action) {
-      state.overlays[action.payload.id] = action.payload.overylay;
     },
     setOverlaySelection(state, action) {
       state.overlay_selection = action.payload;
@@ -73,9 +70,9 @@ const editor = createSlice({
 const editorActions = Object(editor.actions);
 
 // Selectors
-const selectMarkerSrc = (state) => state.editor.marker.src;
+const selectMarkerSrc = (state) => state.editor.trigger.src;
 
-const selectMarkerIsValid = (state) => state.editor.marker.isValid;
+const selectMarkerIsValid = (state) => state.editor.trigger.isValid;
 
 const selectOverlays = (state) => state.editor.overlays;
 
