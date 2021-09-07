@@ -33,7 +33,7 @@ function OverlayMenu() {
         </Box>
       )}
     >
-      {overlays.map((overlay, index) => <OverlayMenuItem id={index} nome={`Overlay ${index}`} />)}
+      {overlays.map((overlay, index) => <OverlayMenuItem key={String(index)} id={index} nome={`Overlay ${index}`} />)}
     </SideSubMenu>
   );
 }

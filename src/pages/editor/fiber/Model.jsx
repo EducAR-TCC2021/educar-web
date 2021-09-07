@@ -1,11 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import React, {
   Suspense,
   useEffect,
   useState,
   useMemo,
 } from 'react';
+import { useFrame } from '@react-three/fiber';
 import PropTypes from 'prop-types';
-import { Sphere } from '@react-three/drei';
+import { Sphere, useGLTF } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 // Esfera rosa representando que o modelo está carregando.
@@ -16,36 +19,46 @@ const Fallback = () => (
 );
 
 // Modelo 3D
-function Model({ url, ref }) {
-  const [gltf, setGltf] = useState();
-  const [loading, setLoading] = useState(true);
+const Model = React.forwardRef((props, fwdRef) => {
+  const { url } = props;
+  const [loading, setLoading] = useState(false);
+  const scene = useGLTF(url);
+  const [gltf, setGltf] = useState(scene);
+
+  console.log('rendering');
 
   function onLoad(gltfObj) {
     setGltf(gltfObj);
     setLoading(false);
   }
 
-  useMemo(() => { new GLTFLoader().load(url, onLoad); }, [url]);
+  useFrame(() => {
+    if (fwdRef && fwdRef.current) {
+      fwdRef.current.updateMatrix();
+    }
+  });
+
+  // useMemo(() => { new GLTFLoader().load(url, onLoad); }, [url]);
 
   useEffect(() => {
-    if (ref && ref.current) {
-      setLoading(true);
-      ref.current.clear();
+    if (fwdRef && fwdRef.current) {
+      // fwdRef.current.clear();
     }
-  }, [ref, url]);
+  }, [fwdRef, url]);
 
   // Enquanto o modelo carrega, exibir modelo de Fallback
   return (gltf && !loading)
     ? (
       <Suspense fallback={<div />}>
-        <primitive ref={ref} name="3dmodel" object={gltf.scene} />
+        <group ref={fwdRef}>
+          <primitive name="3dmodel" object={gltf.scene} />
+        </group>
       </Suspense>
     )
     : <Fallback />;
-}
+});
 Model.propTypes = {
   url: PropTypes.string.isRequired,
-  ref: PropTypes.element.isRequired,
 };
 
 export default Model;
