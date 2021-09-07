@@ -3,7 +3,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useRef, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useContextBridge } from '@react-three/drei';
 import { useSelector, Provider, useStore } from 'react-redux';
 import { editorSelectors } from '../../../state/slices/editor';
@@ -41,6 +42,7 @@ export default function Scene() {
             return ((index === selection)
               ? (
                 <CameraMultiControls
+                  modelRef={modelRef}
                   orbitRef={orbitRef}
                   controlMode={controlMode}
                   ref={transformRef}
