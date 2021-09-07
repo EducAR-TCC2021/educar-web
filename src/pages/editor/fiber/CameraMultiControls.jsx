@@ -21,7 +21,7 @@ const CameraMultiControls = React.forwardRef((props, transformRef) => {
       const callback = (event) => { orbitRef.current.enabled = !event.value; };
       const logMatrix = (event) => {
         if (modelRef && modelRef.current) {
-          console.log(modelRef.current.matrixWorld);
+          console.log(modelRef.current.matrixWorld.elements);
         }
       };
       controls.addEventListener('dragging-changed', callback);

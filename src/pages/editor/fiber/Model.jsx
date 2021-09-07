@@ -50,9 +50,7 @@ const Model = React.forwardRef((props, fwdRef) => {
   return (gltf && !loading)
     ? (
       <Suspense fallback={<div />}>
-        <group ref={fwdRef}>
-          <primitive name="3dmodel" object={gltf.scene} />
-        </group>
+        <primitive ref={fwdRef} name="3dmodel" object={gltf.scene} />
       </Suspense>
     )
     : <Fallback />;
