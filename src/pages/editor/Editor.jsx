@@ -6,6 +6,7 @@ import NextPageButton from '../../components/NextPageButton';
 import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
 import { editorActions, modesEnum } from '../../state/slices/editor';
+import AddOverlayModal from './modal/AddOverlayModal';
 import EditorViewport from './EditorViewport';
 import IconTool from './IconTool';
 import OverlayMenu from './OverlayMenu';
@@ -92,6 +93,7 @@ export default function Editor() {
           <SideSubMenu title="Info" />
         </SideMenu>
       </Box>
+      <AddOverlayModal />
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 import { Box, IconButton, makeStyles } from '@material-ui/core';
 import { Add, Remove } from '@material-ui/icons';
 
 import SideSubMenu from './SideSubMenu';
-import { editorSelectors } from '../../state/slices/editor';
+import { editorActions, editorSelectors } from '../../state/slices/editor';
 import OverlayMenuItem from './OverlayMenuItem';
 
 const useStyles = makeStyles(() => ({
@@ -18,16 +18,21 @@ const useStyles = makeStyles(() => ({
 function OverlayMenu() {
   const classes = useStyles();
   const overlays = useSelector(editorSelectors.selectOverlays);
+  const store = useStore();
+
+  const handleAdd = () => store.dispatch(editorActions.setIsAddingOverlay(true));
+
+  const handleRemove = () => store.dispatch(editorActions.removeOverlay());
 
   return (
     <SideSubMenu
       title="Overlays"
       options={(
         <Box className={classes.container}>
-          <IconButton size="small">
+          <IconButton size="small" onClick={handleAdd}>
             <Add />
           </IconButton>
-          <IconButton size="small">
+          <IconButton size="small" onClick={handleRemove}>
             <Remove />
           </IconButton>
         </Box>
