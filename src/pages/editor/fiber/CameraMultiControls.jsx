@@ -7,8 +7,13 @@
 import React, { useEffect } from 'react';
 import { TransformControls } from '@react-three/drei';
 import PropTypes from 'prop-types';
+import { Vector3, Quaternion, Euler } from 'three';
+import { useSelector } from 'react-redux';
+import { editorActions, editorSelectors } from '../../../state/slices/editor';
 
 const CameraMultiControls = React.forwardRef((props, transformRef) => {
+  const modelSelection = useSelector(editorSelectors.selectOverlaySelection);
+
   const {
     orbitRef, modelRef, controlMode, children,
   } = props;
@@ -20,8 +25,23 @@ const CameraMultiControls = React.forwardRef((props, transformRef) => {
       controls.setMode(controlMode);
       const callback = (event) => { orbitRef.current.enabled = !event.value; };
       const logMatrix = (event) => {
+        const translation = new Vector3();
+        const rotation = new Euler();
+        const scale = new Vector3();
+        const quaternion = new Quaternion();
         if (modelRef && modelRef.current) {
-          console.log(modelRef.current.matrixWorld.elements);
+          modelRef.current.matrixWorld.decompose(translation, quaternion, scale);
+          rotation.setFromQuaternion(quaternion);
+          const posRotScale = {
+            id: modelSelection[0],
+            posRotScale: {
+              position: { ...translation },
+              rotation: { ...rotation },
+              scale: { ...scale },
+            },
+          };
+          console.log(posRotScale);
+          editorActions.setOverlayPosRotScale(posRotScale);
         }
       };
       controls.addEventListener('dragging-changed', callback);

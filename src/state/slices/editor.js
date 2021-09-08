@@ -54,11 +54,17 @@ const editor = createSlice({
     setOverlaySelection(state, action) {
       state.overlay_selection = action.payload;
     },
+    setOverlayPosRotScale(state, action) {
+      state.overlays[action.payload.id] = action.payload;
+    },
     setControlMode(state, action) {
       state.controlMode = action.payload;
     },
     setOverlayTransform(state, action) {
-      state.overlays[action.payload.id] = action.payload.overylay;
+      const { position, rotation, scale } = action.payload.posRotScale;
+      state.overlay[action.payload.id].position = position;
+      state.overlay[action.payload.id].rotation = rotation;
+      state.overlay[action.payload.id].scale = scale;
     },
     clearEditorState() {
       return initialState;

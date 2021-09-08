@@ -5,7 +5,7 @@
 import React, { useState, useRef, Suspense } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useContextBridge } from '@react-three/drei';
+import { PerspectiveCamera, OrbitControls, useContextBridge } from '@react-three/drei';
 import { useSelector, Provider, useStore } from 'react-redux';
 import { editorSelectors } from '../../../state/slices/editor';
 import CameraMultiControls from './CameraMultiControls';
@@ -27,12 +27,14 @@ export default function Scene() {
   const modelRef = useRef();
 
   // Cameras
+  const camera = useRef();
   const orbitRef = useRef();
   const transformRef = useRef();
 
   return (
     <Canvas>
       <Provider store={store}>
+        <PerspectiveCamera ref={camera} position={[0, 5, 6]} rotation={[0, 3.14 / 2, 0]} />
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         {
@@ -48,13 +50,23 @@ export default function Scene() {
                   ref={transformRef}
                 >
                   <Suspense fallback={null}>
-                    <Asset type={type} ref={modelRef} url={url} />
+                    <Asset
+                      id={index}
+                      type={type}
+                      ref={modelRef}
+                      url={url}
+                    />
                   </Suspense>
                 </CameraMultiControls>
               )
               : (
                 <Suspense fallback={null}>
-                  <Asset type={type} ref={null} url={url} />
+                  <Asset
+                    id={index}
+                    type={type}
+                    ref={null}
+                    url={url}
+                  />
                 </Suspense>
               )
             );

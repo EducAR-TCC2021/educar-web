@@ -6,12 +6,12 @@ import Image from './Image';
 import Model from './Model';
 
 const Asset = React.forwardRef((props, fwdRef) => {
-  const { type, url } = props;
+  const { id, type, url } = props;
   switch (type) {
     case typeEnums.IMAGE:
-      return <Image url={url} ref={fwdRef} />;
+      return <Image id={id} url={url} ref={fwdRef} />;
     case typeEnums.MODEL:
-      return <Model url={url} ref={fwdRef} />;
+      return <Model id={id} url={url} ref={fwdRef} />;
     case typeEnums.VIDEO:
       return null;
     default:
@@ -20,6 +20,7 @@ const Asset = React.forwardRef((props, fwdRef) => {
 });
 
 Asset.propTypes = {
+  id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
 };

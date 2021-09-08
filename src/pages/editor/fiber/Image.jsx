@@ -2,12 +2,16 @@
 import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { useTexture } from '@react-three/drei';
+import { useSelector } from 'react-redux';
+import { editorSelectors } from '../../../state/slices/editor';
 
 const PI = 3.14;
 
 const Image = React.forwardRef((props, fwdRef) => {
-  const { url } = props;
+  const { id, url } = props;
   const texture = useTexture(url);
+  const overlay = useSelector(editorSelectors.selectOverlays)[id];
+  console.log(overlay);
 
   return (!url || !texture) ? null : (
     <Suspense fallback={null}>
@@ -19,6 +23,7 @@ const Image = React.forwardRef((props, fwdRef) => {
   );
 });
 Image.propTypes = {
+  id: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
 };
 

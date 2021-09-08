@@ -10,6 +10,8 @@ import { useFrame } from '@react-three/fiber';
 import PropTypes from 'prop-types';
 import { Sphere, useGLTF } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { useSelector } from 'react-redux';
+import { editorSelectors } from '../../../state/slices/editor';
 
 // Esfera rosa representando que o modelo está carregando.
 const Fallback = () => (
@@ -20,23 +22,20 @@ const Fallback = () => (
 
 // Modelo 3D
 const Model = React.forwardRef((props, fwdRef) => {
-  const { url } = props;
+  const { id, url } = props;
   const [loading, setLoading] = useState(false);
   const scene = useGLTF(url);
   const [gltf, setGltf] = useState(scene);
 
-  console.log('rendering');
+  const overlays = useSelector(editorSelectors.selectOverlays);
+  const { position, rotation, scale } = overlays[0];
+
+  console.log('model overlays', position);
 
   function onLoad(gltfObj) {
     setGltf(gltfObj);
     setLoading(false);
   }
-
-  useFrame(() => {
-    if (fwdRef && fwdRef.current) {
-      fwdRef.current.updateMatrix();
-    }
-  });
 
   // useMemo(() => { new GLTFLoader().load(url, onLoad); }, [url]);
 
@@ -50,12 +49,18 @@ const Model = React.forwardRef((props, fwdRef) => {
   return (gltf && !loading)
     ? (
       <Suspense fallback={<div />}>
-        <primitive ref={fwdRef} name="3dmodel" object={gltf.scene} />
+        <primitive
+          position={[position.x, position.y, position.z]}
+          ref={fwdRef}
+          name="3dmodel"
+          object={gltf.scene}
+        />
       </Suspense>
     )
     : <Fallback />;
 });
 Model.propTypes = {
+  id: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
 };
 
