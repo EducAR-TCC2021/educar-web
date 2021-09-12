@@ -28,9 +28,14 @@ const Model = React.forwardRef((props, fwdRef) => {
   const [gltf, setGltf] = useState(scene);
 
   const overlays = useSelector(editorSelectors.selectOverlays);
-  const { position, rotation, scale } = overlays[0];
+  const selection = useSelector(editorSelectors.selectOverlaySelection);
+  const isSelected = selection[0] === id;
+  const { position, rotation, scale } = overlays[id];
+  const initialPosition = (!isSelected) ? [position.x, position.y, position.z] : [0, 0, 0];
+  const initialRotation = (!isSelected) ? [rotation.x, rotation.y, rotation.z] : [0, 0, 0];
+  const initialScale = (!isSelected) ? [scale.x, scale.y, scale.z] : [0, 0, 0];
 
-  console.log('model overlays', position);
+  console.log('model overlays', position, initialPosition);
 
   function onLoad(gltfObj) {
     setGltf(gltfObj);
@@ -50,7 +55,7 @@ const Model = React.forwardRef((props, fwdRef) => {
     ? (
       <Suspense fallback={<div />}>
         <primitive
-          position={[position.x, position.y, position.z]}
+          position={initialPosition}
           ref={fwdRef}
           name="3dmodel"
           object={gltf.scene}

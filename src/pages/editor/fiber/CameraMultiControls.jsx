@@ -8,11 +8,16 @@ import React, { useEffect } from 'react';
 import { TransformControls } from '@react-three/drei';
 import PropTypes from 'prop-types';
 import { Vector3, Quaternion, Euler } from 'three';
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 import { editorActions, editorSelectors } from '../../../state/slices/editor';
 
 const CameraMultiControls = React.forwardRef((props, transformRef) => {
   const modelSelection = useSelector(editorSelectors.selectOverlaySelection);
+  const overlays = useSelector(editorSelectors.selectOverlays);
+  const overlay = overlays[modelSelection[0]];
+  const initialPosition = [overlay.position.x, overlay.position.y, overlay.position.z];
+  const initialRotation = [overlay.rotation.x, overlay.rotation.y, overlay.rotation.z];
+  const store = useStore();
 
   const {
     orbitRef, modelRef, controlMode, children,
@@ -40,8 +45,8 @@ const CameraMultiControls = React.forwardRef((props, transformRef) => {
               scale: { ...scale },
             },
           };
-          console.log(posRotScale);
-          editorActions.setOverlayPosRotScale(posRotScale);
+          console.log('transformCurrent', transformRef.current);
+          store.dispatch(editorActions.setOverlayTransform(posRotScale));
         }
       };
       controls.addEventListener('dragging-changed', callback);
@@ -54,7 +59,10 @@ const CameraMultiControls = React.forwardRef((props, transformRef) => {
   });
 
   return (
-    <TransformControls ref={transformRef}>
+    <TransformControls
+      ref={transformRef}
+      position={initialPosition}
+    >
       {children}
     </TransformControls>
   );

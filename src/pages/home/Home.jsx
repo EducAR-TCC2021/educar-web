@@ -15,6 +15,7 @@ import ProfileDropdown from '../../components/ProfileDropdown';
 import PageTitle from '../../components/PageTitle';
 import { getScenes, scenesSelectors } from '../../state/queries/scenes';
 import SceneCard from './SceneCard';
+import { accountSelectors } from '../../state/slices/account';
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -32,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
 function Home() {
   const classes = useStyles();
   const scenes = useSelector(scenesSelectors.selectScenes);
-  const [{ isPending }] = useRequest(getScenes);
+  const accessToken = useSelector(accountSelectors.selectAccessToken);
+  const [{ isPending }] = useRequest(getScenes(accessToken));
 
   return (
     <>

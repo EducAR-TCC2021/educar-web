@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 // query config for retrieving current user's scenes
-const getScenes = {
+const getScenes = (accessToken) => ({
   url: 'https://hd90gur552.execute-api.us-east-1.amazonaws.com/teste/payloads',
   transform: (body) => ({
     scenes: body.Items[0].payloads,
@@ -11,11 +11,11 @@ const getScenes = {
   },
   options: {
     headers: {
-      authorizationToken: 'allow',
+      authorizationToken: accessToken,
     },
   },
   force: true,
-};
+});
 
 const selectScenes = (state) => state.entities.scenes || [];
 
