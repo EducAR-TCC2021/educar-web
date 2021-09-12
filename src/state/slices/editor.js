@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createSlice } from '@reduxjs/toolkit';
 
 // Enums
@@ -58,7 +59,10 @@ const editor = createSlice({
       state.controlMode = action.payload;
     },
     setOverlayTransform(state, action) {
-      state.overlays[action.payload.id] = action.payload.overylay;
+      const { position, rotation, scale } = action.payload.posRotScale;
+      state.overlays[action.payload.id].position = position;
+      state.overlays[action.payload.id].rotation = rotation;
+      state.overlays[action.payload.id].scale = scale;
     },
     clearEditorState() {
       return initialState;

@@ -5,12 +5,12 @@
 import React, { useState, useRef, Suspense } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useContextBridge } from '@react-three/drei';
+import { PerspectiveCamera, OrbitControls, useContextBridge } from '@react-three/drei';
 import { useSelector, Provider, useStore } from 'react-redux';
 import { editorSelectors } from '../../../state/slices/editor';
-import CameraMultiControls from './CameraMultiControls';
+import TransformController from './TransformController';
 import Image from './Image';
-import Asset from './Asset';
+import Overlay from './Overlay';
 import store from '../../../state/store';
 
 export default function Scene() {
@@ -19,20 +19,20 @@ export default function Scene() {
   const controlMode = useSelector(editorSelectors.selectControlMode);
   const markerSrc = useSelector(editorSelectors.selectMarkerSrc);
 
-  console.log('marker?', markerSrc);
-
   const selection = overlaySelection[0];
 
   // Selected
   const modelRef = useRef();
 
   // Cameras
+  const camera = useRef();
   const orbitRef = useRef();
   const transformRef = useRef();
 
   return (
     <Canvas>
       <Provider store={store}>
+        <PerspectiveCamera ref={camera} position={[0, 5, 6]} rotation={[0, 3.14 / 2, 0]} />
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         {
@@ -41,20 +41,30 @@ export default function Scene() {
 
             return ((index === selection)
               ? (
-                <CameraMultiControls
+                <TransformController
                   modelRef={modelRef}
                   orbitRef={orbitRef}
                   controlMode={controlMode}
                   ref={transformRef}
                 >
                   <Suspense fallback={null}>
-                    <Asset type={type} ref={modelRef} url={url} />
+                    <Overlay
+                      id={index}
+                      type={type}
+                      ref={modelRef}
+                      url={url}
+                    />
                   </Suspense>
-                </CameraMultiControls>
+                </TransformController>
               )
               : (
                 <Suspense fallback={null}>
-                  <Asset type={type} ref={null} url={url} />
+                  <Overlay
+                    id={index}
+                    type={type}
+                    ref={null}
+                    url={url}
+                  />
                 </Suspense>
               )
             );
