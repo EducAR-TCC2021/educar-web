@@ -8,9 +8,9 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, useContextBridge } from '@react-three/drei';
 import { useSelector, Provider, useStore } from 'react-redux';
 import { editorSelectors } from '../../../state/slices/editor';
-import CameraMultiControls from './CameraMultiControls';
+import TransformController from './TransformController';
 import Image from './Image';
-import Asset from './Asset';
+import Overlay from './Overlay';
 import store from '../../../state/store';
 
 export default function Scene() {
@@ -18,8 +18,6 @@ export default function Scene() {
   const overlaySelection = useSelector(editorSelectors.selectOverlaySelection);
   const controlMode = useSelector(editorSelectors.selectControlMode);
   const markerSrc = useSelector(editorSelectors.selectMarkerSrc);
-
-  console.log('marker?', markerSrc);
 
   const selection = overlaySelection[0];
 
@@ -43,25 +41,25 @@ export default function Scene() {
 
             return ((index === selection)
               ? (
-                <CameraMultiControls
+                <TransformController
                   modelRef={modelRef}
                   orbitRef={orbitRef}
                   controlMode={controlMode}
                   ref={transformRef}
                 >
                   <Suspense fallback={null}>
-                    <Asset
+                    <Overlay
                       id={index}
                       type={type}
                       ref={modelRef}
                       url={url}
                     />
                   </Suspense>
-                </CameraMultiControls>
+                </TransformController>
               )
               : (
                 <Suspense fallback={null}>
-                  <Asset
+                  <Overlay
                     id={index}
                     type={type}
                     ref={null}
