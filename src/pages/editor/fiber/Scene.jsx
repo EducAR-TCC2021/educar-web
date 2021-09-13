@@ -71,7 +71,15 @@ export default function Scene() {
           })
         }
         <Suspense fallback={null}>
-          <Image url={markerSrc} fwdRef={null} />
+          <Image
+            initialParam={{
+              initialPosition: [0, 0, 0],
+              initialRotation: [-3.1415 / 2, 0, 0],
+              initialScale: [1, 1, 1],
+            }}
+            url={markerSrc}
+            fwdRef={null}
+          />
         </Suspense>
         <OrbitControls ref={orbitRef} />
       </Provider>
