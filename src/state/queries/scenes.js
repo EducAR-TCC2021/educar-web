@@ -4,7 +4,7 @@ import { createSelector } from '@reduxjs/toolkit';
 const getScenes = (accessToken) => ({
   url: 'https://hd90gur552.execute-api.us-east-1.amazonaws.com/teste/payloads',
   transform: (body) => ({
-    scenes: body.Items[0].payloads,
+    scenes: body.Items[2].payloads,
   }),
   update: {
     scenes: (prev, next) => next,
