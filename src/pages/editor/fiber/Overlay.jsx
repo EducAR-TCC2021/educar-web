@@ -28,9 +28,6 @@ const Overlay = React.forwardRef((props, fwdRef) => {
   const selection = useSelector(editorSelectors.selectOverlaySelection);
   const overlay = useSelector(editorSelectors.selectOverlays)[id];
   const isSelected = selection[0] === id;
-  if (isSelected) {
-    console.log('THIS IS OVRELAY', overlay.type, overlay);
-  }
 
   /*
     Quando o overlay está selecionado, os parâmetros iniciais do modelo devem ser [0,0,0],
