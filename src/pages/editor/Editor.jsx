@@ -2,7 +2,6 @@ import { Box, makeStyles } from '@material-ui/core';
 import { Cached, Height, OpenWith } from '@material-ui/icons';
 import React from 'react';
 import { useStore } from 'react-redux';
-import NextPageButton from '../../components/NextPageButton';
 import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
 import { editorActions, modesEnum } from '../../state/slices/editor';
@@ -12,6 +11,7 @@ import OverlayMenu from './OverlayMenu';
 import SceneTextField from './SceneTextField';
 import SideMenu from './SideMenu';
 import SideSubMenu from './SideSubMenu';
+import SaveSceneButton from './SaveSceneButton';
 
 const useStyles = makeStyles(() => ({
   horizontal: {
@@ -78,7 +78,7 @@ export default function Editor() {
           </div>
           <div className={classes.toolbarRight}>
             <ProfileDropdown />
-            <NextPageButton>Salvar Cena</NextPageButton>
+            <SaveSceneButton />
           </div>
         </div>
       </TopMenu>

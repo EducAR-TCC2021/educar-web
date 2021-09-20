@@ -84,12 +84,21 @@ const selectOverlaySelection = (state) => state.editor.overlay_selection;
 
 const selectControlMode = (state) => state.editor.controlMode;
 
+const selectScene = (state) => ({
+  sceneId: state.editor.name,
+  sceneInfo: {
+    trigger: state.editor.trigger.src,
+    overlays: state.editor.overlays,
+  },
+});
+
 const editorSelectors = {
   selectMarkerSrc,
   selectMarkerIsValid,
   selectOverlays,
   selectOverlaySelection,
   selectControlMode,
+  selectScene,
 };
 
 // Exports

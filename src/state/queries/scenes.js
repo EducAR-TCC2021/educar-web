@@ -4,10 +4,12 @@ import { createSelector } from '@reduxjs/toolkit';
 const getScenes = (accessToken) => ({
   url: 'https://hd90gur552.execute-api.us-east-1.amazonaws.com/teste/payloads',
   transform: (body) => ({
+    channel_id: body.Items[2].id,
     scenes: body.Items[2].payloads,
   }),
   update: {
     scenes: (prev, next) => next,
+    channel_id: (prev, next) => next,
   },
   options: {
     headers: {
