@@ -127,6 +127,7 @@ const selectOverlaySelection = (state) => state.editor.overlay_selection;
 
 const selectControlMode = (state) => state.editor.controlMode;
 
+//
 const selectScene = (state) => ({
   sceneId: state.editor.name,
   sceneInfo: {
@@ -134,6 +135,7 @@ const selectScene = (state) => ({
     overlays: state.editor.overlays,
   },
 });
+
 const selectIsAddingOverlay = (state) => state.editor.addOverlayModal.isAddingOverlay;
 
 const selectIsValidAddOverlay = (state) => state.editor.addOverlayModal.isValid;
