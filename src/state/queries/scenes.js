@@ -2,9 +2,9 @@ import { createSelector } from '@reduxjs/toolkit';
 
 // query config for retrieving current user's scenes
 const getScenes = (accessToken) => ({
-  url: 'https://hd90gur552.execute-api.us-east-1.amazonaws.com/teste/payloads',
+  url: 'https://4wu9au10o7.execute-api.us-east-1.amazonaws.com/dev/channels/',
   transform: (body) => ({
-    scenes: body.Items[2].payloads,
+    scenes: body.Items[0].scenes,
   }),
   update: {
     scenes: (prev, next) => next,
@@ -17,13 +17,13 @@ const getScenes = (accessToken) => ({
   force: true,
 });
 
-const selectScenes = (state) => state.entities.scenes || [];
+const selectScenes = (state) => state.entities.scenes || {};
 
 const selectSceneCards = createSelector(
   selectScenes,
-  (scenes) => scenes.map((scene, idx) => ({
-    thumbnail: scene.trigger,
-    name: scene.name,
+  (scenes) => Object.keys().map((name, idx) => ({
+    thumbnail: scenes[name].trigger,
+    name,
     id: idx,
   })),
 );

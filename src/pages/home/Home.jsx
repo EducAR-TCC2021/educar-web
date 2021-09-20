@@ -47,8 +47,8 @@ function Home() {
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
           {isPending ? <div className={classes.loading}><CircularProgress /></div>
-            : scenes.map((scene, idx) => (
-              <SceneCard scene={scene} id={idx} />
+            : Object.keys(scenes).map((key, idx) => (
+              <SceneCard scene={scenes[key]} id={idx} />
             ))}
         </Grid>
       </Container>
