@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createSlice } from '@reduxjs/toolkit';
 
 // Enums
@@ -127,7 +126,6 @@ const selectOverlaySelection = (state) => state.editor.overlay_selection;
 
 const selectControlMode = (state) => state.editor.controlMode;
 
-//
 const selectScene = (state) => ({
   sceneId: state.editor.name,
   sceneInfo: {
