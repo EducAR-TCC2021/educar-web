@@ -23,6 +23,12 @@ const initialState = {
   overlays: [],
   isNewScene: true,
   name: '',
+  addOverlayModal: {
+    isAddingOverlay: false,
+    src: '',
+    type: typeEnums.IMAGE,
+    isValid: false,
+  },
 };
 
 // Slice
@@ -64,6 +70,43 @@ const editor = createSlice({
       state.overlays[action.payload.id].rotation = rotation;
       state.overlays[action.payload.id].scale = scale;
     },
+    setIsAddingOverlay(state, action) {
+      state.addOverlayModal.isAddingOverlay = action.payload;
+    },
+    setAddOverlaySrc(state, action) {
+      state.addOverlayModal.src = action.payload;
+    },
+    setAddOverlayIsValid(state, action) {
+      state.addOverlayModal.isValid = action.payload;
+    },
+    addOverlay(state) {
+      state.overlays.push(
+        {
+          scale: {
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+          type: state.addOverlayModal.type,
+          url: state.addOverlayModal.src,
+          rotation: {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+        },
+      );
+      state.addOverlayModal = initialState.addOverlayModal;
+    },
+    removeOverlay(state) {
+      state.overlays.splice(state.overlay_selection[0], 1);
+      state.overlay_selection = [0];
+    },
     clearEditorState() {
       return initialState;
     },
@@ -91,6 +134,11 @@ const selectScene = (state) => ({
     overlays: state.editor.overlays,
   },
 });
+const selectIsAddingOverlay = (state) => state.editor.addOverlayModal.isAddingOverlay;
+
+const selectIsValidAddOverlay = (state) => state.editor.addOverlayModal.isValid;
+
+const selectAddOverlaySrc = (state) => state.editor.addOverlayModal.src;
 
 const editorSelectors = {
   selectMarkerSrc,
@@ -99,6 +147,9 @@ const editorSelectors = {
   selectOverlaySelection,
   selectControlMode,
   selectScene,
+  selectIsAddingOverlay,
+  selectIsValidAddOverlay,
+  selectAddOverlaySrc,
 };
 
 // Exports
