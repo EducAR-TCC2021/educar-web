@@ -8,7 +8,7 @@
 import React, { useEffect } from 'react';
 import { TransformControls } from '@react-three/drei';
 import PropTypes from 'prop-types';
-import { Vector3, Quaternion, Euler } from 'three';
+import { Euler } from 'three';
 import { useSelector, useStore } from 'react-redux';
 import { editorActions, editorSelectors } from '../../../state/slices/editor';
 
@@ -20,7 +20,7 @@ function getInitialPosRotScale({ position, rotation, scale }) {
   };
 }
 
-const TransformController = React.forwardRef((props, transformRef) => {
+const TransformController = (props) => {
   const modelSelection = useSelector(editorSelectors.selectOverlaySelection);
   const overlays = useSelector(editorSelectors.selectOverlays);
   const overlay = overlays[modelSelection[0]];
@@ -33,7 +33,7 @@ const TransformController = React.forwardRef((props, transformRef) => {
   } = getInitialPosRotScale(overlay);
 
   const {
-    orbitRef, modelRef, controlMode, children,
+    orbitRef, controlMode, children, transformRef,
   } = props;
 
   useEffect(() => {
@@ -48,24 +48,18 @@ const TransformController = React.forwardRef((props, transformRef) => {
 
       // Guarda os parâmetros globais do objeto na Store.
       const storeTransform = (event) => {
-        const translation = new Vector3();
-        const rotation = new Euler();
-        const scale = new Vector3();
-        const quaternion = new Quaternion();
-
-        if (modelRef && modelRef.current) {
-          modelRef.current.matrixWorld.decompose(translation, quaternion, scale);
-          rotation.setFromQuaternion(quaternion);
-          const posRotScale = {
-            id: modelSelection[0],
-            posRotScale: {
-              position: { ...translation },
-              rotation: { x: rotation._x, y: rotation._y, z: rotation._z },
-              scale: { ...scale },
-            },
-          };
-          store.dispatch(editorActions.setOverlayTransform(posRotScale));
-        }
+        const translation = controls.worldPosition;
+        const rotation = new Euler().setFromQuaternion(controls.worldQuaternion);
+        const scale = controls.worldScale;
+        const posRotScale = {
+          id: modelSelection[0],
+          posRotScale: {
+            position: { ...translation },
+            rotation: { x: rotation._x, y: rotation._y, z: rotation._z },
+            scale: { ...scale },
+          },
+        };
+        store.dispatch(editorActions.setOverlayTransform(posRotScale));
       };
 
       controls.addEventListener('dragging-changed', callback);
@@ -87,11 +81,11 @@ const TransformController = React.forwardRef((props, transformRef) => {
       {children}
     </TransformControls>
   );
-});
+};
 TransformController.propTypes = {
-  modelRef: PropTypes.any.isRequired,
   orbitRef: PropTypes.any.isRequired,
   controlMode: PropTypes.string.isRequired,
+  transformRef: PropTypes.any.isRequired,
   children: PropTypes.node.isRequired,
 };
 

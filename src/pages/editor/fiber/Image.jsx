@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { useTexture } from '@react-three/drei';
 
-const Image = React.forwardRef((props, fwdRef) => {
+const Image = (props) => {
   const { url, initialParam } = props;
   const {
     initialPosition,
@@ -16,7 +16,6 @@ const Image = React.forwardRef((props, fwdRef) => {
   return (!url || !texture) ? null : (
     <Suspense fallback={null}>
       <mesh
-        ref={fwdRef}
         position={initialPosition}
         rotation={initialRotation}
         scale={initialScale}
@@ -26,7 +25,7 @@ const Image = React.forwardRef((props, fwdRef) => {
       </mesh>
     </Suspense>
   );
-});
+};
 Image.propTypes = {
   url: PropTypes.string.isRequired,
   initialParam: PropTypes.any.isRequired,
