@@ -6,10 +6,14 @@ import React, {
   Suspense,
   useEffect,
   useState,
-  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Sphere, useGLTF } from '@react-three/drei';
+import { useSelector, useStore } from 'react-redux';
+import JSZip from 'jszip';
+
+import { accountSelectors } from '../../../state/slices/account';
+import { editorActions, editorSelectors } from '../../../state/slices/editor';
 
 // Esfera rosa representando que o modelo está carregando.
 const Fallback = () => (
@@ -19,51 +23,122 @@ const Fallback = () => (
 );
 
 // Modelo 3D
-const Model = React.forwardRef((props, fwdRef) => {
+const GltfModel = (props) => {
   const { url, initialParam } = props;
   const {
     initialPosition,
     initialRotation,
     initialScale,
   } = initialParam;
-  const [loading, setLoading] = useState(false);
-  const scene = useGLTF(url);
-  const [gltf, setGltf] = useState(scene);
-
-  /*
-  function onLoad(gltfObj) {
-    setGltf(gltfObj);
-    setLoading(false);
-  }
-
-  useMemo(() => { new GLTFLoader().load(url, onLoad); }, [url]);
-
-  */
-  useEffect(() => {
-    if (fwdRef && fwdRef.current) {
-      // fwdRef.current.clear();
-    }
-  }, [url]);
+  const gltf = useGLTF(url);
 
   // Enquanto o modelo carrega, exibir modelo de Fallback
-  return (gltf && !loading)
+  return (gltf)
     ? (
       <Suspense fallback={<div />}>
         <primitive
           position={initialPosition}
           rotation={initialRotation}
           scale={initialScale}
-          ref={fwdRef}
           name="3dmodel"
           object={gltf.scene}
         />
       </Suspense>
     )
     : <Fallback />;
-});
-Model.propTypes = {
+};
+GltfModel.propTypes = {
   url: PropTypes.string.isRequired,
   initialParam: PropTypes.any.isRequired,
 };
 
-export default Model;
+function getExtension(filename) {
+  return filename.toLowerCase().split('.').pop();
+}
+
+async function getFileUrl(file) {
+  const blob = await file.async('blob');
+  const url = URL.createObjectURL(blob);
+  return url;
+}
+
+async function updateGltfLinks(file, blobUrls) {
+  let gltfString = await file.async('string');
+  Object.keys(blobUrls).forEach((url) => {
+    gltfString = gltfString.replace(url, blobUrls[url]);
+  });
+  const entryBlob = new Blob([gltfString]);
+  return URL.createObjectURL(entryBlob);
+}
+
+async function readGltfFromZipUrl(zipUrl) {
+  const response = await fetch(zipUrl);
+  const arrayBuffer = await response.arrayBuffer();
+
+  const result = await JSZip.loadAsync(arrayBuffer);
+
+  const files = Object.values(result.files).filter((item) => !item.dir);
+  const entryFile = files.find((file) => getExtension(file.name) === 'gltf');
+  files.splice(files.indexOf(entryFile), 1);
+  const blobUrls = {};
+
+  await Promise.all(files.map(async (file) => {
+    blobUrls[file.name] = await getFileUrl(file);
+  }));
+
+  const fileUrl = await updateGltfLinks(entryFile, blobUrls);
+  return fileUrl;
+}
+
+async function getDownloadUrl(src, token) {
+  const pieces = src.split('-');
+  const modelId = pieces[pieces.length - 1];
+  const metadataUrl = `https://api.sketchfab.com/v3/models/${modelId}/download`;
+  const options = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    mode: 'cors',
+  };
+  const response = await fetch(metadataUrl, options);
+  const metadata = await response.json();
+  return metadata.gltf.url;
+}
+
+const SketchfabModel = (props) => {
+  const { url, initialParam } = props;
+  const [blobUrl, setBlobUrl] = useState('');
+  const token = useSelector(accountSelectors.selectAccessToken);
+  const blobFiles = useSelector(editorSelectors.selectBlobFiles);
+  const store = useStore();
+
+  useEffect(async () => {
+    if (!blobFiles[url]) {
+      store.dispatch(editorActions.setBlobFile({ key: url, value: { isDownloading: true } }));
+      const downloadUrl = await getDownloadUrl(url, token);
+      const fileUrl = await readGltfFromZipUrl(downloadUrl);
+      store.dispatch(editorActions.setBlobFile(
+        { key: url, value: { isDownloading: false, fileUrl } },
+      ));
+      setBlobUrl(fileUrl);
+    } else if (!blobFiles[url].isDownloading) {
+      setBlobUrl(blobFiles[url].fileUrl);
+    }
+  }, [url, blobFiles[url]]);
+
+  return (blobUrl)
+    ? (
+      <GltfModel
+        url={blobUrl}
+        initialParam={initialParam}
+      />
+    )
+    : <Fallback />;
+};
+SketchfabModel.propTypes = {
+  url: PropTypes.string.isRequired,
+  initialParam: PropTypes.any.isRequired,
+};
+
+export default SketchfabModel;
