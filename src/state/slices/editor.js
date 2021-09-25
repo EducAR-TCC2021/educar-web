@@ -118,6 +118,9 @@ const editor = createSlice({
     clearEditorState() {
       return initialState;
     },
+    setName(state, action) {
+      state.name = action.payload;
+    },
   },
 });
 
@@ -153,6 +156,8 @@ const selectAddOverlayType = (state) => state.editor.addOverlayModal.type;
 
 const selectBlobFiles = (state) => state.editor.blobFiles;
 
+const selectSceneState = (state) => state.editor;
+
 const editorSelectors = {
   selectMarkerSrc,
   selectMarkerIsValid,
@@ -165,6 +170,7 @@ const editorSelectors = {
   selectAddOverlaySrc,
   selectAddOverlayType,
   selectBlobFiles,
+  selectSceneState,
 };
 
 // Exports
