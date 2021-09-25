@@ -47,7 +47,7 @@ const editor = createSlice({
       state.trigger.isValid = false;
     },
     setStateFromScene(state, action) {
-      const scene = action.payload;
+      const { name, scene } = action.payload;
       return {
         ...initialState,
         overlays: scene.overlays,
@@ -56,7 +56,7 @@ const editor = createSlice({
           isValid: true,
         },
         isNewScene: false,
-        name: scene.name,
+        name,
       };
     },
     setOverlaySelection(state, action) {
@@ -118,6 +118,9 @@ const editor = createSlice({
     clearEditorState() {
       return initialState;
     },
+    setName(state, action) {
+      state.name = action.payload;
+    },
   },
 });
 
@@ -135,6 +138,14 @@ const selectOverlaySelection = (state) => state.editor.overlay_selection;
 
 const selectControlMode = (state) => state.editor.controlMode;
 
+const selectScene = (state) => ({
+  sceneId: state.editor.name,
+  sceneInfo: {
+    trigger: state.editor.trigger.src,
+    overlays: state.editor.overlays,
+  },
+});
+
 const selectIsAddingOverlay = (state) => state.editor.addOverlayModal.isAddingOverlay;
 
 const selectIsValidAddOverlay = (state) => state.editor.addOverlayModal.isValid;
@@ -145,17 +156,21 @@ const selectAddOverlayType = (state) => state.editor.addOverlayModal.type;
 
 const selectBlobFiles = (state) => state.editor.blobFiles;
 
+const selectSceneState = (state) => state.editor;
+
 const editorSelectors = {
   selectMarkerSrc,
   selectMarkerIsValid,
   selectOverlays,
   selectOverlaySelection,
   selectControlMode,
+  selectScene,
   selectIsAddingOverlay,
   selectIsValidAddOverlay,
   selectAddOverlaySrc,
   selectAddOverlayType,
   selectBlobFiles,
+  selectSceneState,
 };
 
 // Exports

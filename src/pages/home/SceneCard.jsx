@@ -28,13 +28,13 @@ const useStyles = makeStyles({
   },
 });
 
-function SceneCard({ scene, id }) {
+function SceneCard({ name, scene, id }) {
   const classes = useStyles();
   const store = useStore();
   const history = useHistory();
 
   const editOnClick = () => {
-    store.dispatch(editorActions.setStateFromScene(scene));
+    store.dispatch(editorActions.setStateFromScene({ name, scene }));
     history.push('/editor');
   };
 
@@ -48,7 +48,7 @@ function SceneCard({ scene, id }) {
         />
         <CardContent className={classes.cardContent}>
           <Typography gutterBottom variant="h5" component="h2">
-            {scene.name}
+            {name}
           </Typography>
         </CardContent>
         <CardActions>
@@ -62,6 +62,7 @@ function SceneCard({ scene, id }) {
 }
 SceneCard.propTypes = {
   id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
   scene: PropTypes.shape({
     name: PropTypes.string,
     trigger: PropTypes.string,
