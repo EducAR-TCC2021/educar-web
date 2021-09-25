@@ -3,7 +3,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useRef, Suspense } from 'react';
-import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, useContextBridge } from '@react-three/drei';
 import { useSelector, Provider, useStore } from 'react-redux';
@@ -20,9 +19,6 @@ export default function Scene() {
   const markerSrc = useSelector(editorSelectors.selectMarkerSrc);
 
   const selection = overlaySelection[0];
-
-  // Selected
-  const modelRef = useRef();
 
   // Cameras
   const camera = useRef();
@@ -42,16 +38,14 @@ export default function Scene() {
             return ((index === selection)
               ? (
                 <TransformController
-                  modelRef={modelRef}
                   orbitRef={orbitRef}
                   controlMode={controlMode}
-                  ref={transformRef}
+                  transformRef={transformRef}
                 >
                   <Suspense fallback={null}>
                     <Overlay
                       id={index}
                       type={type}
-                      ref={modelRef}
                       url={url}
                     />
                   </Suspense>

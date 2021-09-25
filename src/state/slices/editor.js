@@ -28,6 +28,7 @@ const initialState = {
     type: typeEnums.IMAGE,
     isValid: false,
   },
+  blobFiles: {},
 };
 
 // Slice
@@ -78,13 +79,17 @@ const editor = createSlice({
     setAddOverlayIsValid(state, action) {
       state.addOverlayModal.isValid = action.payload;
     },
+    setAddOverlayType(state, action) {
+      state.addOverlayModal.type = action.payload;
+      state.addOverlayModal.src = initialState.addOverlayModal.src;
+    },
     addOverlay(state) {
       state.overlays.push(
         {
           scale: {
-            x: 1.0,
-            y: 1.0,
-            z: 1.0,
+            x: 1,
+            y: 1,
+            z: 1,
           },
           position: {
             x: 0,
@@ -105,6 +110,9 @@ const editor = createSlice({
     removeOverlay(state) {
       state.overlays.splice(state.overlay_selection[0], 1);
       state.overlay_selection = [0];
+    },
+    setBlobFile(state, action) {
+      state.blobFiles[action.payload.key] = action.payload.value;
     },
     clearEditorState() {
       return initialState;
@@ -140,6 +148,10 @@ const selectIsValidAddOverlay = (state) => state.editor.addOverlayModal.isValid;
 
 const selectAddOverlaySrc = (state) => state.editor.addOverlayModal.src;
 
+const selectAddOverlayType = (state) => state.editor.addOverlayModal.type;
+
+const selectBlobFiles = (state) => state.editor.blobFiles;
+
 const editorSelectors = {
   selectMarkerSrc,
   selectMarkerIsValid,
@@ -150,6 +162,8 @@ const editorSelectors = {
   selectIsAddingOverlay,
   selectIsValidAddOverlay,
   selectAddOverlaySrc,
+  selectAddOverlayType,
+  selectBlobFiles,
 };
 
 // Exports

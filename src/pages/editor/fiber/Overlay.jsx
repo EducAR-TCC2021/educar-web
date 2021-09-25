@@ -22,8 +22,12 @@ function getInitialPosRotScale(isSelected, { position, rotation, scale }) {
   };
 }
 
-const Overlay = React.forwardRef((props, fwdRef) => {
-  const { id, type, url } = props;
+const Overlay = (props) => {
+  const {
+    id,
+    type,
+    url,
+  } = props;
 
   const selection = useSelector(editorSelectors.selectOverlaySelection);
   const overlay = useSelector(editorSelectors.selectOverlays)[id];
@@ -44,7 +48,6 @@ const Overlay = React.forwardRef((props, fwdRef) => {
         <Image
           initialParam={initialParam}
           url={url}
-          ref={fwdRef}
         />
       );
     case typeEnums.MODEL:
@@ -52,7 +55,6 @@ const Overlay = React.forwardRef((props, fwdRef) => {
         <Model
           initialParam={initialParam}
           url={url}
-          ref={fwdRef}
         />
       );
     case typeEnums.VIDEO:
@@ -60,8 +62,7 @@ const Overlay = React.forwardRef((props, fwdRef) => {
     default:
       return null;
   }
-});
-
+};
 Overlay.propTypes = {
   id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
