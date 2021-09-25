@@ -13,6 +13,7 @@ import SceneTextField from './SceneTextField';
 import SideMenu from './SideMenu';
 import SideSubMenu from './SideSubMenu';
 import SaveSceneButton from './SaveSceneButton';
+import Logo from '../../components/Logo';
 
 const useStyles = makeStyles(() => ({
   horizontal: {
@@ -58,6 +59,7 @@ export default function Editor() {
       <TopMenu hideLogo>
         <div className={classes.toolbar}>
           <div className={classes.toolbarLeft}>
+            <Logo />
             <IconTool
               toolName="Translação"
               icon={<OpenWith />}
