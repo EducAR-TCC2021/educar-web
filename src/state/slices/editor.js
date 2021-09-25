@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createSlice } from '@reduxjs/toolkit';
 
 // Enums
@@ -46,7 +47,7 @@ const editor = createSlice({
       state.trigger.isValid = false;
     },
     setStateFromScene(state, action) {
-      const scene = action.payload;
+      const { name, scene } = action.payload;
       return {
         ...initialState,
         overlays: scene.overlays,
@@ -55,7 +56,7 @@ const editor = createSlice({
           isValid: true,
         },
         isNewScene: false,
-        name: scene.name,
+        name,
       };
     },
     setOverlaySelection(state, action) {

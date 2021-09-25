@@ -1,21 +1,20 @@
-import React from 'react';
 import {
   CircularProgress,
   Container,
   Grid,
   makeStyles,
 } from '@material-ui/core';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRequest } from 'redux-query-react';
-
-import TopMenu from '../../components/TopMenu';
-import PaletteTypeButton from '../../components/PaletteTypeButton';
 import NextPageButton from '../../components/NextPageButton';
-import ProfileDropdown from '../../components/ProfileDropdown';
 import PageTitle from '../../components/PageTitle';
+import PaletteTypeButton from '../../components/PaletteTypeButton';
+import ProfileDropdown from '../../components/ProfileDropdown';
+import TopMenu from '../../components/TopMenu';
 import { getScenes, scenesSelectors } from '../../state/queries/scenes';
-import SceneCard from './SceneCard';
 import { accountSelectors } from '../../state/slices/account';
+import SceneCard from './SceneCard';
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -32,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Home() {
   const classes = useStyles();
-  const scenes = useSelector(scenesSelectors.selectScenes);
   const accessToken = useSelector(accountSelectors.selectAccessToken);
+  const scenes = useSelector(scenesSelectors.selectScenes);
   const [{ isPending }] = useRequest(getScenes(accessToken));
 
   return (
@@ -48,7 +47,7 @@ function Home() {
         <Grid container spacing={4}>
           {isPending ? <div className={classes.loading}><CircularProgress /></div>
             : Object.keys(scenes).map((key, idx) => (
-              <SceneCard scene={scenes[key]} id={idx} />
+              <SceneCard key={key} name={key} scene={scenes[key]} id={idx} />
             ))}
         </Grid>
       </Container>
