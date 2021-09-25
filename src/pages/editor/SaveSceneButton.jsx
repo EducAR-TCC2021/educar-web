@@ -1,14 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import { Button } from '@material-ui/core';
+import axios from 'axios';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useMutation } from 'redux-query-react';
-import axios from 'axios';
-import { accountSelectors } from '../../state/slices/account';
-import { selectEntities } from '../../state/store';
 import channelRequests from '../../state/requests/channel';
+import { accountSelectors } from '../../state/slices/account';
 import { editorSelectors } from '../../state/slices/editor';
+import { selectEntities } from '../../state/store';
 
 function SaveSceneButton() {
   const queries = useSelector(selectEntities);
@@ -20,18 +17,20 @@ function SaveSceneButton() {
     sceneId,
     scene: sceneInfo,
   });
-  console.log(queries);
-  console.log(request);
 
   return (
-    <Button
-      variant="contained"
-      onClick={() => {
-        axios(request).then((res) => console.log(res)).catch((e) => console.log(e));
-      }}
-    >
-      Salvar Cena
-    </Button>
+    <>
+      <Button
+        variant="contained"
+        onClick={() => {
+          axios(request)
+            .then(() => {})
+            .catch(() => {});
+        }}
+      >
+        Salvar Cena
+      </Button>
+    </>
   );
 }
 

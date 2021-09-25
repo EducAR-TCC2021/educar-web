@@ -1,15 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-const scenesArrayToDict = (scenes) => Object.assign({}, ...scenes.map(
-  (scene) => {
-    const sceneTemp = scene;
-    const sceneName = scene.name;
-    console.log(sceneTemp, sceneName);
-    delete sceneTemp.name;
-    return { [sceneName]: sceneTemp };
-  },
-));
-
 const BASE_URL = 'https://4wu9au10o7.execute-api.us-east-1.amazonaws.com/dev/';
 
 /**
