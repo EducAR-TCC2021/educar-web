@@ -5,7 +5,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRequest } from 'redux-query-react';
 import NextPageButton from '../../components/NextPageButton';
 import PageTitle from '../../components/PageTitle';
@@ -14,6 +14,7 @@ import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
 import { getScenes, scenesSelectors } from '../../state/queries/scenes';
 import { accountSelectors } from '../../state/slices/account';
+import { editorActions } from '../../state/slices/editor';
 import SceneCard from './SceneCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,12 +36,20 @@ function Home() {
   const scenes = useSelector(scenesSelectors.selectScenes);
   const [{ isPending }] = useRequest(getScenes(accessToken));
 
+  const dispatch = useDispatch();
+  const handleAdd = () => dispatch(editorActions.clearEditorState());
+
   return (
     <>
       <TopMenu>
         <PaletteTypeButton />
         <ProfileDropdown />
-        <NextPageButton redirectTo="/marcador">Criar Cena</NextPageButton>
+        <NextPageButton
+          redirectTo="/marcador"
+          onClick={handleAdd}
+        >
+          Criar Cena
+        </NextPageButton>
       </TopMenu>
       <PageTitle title="Minhas Cenas" />
       <Container className={classes.cardGrid} maxWidth="md">
