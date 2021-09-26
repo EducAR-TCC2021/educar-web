@@ -38,7 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
-function EditingCard(setState) {
+function EditingCard({ setState }) {
   const classes = useStyles();
   return (
     <Card
@@ -56,7 +56,7 @@ function EditingCard(setState) {
         <Add />
       </CardContent>
       <CardActions>
-        <Button size="small">
+        <Button size="small" onClick={() => setState('blank')}>
           Salvar
         </Button>
       </CardActions>
@@ -73,7 +73,9 @@ function BlankCard({ setState }) {
     >
       <ButtonBase
         className={classes.buttonBase}
-        onClick={() => setState('editing')}
+        onClick={() => {
+          setState('editing');
+        }}
       >
         <CardContent className={classes.cardContent}>
           Nova Cena
@@ -88,14 +90,14 @@ function AddSceneCard() {
   const classes = useStyles();
   const [state, setState] = useState('blank');
 
-  const CardSelector = (type) => {
+  const CardSelector = ({ type }) => {
     switch (type) {
       case 'blank':
         return <BlankCard setState={setState} />;
       case 'editing':
-        return <BlankCard setState={setState} />;
+        return <EditingCard setState={setState} />;
       default:
-        return <BlankCard setState={setState} />;
+        return <div />;
     }
   };
 

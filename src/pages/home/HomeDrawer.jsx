@@ -46,7 +46,7 @@ function HomeDrawer({ channels, children }) {
   const handleClick = (index) => dispatch(homeActions.setSelectedChannel(index));
 
   const renderItem = (channel, index) => (
-    <ListItem button onClick={() => handleClick(index)}>
+    <ListItem key={channel.id} button onClick={() => handleClick(index)}>
       <ListItemText primary={channel.id} />
     </ListItem>
   );
