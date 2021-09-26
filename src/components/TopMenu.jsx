@@ -7,21 +7,21 @@ import React from 'react';
 import Logo from './Logo';
 
 const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
   title: {
     display: 'flex',
     justifyContent: 'flex-start',
     padding: 0,
     marginLeft: 0,
   },
+  appBar: {
+    zIndex: 2,
+  },
 });
 
-function TopMenu({ children, hideLogo }) {
+function TopMenu({ children, hideLogo, position }) {
   const classes = useStyles();
   return (
-    <AppBar position="static">
+    <AppBar position={position} className={classes.appBar}>
       <Toolbar variant="dense">
         {
           (!hideLogo)
@@ -38,10 +38,12 @@ function TopMenu({ children, hideLogo }) {
 }
 TopMenu.defaultProps = {
   hideLogo: false,
+  position: 'static',
 };
 TopMenu.propTypes = {
   children: PropTypes.node.isRequired,
   hideLogo: PropTypes.bool,
+  position: PropTypes.string,
 };
 
 export default TopMenu;
