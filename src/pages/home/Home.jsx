@@ -15,6 +15,7 @@ import TopMenu from '../../components/TopMenu';
 import { getScenes, scenesSelectors } from '../../state/queries/scenes';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions } from '../../state/slices/editor';
+import AddSceneCard from './AddSceneCard';
 import SceneCard from './SceneCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +59,7 @@ function Home() {
             : Object.keys(scenes).map((key, idx) => (
               <SceneCard key={key} name={key} scene={scenes[key]} id={idx} />
             ))}
+          <AddSceneCard />
         </Grid>
       </Container>
     </>
