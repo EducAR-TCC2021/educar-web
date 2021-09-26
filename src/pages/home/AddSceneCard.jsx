@@ -9,6 +9,7 @@ import {
   CardMedia,
   Grid,
   IconButton,
+  TextField,
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -33,27 +34,38 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  editingCardContent: {
+    flexGrow: 1,
+  },
   buttonBase: {
+    display: 'block',
     flexGrow: 1,
   },
 });
 
 function EditingCard({ setState }) {
   const classes = useStyles();
+  const [sceneName, setSceneName] = useState('');
+
   return (
     <Card
       className={classes.card}
     >
       <ButtonBase
+        className={classes.buttonBase}
         onClick={() => {}}
       >
         <CardMedia
           className={classes.cardMedia}
-          title="thumbnail"
+          title="marker"
         />
       </ButtonBase>
-      <CardContent className={classes.cardContent}>
-        <Add />
+      <CardContent className={classes.editingCardContent}>
+        <TextField
+          value={sceneName}
+          placeholder="Nome da cena"
+          onChange={(e) => setSceneName(e.target.value)}
+        />
       </CardContent>
       <CardActions>
         <Button size="small" onClick={() => setState('blank')}>
