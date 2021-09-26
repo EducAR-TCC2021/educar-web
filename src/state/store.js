@@ -7,6 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import accountReducer from './slices/account';
 import settingsReducer from './slices/settings';
 import editorReducer from './slices/editor';
+import homeReducer from './slices/home';
 
 export const selectQueries = (state) => state.queries;
 export const selectEntities = (state) => state.entities;
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   editor: editorReducer,
   entities: entitiesReducer,
   queries: queriesReducer,
+  home: homeReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
