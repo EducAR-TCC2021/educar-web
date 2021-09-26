@@ -73,6 +73,7 @@ function Home() {
         <PageTitle title="Cenas" />
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
+            <AddSceneCard />
             {!selectedChannel ? <div className={classes.loading}><CircularProgress /></div>
               : Object.keys(selectedChannel.scenes).map((key, idx) => (
                 <SceneCard key={key} name={key} scene={selectedChannel.scenes[key]} id={idx} />
