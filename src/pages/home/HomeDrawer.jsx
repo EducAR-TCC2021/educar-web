@@ -2,17 +2,20 @@
 /* eslint-disable react/forbid-prop-types */
 import {
   Drawer,
+  IconButton,
   List,
-  ListItem,
+  ListItem, ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
   makeStyles,
 } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TopMenu from '../../components/TopMenu';
 import { homeActions } from '../../state/slices/home';
+import AddChannelDialog from './AddChannelDialog';
 
 const drawerWidth = 248;
 
@@ -45,6 +48,11 @@ function HomeDrawer({ channels, children }) {
   const dispatch = useDispatch();
   const handleClick = (index) => dispatch(homeActions.setSelectedChannel(index));
 
+  const [channelDialogOpen, setChannelDialogOpen] = useState(false);
+
+  const handleOpenAddChannel = () => setChannelDialogOpen(true);
+  const handleCloseAddChannel = () => setChannelDialogOpen(false);
+
   const renderItem = (channel, index) => (
     <ListItem key={channel.id} button onClick={() => handleClick(index)}>
       <ListItemText primary={channel.id} />
@@ -64,10 +72,21 @@ function HomeDrawer({ channels, children }) {
       </TopMenu>
       <div className={classes.drawerContainer}>
         <List>
-          <ListSubheader>Meus Canais</ListSubheader>
+          <ListSubheader>
+            Meus Canais
+            <ListItemSecondaryAction>
+              <IconButton edge="end" onClick={handleOpenAddChannel}>
+                <Add />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListSubheader>
           { channels.map(renderItem) }
         </List>
       </div>
+      <AddChannelDialog
+        open={channelDialogOpen}
+        handleClose={handleCloseAddChannel}
+      />
     </Drawer>
   );
 }
