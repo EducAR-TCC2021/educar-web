@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { editorSelectors, typeEnums } from '../../../state/slices/editor';
 import Image from './Image';
-import Model from './Model';
+import SketchfabModel from './Model';
 
 function getInitialPosRotScale(isSelected, { position, rotation, scale }) {
   if (isSelected) {
@@ -52,9 +52,9 @@ const Overlay = (props) => {
       );
     case typeEnums.MODEL:
       return (
-        <Model
+        <SketchfabModel
           initialParam={initialParam}
-          url={url}
+          modelId={url}
         />
       );
     case typeEnums.VIDEO:

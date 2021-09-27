@@ -90,9 +90,7 @@ async function readGltfFromZipUrl(zipUrl) {
   return fileUrl;
 }
 
-async function getDownloadUrl(src, token) {
-  const pieces = src.split('-');
-  const modelId = pieces[pieces.length - 1];
+async function getDownloadUrl(modelId, token) {
   const metadataUrl = `https://api.sketchfab.com/v3/models/${modelId}/download`;
   const options = {
     method: 'GET',
@@ -107,25 +105,25 @@ async function getDownloadUrl(src, token) {
 }
 
 const SketchfabModel = (props) => {
-  const { url, initialParam } = props;
+  const { modelId, initialParam } = props;
   const [blobUrl, setBlobUrl] = useState('');
   const token = useSelector(accountSelectors.selectAccessToken);
   const blobFiles = useSelector(editorSelectors.selectBlobFiles);
   const store = useStore();
 
   useEffect(async () => {
-    if (!blobFiles[url]) {
-      store.dispatch(editorActions.setBlobFile({ key: url, value: { isDownloading: true } }));
-      const downloadUrl = await getDownloadUrl(url, token);
+    if (!blobFiles[modelId]) {
+      store.dispatch(editorActions.setBlobFile({ key: modelId, value: { isDownloading: true } }));
+      const downloadUrl = await getDownloadUrl(modelId, token);
       const fileUrl = await readGltfFromZipUrl(downloadUrl);
       store.dispatch(editorActions.setBlobFile(
-        { key: url, value: { isDownloading: false, fileUrl } },
+        { key: modelId, value: { isDownloading: false, fileUrl } },
       ));
       setBlobUrl(fileUrl);
-    } else if (!blobFiles[url].isDownloading) {
-      setBlobUrl(blobFiles[url].fileUrl);
+    } else if (!blobFiles[modelId].isDownloading) {
+      setBlobUrl(blobFiles[modelId].fileUrl);
     }
-  }, [url, blobFiles[url]]);
+  }, [modelId, blobFiles[modelId]]);
 
   return (blobUrl)
     ? (
@@ -137,7 +135,7 @@ const SketchfabModel = (props) => {
     : <Fallback />;
 };
 SketchfabModel.propTypes = {
-  url: PropTypes.string.isRequired,
+  modelId: PropTypes.string.isRequired,
   initialParam: PropTypes.any.isRequired,
 };
 

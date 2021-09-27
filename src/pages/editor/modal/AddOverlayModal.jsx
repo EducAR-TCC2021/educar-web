@@ -17,6 +17,7 @@ import { useSelector, useStore } from 'react-redux';
 import { editorActions, editorSelectors, typeEnums } from '../../../state/slices/editor';
 import ImagePreview from './ImagePreview';
 import ModelPreview from './ModelPreview';
+import parseSketchfabUrl from '../../../utils';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -60,7 +61,13 @@ export default function AddOverlayModal() {
 
   const handleTypeChange = (newType) => store.dispatch(editorActions.setAddOverlayType(newType));
 
-  const handleAddOverlay = () => store.dispatch(editorActions.addOverlay());
+  const handleAddOverlay = () => {
+    if (type === typeEnums.MODEL) {
+      store.dispatch(editorActions.setAddOverlaySrc(parseSketchfabUrl(srcValue)));
+    }
+
+    store.dispatch(editorActions.addOverlay());
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="xl" className={classes.dialog}>

@@ -14,6 +14,7 @@ import {
 
 import { editorActions, editorSelectors } from '../../../state/slices/editor';
 import { accountSelectors } from '../../../state/slices/account';
+import parseSketchfabUrl from '../../../utils';
 
 const useStyles = makeStyles({
   img: {
@@ -37,8 +38,7 @@ export default function ModelPreview() {
     if (url) {
       const baseUrl = url.substring(0, 32);
       if (baseUrl === modelsBaseUrl) {
-        const pieces = url.split('-');
-        const modelId = pieces[pieces.length - 1];
+        const modelId = parseSketchfabUrl(url);
         const metadataUrl = `https://api.sketchfab.com/v3/models/${modelId}`;
         const options = {
           method: 'GET',

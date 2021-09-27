@@ -26,10 +26,14 @@ export default function ImagePreview() {
   const store = useStore();
 
   async function checkIfDownloadable() {
-    const response = await fetch(src);
-    if (response.ok) {
-      setAlertUndownloadable(false);
-      store.dispatch(editorActions.setAddOverlayIsValid(true));
+    try {
+      const response = await fetch(src);
+      if (response.ok) {
+        setAlertUndownloadable(false);
+        store.dispatch(editorActions.setValidMarker());
+      }
+    } catch (e) {
+      setAlertUndownloadable(true);
     }
   }
 
@@ -37,12 +41,10 @@ export default function ImagePreview() {
     store.dispatch(editorActions.setAddOverlayIsValid(false));
     setAlertUndownloadable(false);
     setImgExists(false);
-    checkIfDownloadable();
   }, [src]);
 
   useEffect(() => {
     if (imgExists) {
-      setAlertUndownloadable(true);
       checkIfDownloadable();
     }
   }, [imgExists]);
