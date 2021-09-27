@@ -25,9 +25,11 @@ const accountActions = Object(account.actions);
 // Selectors
 
 const selectAccessToken = (state) => state.account.accessToken;
+const selectChannelsMeta = (state) => state.entities.channels || [];
 
 const accountSelectors = {
   selectAccessToken,
+  selectChannelsMeta,
 };
 
 // Exports
