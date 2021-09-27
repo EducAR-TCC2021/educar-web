@@ -49,7 +49,6 @@ function HomeDrawer({ channels, children }) {
   const handleClick = (index) => dispatch(homeActions.setSelectedChannel(index));
 
   const [channelDialogOpen, setChannelDialogOpen] = useState(false);
-
   const handleOpenAddChannel = () => setChannelDialogOpen(true);
   const handleCloseAddChannel = () => setChannelDialogOpen(false);
 

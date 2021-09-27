@@ -6,7 +6,7 @@ import {
   Grid,
   makeStyles,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'redux-query-react';
 import NextPageButton from '../../components/NextPageButton';
@@ -18,6 +18,7 @@ import { getScenes, scenesSelectors } from '../../state/queries/scenes';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions } from '../../state/slices/editor';
 import { homeSelectors } from '../../state/slices/home';
+import AddMarkerDialog from './AddMarkerDialog';
 import AddSceneCard from './AddSceneCard';
 import HomeDrawer from './HomeDrawer';
 import SceneCard from './SceneCard';
@@ -52,6 +53,10 @@ function Home() {
   const selectedChannel = channels[channelIndex];
   const [{ isPending }] = useRequest(getScenes(accessToken));
 
+  const [markerDialogOpen, setMarkerDialogOpen] = useState(false);
+  const handleOpenAddMarker = () => setMarkerDialogOpen(true);
+  const handleCloseAddMarker = () => setMarkerDialogOpen(false);
+
   const dispatch = useDispatch();
   const handleAdd = () => dispatch(editorActions.clearEditorState());
 
@@ -73,7 +78,7 @@ function Home() {
         <PageTitle title="Cenas" />
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            <AddSceneCard />
+            <AddSceneCard handleOpenMarker={handleOpenAddMarker} />
             {!selectedChannel ? <div className={classes.loading}><CircularProgress /></div>
               : Object.keys(selectedChannel.scenes).map((key, idx) => (
                 <SceneCard key={key} name={key} scene={selectedChannel.scenes[key]} id={idx} />
@@ -81,6 +86,7 @@ function Home() {
           </Grid>
         </Container>
       </div>
+      <AddMarkerDialog open={markerDialogOpen} handleClose={handleCloseAddMarker} />
     </div>
   );
 }
