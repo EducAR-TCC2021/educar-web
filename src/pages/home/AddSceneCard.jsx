@@ -15,6 +15,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { editorSelectors } from '../../state/slices/editor';
 
 const useStyles = makeStyles({
   cardDesign: {
@@ -43,8 +45,9 @@ const useStyles = makeStyles({
   },
 });
 
-function EditingCard({ setState }) {
+function EditingCard({ setState, handleOpenMarker }) {
   const classes = useStyles();
+  const markerSrcValue = useSelector(editorSelectors.selectMarkerSrc);
   const [sceneName, setSceneName] = useState('');
 
   return (
@@ -53,10 +56,11 @@ function EditingCard({ setState }) {
     >
       <ButtonBase
         className={classes.buttonBase}
-        onClick={() => {}}
+        onClick={handleOpenMarker}
       >
         <CardMedia
           className={classes.cardMedia}
+          image={markerSrcValue || ''}
           title="marker"
         />
       </ButtonBase>
@@ -98,7 +102,7 @@ function BlankCard({ setState }) {
   );
 }
 
-function AddSceneCard() {
+function AddSceneCard({ handleOpenMarker }) {
   const classes = useStyles();
   const [state, setState] = useState('blank');
 
@@ -107,7 +111,7 @@ function AddSceneCard() {
       case 'blank':
         return <BlankCard setState={setState} />;
       case 'editing':
-        return <EditingCard setState={setState} />;
+        return <EditingCard setState={setState} handleOpenMarker={handleOpenMarker} />;
       default:
         return <div />;
     }

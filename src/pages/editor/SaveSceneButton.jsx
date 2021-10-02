@@ -5,15 +5,17 @@ import { useSelector } from 'react-redux';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
 import { editorSelectors } from '../../state/slices/editor';
-import { selectEntities } from '../../state/store';
+import { homeSelectors } from '../../state/slices/home';
 
 function SaveSceneButton() {
-  const queries = useSelector(selectEntities);
   const accessToken = useSelector(accountSelectors.selectAccessToken);
+  const channels = useSelector(accountSelectors.selectChannelsMeta);
+  const channelIndex = useSelector(homeSelectors.selectSelectedChannel);
+  const selectedChannel = channels[channelIndex];
   const { sceneId, sceneInfo } = useSelector(editorSelectors.selectScene);
   const request = channelRequests.updateScene({
     accessToken,
-    channelId: queries.channel_id,
+    channelId: selectedChannel.id,
     sceneId,
     scene: sceneInfo,
   });

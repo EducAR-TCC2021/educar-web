@@ -36,11 +36,12 @@ const createChannel = ({
   password,
 }) => ({
   method: 'post',
-  url: `/channels/${channelId}`,
+  url: '/channels',
   baseURL: BASE_URL,
   data: {
-    channelId,
-    password,
+    id: channelId,
+    ...(password && { password }),
+    scenes: {},
   },
   headers: {
     authorizationToken: accessToken,
