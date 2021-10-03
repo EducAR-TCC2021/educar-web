@@ -4,11 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const home = createSlice({
   name: 'home',
   initialState: {
-    selectedChannel: null,
+    selectedChannelIndex: null,
   },
   reducers: {
-    setSelectedChannel(state, action) {
-      state.selectedChannel = action.payload;
+    setSelectedChannelIndex(state, action) {
+      state.selectedChannelIndex = action.payload;
     },
   },
 });
@@ -18,9 +18,14 @@ const homeActions = Object(home.actions);
 
 // Selectors
 
-const selectSelectedChannel = (state) => state.home.selectedChannel;
+const selectSelectedChannelIndex = (state) => state.home.selectedChannelIndex;
+const selectSelectedChannel = (state) => {
+  const channels = state.entities.channels || [];
+  return channels[state.home.selectedChannelIndex] || {};
+};
 
 const homeSelectors = {
+  selectSelectedChannelIndex,
   selectSelectedChannel,
 };
 

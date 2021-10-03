@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 function HomeDrawer({ channels, children }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const handleClick = (index) => dispatch(homeActions.setSelectedChannel(index));
+  const handleClick = (index) => dispatch(homeActions.setSelectedChannelIndex(index));
 
   const [channelDialogOpen, setChannelDialogOpen] = useState(false);
   const handleOpenAddChannel = () => setChannelDialogOpen(true);

@@ -6,7 +6,7 @@ import {
   Grid,
   makeStyles,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'redux-query-react';
 import NextPageButton from '../../components/NextPageButton';
@@ -17,7 +17,7 @@ import TopMenu from '../../components/TopMenu';
 import { getScenes, scenesSelectors } from '../../state/queries/scenes';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions } from '../../state/slices/editor';
-import { homeSelectors } from '../../state/slices/home';
+import { homeActions, homeSelectors } from '../../state/slices/home';
 import AddMarkerDialog from './AddMarkerDialog';
 import AddSceneCard from './AddSceneCard';
 import HomeDrawer from './HomeDrawer';
@@ -49,16 +49,25 @@ function Home() {
   const scenes = useSelector(scenesSelectors.selectScenes);
 
   const channels = useSelector(accountSelectors.selectChannelsMeta);
-  const channelIndex = useSelector(homeSelectors.selectSelectedChannel);
+  const channelIndex = useSelector(homeSelectors.selectSelectedChannelIndex);
   const selectedChannel = channels[channelIndex];
-  const [{ isPending }] = useRequest(getScenes(accessToken));
+
+  const dispatch = useDispatch();
+  const [{ isFinished }] = useRequest(
+    getScenes(accessToken),
+  );
+
+  // Redireciona para o primeiro canal da lista, assim que
+  // o download estiver pronto.
+  useEffect(() => {
+    if (isFinished) {
+      dispatch(homeActions.setSelectedChannelIndex(0));
+    }
+  }, [isFinished]);
 
   const [markerDialogOpen, setMarkerDialogOpen] = useState(false);
   const handleOpenAddMarker = () => setMarkerDialogOpen(true);
   const handleCloseAddMarker = () => setMarkerDialogOpen(false);
-
-  const dispatch = useDispatch();
-  const handleAdd = () => dispatch(editorActions.clearEditorState());
 
   return (
     <div className={classes.root}>
@@ -67,12 +76,6 @@ function Home() {
       <HomeDrawer channels={channels}>
         <PaletteTypeButton />
         <ProfileDropdown />
-        <NextPageButton
-          redirectTo="/marcador"
-          onClick={handleAdd}
-        >
-          Criar Cena
-        </NextPageButton>
       </HomeDrawer>
       <div className={classes.content}>
         <PageTitle title="Cenas" />
