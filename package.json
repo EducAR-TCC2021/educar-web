@@ -1,7 +1,6 @@
 {
   "name": "educar_web",
   "version": "0.1.0",
-  "homepage": "https://educar-tcc2021.github.io/educar-web/",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.3",
