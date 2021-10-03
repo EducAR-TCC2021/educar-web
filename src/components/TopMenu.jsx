@@ -39,9 +39,10 @@ function TopMenu({ children, hideLogo, position }) {
 TopMenu.defaultProps = {
   hideLogo: false,
   position: 'static',
+  children: [],
 };
 TopMenu.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   hideLogo: PropTypes.bool,
   position: PropTypes.string,
 };
