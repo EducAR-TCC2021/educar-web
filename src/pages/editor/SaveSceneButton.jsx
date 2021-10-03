@@ -10,7 +10,7 @@ import { homeSelectors } from '../../state/slices/home';
 function SaveSceneButton() {
   const accessToken = useSelector(accountSelectors.selectAccessToken);
   const channels = useSelector(accountSelectors.selectChannelsMeta);
-  const channelIndex = useSelector(homeSelectors.selectSelectedChannel);
+  const channelIndex = useSelector(homeSelectors.selectSelectedChannelIndex);
   const selectedChannel = channels[channelIndex];
   const { sceneId, sceneInfo } = useSelector(editorSelectors.selectScene);
   const request = channelRequests.updateScene({

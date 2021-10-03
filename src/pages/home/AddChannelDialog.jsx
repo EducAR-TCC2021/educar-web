@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   TextField,
+  Typography,
 } from '@material-ui/core';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -34,6 +35,7 @@ function AddChannelDialog({ open, handleClose }) {
     <Dialog open={open} onClose={handleClose}>
       <DialogContent style={{ display: 'flex' }}>
         <Container>
+          <Typography variant="h6">Adicionar Canal</Typography>
           <Box m={2}>
             <TextField
               placeholder="Nome do Canal"
@@ -57,8 +59,8 @@ function AddChannelDialog({ open, handleClose }) {
         </Container>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Fechar</Button>
         <Button onClick={handleSave}>Salvar</Button>
+        <Button onClick={handleClose}>Fechar</Button>
       </DialogActions>
     </Dialog>
   );

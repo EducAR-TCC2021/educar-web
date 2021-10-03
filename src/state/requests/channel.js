@@ -48,9 +48,22 @@ const createChannel = ({
   },
 });
 
+const deleteChannel = ({
+  accessToken,
+  channelId,
+}) => ({
+  method: 'delete',
+  url: `/channels/${channelId}`,
+  baseURL: BASE_URL,
+  headers: {
+    authorizationToken: accessToken,
+  },
+});
+
 const channelRequests = {
   updateScene,
   createChannel,
+  deleteChannel,
 };
 
 export default channelRequests;
