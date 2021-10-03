@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { editorSelectors, typeEnums } from '../../../state/slices/editor';
-import Image from './Image';
+import ImageObject from './Image';
 import SketchfabModel from './Model';
 
 function getInitialPosRotScale(isSelected, { position, rotation, scale }) {
@@ -45,7 +45,7 @@ const Overlay = (props) => {
   switch (type) {
     case typeEnums.IMAGE:
       return (
-        <Image
+        <ImageObject
           initialParam={initialParam}
           url={url}
         />

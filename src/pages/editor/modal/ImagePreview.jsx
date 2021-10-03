@@ -30,7 +30,7 @@ export default function ImagePreview() {
       const response = await fetch(src);
       if (response.ok) {
         setAlertUndownloadable(false);
-        store.dispatch(editorActions.setValidMarker());
+        store.dispatch(editorActions.setAddOverlayIsValid(true));
       }
     } catch (e) {
       setAlertUndownloadable(true);
