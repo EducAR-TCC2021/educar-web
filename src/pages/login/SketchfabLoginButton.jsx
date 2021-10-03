@@ -11,7 +11,7 @@ import { accountActions } from '../../state/slices/account';
 
 const CLIENT_ID = 'Qj6hQl5K04dccP4SsGykPq4Pyp8kTYkny5gAqBBY';
 const SKETCHFAB_URL = `https://sketchfab.com/oauth2/authorize/?response_type=token&client_id=${CLIENT_ID}&approval_prompt=auto`;
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://educar-web.netlify.app';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
