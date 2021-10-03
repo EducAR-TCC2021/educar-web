@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions, editorSelectors } from '../../state/slices/editor';
-import { homeSelectors } from '../../state/slices/home';
+import { homeActions, homeSelectors } from '../../state/slices/home';
 
 const useStyles = makeStyles({
   cardDesign: {
@@ -55,8 +55,9 @@ function EditingCard({ setState, handleOpenMarker }) {
   const markerSrcValue = useSelector(editorSelectors.selectMarkerSrc);
   const accessToken = useSelector(accountSelectors.selectAccessToken);
   const channels = useSelector(accountSelectors.selectChannelsMeta);
-  const channelIndex = useSelector(homeSelectors.selectSelectedChannel);
+  const channelIndex = useSelector(homeSelectors.selectSelectedChannelIndex);
   const selectedChannel = channels[channelIndex];
+  const dispatch = useDispatch();
   const [sceneName, setSceneName] = useState('');
 
   const handleSaveScene = () => {
