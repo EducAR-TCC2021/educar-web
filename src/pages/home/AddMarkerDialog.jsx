@@ -25,6 +25,7 @@ function AddMarkerDialog({ open, handleClose }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => {}}>Salvar</Button>
+        <Button onClick={handleClose}>Fechar</Button>
       </DialogActions>
     </Dialog>
   );
