@@ -14,6 +14,7 @@ import SideMenu from './SideMenu';
 import SideSubMenu from './SideSubMenu';
 import SaveSceneButton from './SaveSceneButton';
 import Logo from '../../components/Logo';
+import InfoMenu from './InfoMenu';
 
 const useStyles = makeStyles(() => ({
   horizontal: {
@@ -92,7 +93,7 @@ export default function Editor() {
         </SideMenu>
         <EditorViewport />
         <SideMenu>
-          <SideSubMenu title="Info" />
+          <InfoMenu />
         </SideMenu>
       </Box>
       <AddOverlayModal />
