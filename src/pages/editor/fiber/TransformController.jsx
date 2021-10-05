@@ -11,14 +11,7 @@ import PropTypes from 'prop-types';
 import { Euler } from 'three';
 import { useSelector, useStore } from 'react-redux';
 import { editorActions, editorSelectors } from '../../../state/slices/editor';
-
-function getInitialPosRotScale({ position, rotation, scale }) {
-  return {
-    initialPosition: [position.x, position.y, position.z],
-    initialRotation: [rotation.x, rotation.y, rotation.z],
-    initialScale: [scale.x, scale.y, scale.z],
-  };
-}
+import { toDegrees, getInitialPosRotScale } from '../../../utils';
 
 const TransformController = (props) => {
   const modelSelection = useSelector(editorSelectors.selectOverlaySelection);
@@ -30,7 +23,7 @@ const TransformController = (props) => {
     initialPosition,
     initialRotation,
     initialScale,
-  } = getInitialPosRotScale(overlay);
+  } = getInitialPosRotScale(false, overlay);
 
   const {
     orbitRef, controlMode, children, transformRef,
@@ -55,7 +48,11 @@ const TransformController = (props) => {
           id: modelSelection[0],
           posRotScale: {
             position: { ...translation },
-            rotation: { x: rotation._x, y: rotation._y, z: rotation._z },
+            rotation: {
+              x: toDegrees(rotation._x),
+              y: toDegrees(rotation._y),
+              z: toDegrees(rotation._z),
+            },
             scale: { ...scale },
           },
         };
