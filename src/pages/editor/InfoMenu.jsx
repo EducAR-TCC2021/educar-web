@@ -43,8 +43,8 @@ function InfoMenuRow({
     if (proportionCheckbox && proportion) {
       onValueChange({
         x: newX,
-        y: newX * (getY() / getX()),
-        z: newX * (getZ() / getX()),
+        y: newX * ((getY() / getX()) || 1),
+        z: newX * ((getZ() / getX()) || 1),
       });
     } else {
       onValueChange({ ...values, x: newX });
@@ -54,9 +54,9 @@ function InfoMenuRow({
   const handleYOnChange = (newY) => {
     if (proportionCheckbox && proportion) {
       onValueChange({
-        x: newY * (getX() / getY()),
+        x: newY * ((getX() / getY()) || 1),
         y: newY,
-        z: newY * (getZ() / getY()),
+        z: newY * ((getZ() / getY()) || 1),
       });
     } else {
       onValueChange({ ...values, y: newY });
@@ -66,8 +66,8 @@ function InfoMenuRow({
   const handleZOnChange = (newZ) => {
     if (proportionCheckbox && proportion) {
       onValueChange({
-        x: newZ * (getX() / getZ()),
-        y: newZ * (getY() / getZ()),
+        x: newZ * ((getX() / getZ()) || 1),
+        y: newZ * ((getY() / getZ()) || 1),
         z: newZ,
       });
     } else {

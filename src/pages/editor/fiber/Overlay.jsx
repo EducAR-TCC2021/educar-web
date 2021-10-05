@@ -1,26 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable react/forbid-prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { editorSelectors, typeEnums } from '../../../state/slices/editor';
+import { getInitialPosRotScale } from '../../../utils';
 import ImageObject from './Image';
 import SketchfabModel from './Model';
-
-function getInitialPosRotScale(isSelected, { position, rotation, scale }) {
-  if (isSelected) {
-    return {
-      initialPosition: [0, 0, 0],
-      initialRotation: [0, 0, 0],
-      initialScale: [1, 1, 1],
-    };
-  }
-  return {
-    initialPosition: [position.x, position.y, position.z],
-    initialRotation: [rotation.x, rotation.y, rotation.z],
-    initialScale: [scale.x, scale.y, scale.z],
-  };
-}
 
 const Overlay = (props) => {
   const {
@@ -41,6 +27,10 @@ const Overlay = (props) => {
     da última modificação na transformada, os quais estão armazenados na Store.
   */
   const initialParam = getInitialPosRotScale(isSelected, overlay);
+
+  useEffect(() => {
+    console.log(initialParam);
+  }, [initialParam]);
 
   switch (type) {
     case typeEnums.IMAGE:

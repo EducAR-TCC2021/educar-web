@@ -14,3 +14,18 @@ export function toDegrees(angle) {
 export function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
+
+export function getInitialPosRotScale(isSelected, { position, rotation, scale }) {
+  if (isSelected) {
+    return {
+      initialPosition: [0, 0, 0],
+      initialRotation: [0, 0, 0],
+      initialScale: [1, 1, 1],
+    };
+  }
+  return {
+    initialPosition: [position.x, position.y, position.z],
+    initialRotation: [toRadians(rotation.x), toRadians(rotation.y), toRadians(rotation.z)],
+    initialScale: [scale.x, scale.y, scale.z],
+  };
+}
