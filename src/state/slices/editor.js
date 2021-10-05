@@ -166,9 +166,27 @@ const selectBlobFiles = (state) => state.editor.blobFiles;
 
 const selectSceneState = (state) => state.editor;
 
+const placeholderOverlay = {
+  position: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+  rotation: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+  scale: {
+    x: 1,
+    y: 1,
+    z: 1,
+  },
+};
+
 const selectTransform = (state) => {
   const idx = state.editor.overlay_selection[0];
-  const overlay = state.editor.overlays[idx];
+  const overlay = state.editor.overlays[idx] || placeholderOverlay;
   return [overlay.position, overlay.rotation, overlay.scale];
 };
 

@@ -11,11 +11,12 @@ import PropTypes from 'prop-types';
 import { Euler } from 'three';
 import { useSelector, useStore } from 'react-redux';
 import { editorActions, editorSelectors } from '../../../state/slices/editor';
+import { toDegrees, toRadians } from '../../../utils';
 
 function getInitialPosRotScale({ position, rotation, scale }) {
   return {
     initialPosition: [position.x, position.y, position.z],
-    initialRotation: [rotation.x, rotation.y, rotation.z],
+    initialRotation: [toRadians(rotation.x), toRadians(rotation.y), toRadians(rotation.z)],
     initialScale: [scale.x, scale.y, scale.z],
   };
 }
@@ -55,7 +56,11 @@ const TransformController = (props) => {
           id: modelSelection[0],
           posRotScale: {
             position: { ...translation },
-            rotation: { x: rotation._x, y: rotation._y, z: rotation._z },
+            rotation: {
+              x: toDegrees(rotation._x),
+              y: toDegrees(rotation._y),
+              z: toDegrees(rotation._z),
+            },
             scale: { ...scale },
           },
         };

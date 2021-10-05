@@ -40,7 +40,7 @@ function InfoMenuRow({
   const getZ = () => +values.z;
 
   const handleXOnChange = (newX) => {
-    if (proportion) {
+    if (proportionCheckbox && proportion) {
       onValueChange({
         x: newX,
         y: newX * (getY() / getX()),
@@ -52,7 +52,7 @@ function InfoMenuRow({
   };
 
   const handleYOnChange = (newY) => {
-    if (proportion) {
+    if (proportionCheckbox && proportion) {
       onValueChange({
         x: newY * (getX() / getY()),
         y: newY,
@@ -64,7 +64,7 @@ function InfoMenuRow({
   };
 
   const handleZOnChange = (newZ) => {
-    if (proportion) {
+    if (proportionCheckbox && proportion) {
       onValueChange({
         x: newZ * (getX() / getZ()),
         y: newZ * (getY() / getZ()),

@@ -14,7 +14,7 @@ import {
 
 import { editorActions, editorSelectors } from '../../../state/slices/editor';
 import { accountSelectors } from '../../../state/slices/account';
-import parseSketchfabUrl from '../../../utils';
+import { parseSketchfabUrl } from '../../../utils';
 
 const useStyles = makeStyles({
   img: {

@@ -17,7 +17,7 @@ import { useSelector, useStore } from 'react-redux';
 import { editorActions, editorSelectors, typeEnums } from '../../../state/slices/editor';
 import ImagePreview from './ImagePreview';
 import ModelPreview from './ModelPreview';
-import parseSketchfabUrl from '../../../utils';
+import { parseSketchfabUrl } from '../../../utils';
 
 const useStyles = makeStyles((theme) => ({
   form: {
