@@ -14,10 +14,12 @@ import { Add } from '@material-ui/icons';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRequest } from 'redux-query-react';
+import { getScenes } from '../../state/queries/scenes';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions, editorSelectors } from '../../state/slices/editor';
-import { homeActions, homeSelectors } from '../../state/slices/home';
+import { homeSelectors } from '../../state/slices/home';
 
 const useStyles = makeStyles({
   cardDesign: {
@@ -74,7 +76,9 @@ function EditingCard({ setState, handleOpenMarker }) {
     });
 
     axios(request)
-      .then()
+      .then(() => {
+        window.location.reload();
+      })
       .catch();
 
     setState('blank');

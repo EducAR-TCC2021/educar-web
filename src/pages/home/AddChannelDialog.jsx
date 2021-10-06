@@ -28,7 +28,9 @@ function AddChannelDialog({ open, handleClose }) {
     if (channelId === '') return;
     handleClose();
     axios(request)
-      .then(() => {})
+      .then(() => {
+        window.location.reload();
+      })
       .catch(() => {});
   };
   return (

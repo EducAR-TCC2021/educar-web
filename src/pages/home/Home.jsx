@@ -59,7 +59,8 @@ function Home() {
   // o download estiver pronto.
   useEffect(() => {
     if (isFinished) {
-      dispatch(homeActions.setSelectedChannelIndex(0));
+      const index = channelIndex || 0;
+      dispatch(homeActions.setSelectedChannelIndex(index));
     }
   }, [isFinished]);
 
