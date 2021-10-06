@@ -66,6 +66,7 @@ function Home() {
   const [markerDialogOpen, setMarkerDialogOpen] = useState(false);
   const handleOpenAddMarker = () => setMarkerDialogOpen(true);
   const handleCloseAddMarker = () => setMarkerDialogOpen(false);
+  const channelName = (selectedChannel) ? selectedChannel.id : '';
 
   return (
     <div className={classes.root}>
@@ -76,7 +77,7 @@ function Home() {
         <ProfileDropdown />
       </HomeDrawer>
       <div className={classes.content}>
-        <PageTitle title={`Canal ― ${selectedChannel.id}`} />
+        <PageTitle title={`Canal ― ${channelName}`} />
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {!selectedChannel ? (
