@@ -33,7 +33,9 @@ function ChannelMoreMenu({ channelId, anchorEl, handleClose }) {
     >
       <MenuItem onClick={() => {
         axios(deleteRequest)
-          .then()
+          .then(() => {
+            window.location.reload();
+          })
           .catch();
         handleClose();
       }}
