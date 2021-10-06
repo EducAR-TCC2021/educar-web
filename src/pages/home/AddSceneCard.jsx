@@ -19,7 +19,7 @@ import { getScenes } from '../../state/queries/scenes';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions, editorSelectors } from '../../state/slices/editor';
-import { homeSelectors } from '../../state/slices/home';
+import { homeActions, homeSelectors } from '../../state/slices/home';
 import { spaceToDash } from '../../utils';
 
 const useStyles = makeStyles({

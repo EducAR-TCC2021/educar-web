@@ -5,6 +5,7 @@ import {
   CssBaseline,
   Grid,
   makeStyles,
+  Snackbar,
 } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,7 @@ import { homeActions, homeSelectors } from '../../state/slices/home';
 import AddMarkerDialog from './AddMarkerDialog';
 import AddSceneCard from './AddSceneCard';
 import HomeDrawer from './HomeDrawer';
+import HomeSnackbar from './HomeSnackbar';
 import SceneCard from './SceneCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -105,6 +107,7 @@ function Home() {
         open={markerDialogOpen}
         handleClose={handleCloseAddMarker}
       />
+      <HomeSnackbar />
     </div>
   );
 }

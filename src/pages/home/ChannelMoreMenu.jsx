@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { Menu, MenuItem } from '@material-ui/core';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
+import { homeActions } from '../../state/slices/home';
+import store from '../../state/store';
 
 function ChannelMoreMenu({ channelId, anchorEl, handleClose }) {
   const accessToken = useSelector(accountSelectors.selectAccessToken);

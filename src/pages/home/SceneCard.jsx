@@ -46,7 +46,7 @@ function SceneCard({ name, scene, id }) {
 
     axios(request)
       .then(() => {
-        history.push('/home');
+        window.location.reload();
       })
       .catch();
   };
