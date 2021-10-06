@@ -18,7 +18,16 @@ function ChannelMoreMenu({ channelId, anchorEl, handleClose }) {
     <Menu
       id="simple-menu"
       anchorEl={anchorEl}
+      getContentAnchorEl={null}
       keepMounted
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
