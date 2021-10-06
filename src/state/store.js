@@ -15,7 +15,7 @@ export const selectEntities = (state) => state.entities;
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['account', 'settings'],
+  whitelist: ['account', 'settings', 'home'],
 };
 
 const rootReducer = combineReducers({

@@ -1,18 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import {
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Typography,
-  Button,
-  makeStyles,
+  Button, Card, CardActions, CardContent, CardMedia, Grid, makeStyles, Typography,
 } from '@material-ui/core';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useStore } from 'react-redux';
+import channelRequests from '../../state/requests/channel';
+import { accountSelectors } from '../../state/slices/account';
 import { editorActions } from '../../state/slices/editor';
+import { homeSelectors } from '../../state/slices/home';
 
 const useStyles = makeStyles({
   card: {
@@ -32,10 +29,26 @@ function SceneCard({ name, scene, id }) {
   const classes = useStyles();
   const store = useStore();
   const history = useHistory();
+  const accessToken = useSelector(accountSelectors.selectAccessToken);
+  const selectedChannel = useSelector(homeSelectors.selectSelectedChannel);
 
   const editOnClick = () => {
     store.dispatch(editorActions.setStateFromScene({ name, scene }));
     history.push('/editor');
+  };
+
+  const handleDelete = () => {
+    const request = channelRequests.deleteScene({
+      accessToken,
+      channelId: selectedChannel.id,
+      sceneId: name,
+    });
+
+    axios(request)
+      .then(() => {
+        window.location.reload();
+      })
+      .catch();
   };
 
   return (
@@ -54,6 +67,9 @@ function SceneCard({ name, scene, id }) {
         <CardActions>
           <Button size="small" color="primary" onClick={editOnClick}>
             Editar
+          </Button>
+          <Button size="small" color="secondary" onClick={handleDelete}>
+            Deletar
           </Button>
         </CardActions>
       </Card>
