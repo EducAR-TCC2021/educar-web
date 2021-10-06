@@ -20,6 +20,7 @@ import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions, editorSelectors } from '../../state/slices/editor';
 import { homeSelectors } from '../../state/slices/home';
+import { spaceToDash } from '../../utils';
 
 const useStyles = makeStyles({
   cardDesign: {
@@ -114,7 +115,7 @@ function EditingCard({ setState, handleOpenMarker }) {
         <TextField
           value={sceneName}
           placeholder="Nome da cena"
-          onChange={(e) => setSceneName(e.target.value)}
+          onChange={(e) => setSceneName(spaceToDash(e.target.value))}
         />
       </CardContent>
       <CardActions>

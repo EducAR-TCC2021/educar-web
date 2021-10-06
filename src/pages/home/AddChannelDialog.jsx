@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
+import { spaceToDash } from '../../utils';
 
 function AddChannelDialog({ open, handleClose }) {
   const [channelId, setChannelId] = useState('');
@@ -33,6 +34,7 @@ function AddChannelDialog({ open, handleClose }) {
       })
       .catch(() => {});
   };
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogContent style={{ display: 'flex' }}>
@@ -45,7 +47,7 @@ function AddChannelDialog({ open, handleClose }) {
               name="channelId"
               required
               value={channelId}
-              onChange={(e) => setChannelId(e.target.value)}
+              onChange={(e) => setChannelId(spaceToDash(e.target.value))}
             />
           </Box>
           <Box m={2}>

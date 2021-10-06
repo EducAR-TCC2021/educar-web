@@ -29,3 +29,7 @@ export function getInitialPosRotScale(isSelected, { position, rotation, scale })
     initialScale: [scale.x, scale.y, scale.z],
   };
 }
+
+export function spaceToDash(string) {
+  return string.replace(' ', '-');
+}
