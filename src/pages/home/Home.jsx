@@ -5,6 +5,7 @@ import {
   CssBaseline,
   Grid,
   makeStyles,
+  Snackbar,
 } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,7 @@ import { homeActions, homeSelectors } from '../../state/slices/home';
 import AddMarkerDialog from './AddMarkerDialog';
 import AddSceneCard from './AddSceneCard';
 import HomeDrawer from './HomeDrawer';
+import HomeSnackbar from './HomeSnackbar';
 import SceneCard from './SceneCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,21 +55,21 @@ function Home() {
   const selectedChannel = channels[channelIndex];
 
   const dispatch = useDispatch();
-  const [{ isFinished }] = useRequest(
-    getScenes(accessToken),
-  );
+  const [{ isFinished }] = useRequest(getScenes(accessToken));
 
   // Redireciona para o primeiro canal da lista, assim que
   // o download estiver pronto.
   useEffect(() => {
     if (isFinished) {
-      dispatch(homeActions.setSelectedChannelIndex(0));
+      const index = channelIndex || 0;
+      dispatch(homeActions.setSelectedChannelIndex(index));
     }
   }, [isFinished]);
 
   const [markerDialogOpen, setMarkerDialogOpen] = useState(false);
   const handleOpenAddMarker = () => setMarkerDialogOpen(true);
   const handleCloseAddMarker = () => setMarkerDialogOpen(false);
+  const channelName = (selectedChannel) ? selectedChannel.id : '';
 
   return (
     <div className={classes.root}>
@@ -78,18 +80,34 @@ function Home() {
         <ProfileDropdown />
       </HomeDrawer>
       <div className={classes.content}>
-        <PageTitle title="Cenas" />
+        <PageTitle title={`Canal ― ${channelName}`} />
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            <AddSceneCard handleOpenMarker={handleOpenAddMarker} />
-            {!selectedChannel ? <div className={classes.loading}><CircularProgress /></div>
-              : Object.keys(selectedChannel.scenes).map((key, idx) => (
-                <SceneCard key={key} name={key} scene={selectedChannel.scenes[key]} id={idx} />
-              ))}
+            {!selectedChannel ? (
+              <div className={classes.loading}>
+                <CircularProgress />
+              </div>
+            ) : (
+              <>
+                <AddSceneCard handleOpenMarker={handleOpenAddMarker} />
+                {Object.keys(selectedChannel.scenes).map((key, idx) => (
+                  <SceneCard
+                    key={key}
+                    name={key}
+                    scene={selectedChannel.scenes[key]}
+                    id={idx}
+                  />
+                ))}
+              </>
+            )}
           </Grid>
         </Container>
       </div>
-      <AddMarkerDialog open={markerDialogOpen} handleClose={handleCloseAddMarker} />
+      <AddMarkerDialog
+        open={markerDialogOpen}
+        handleClose={handleCloseAddMarker}
+      />
+      <HomeSnackbar />
     </div>
   );
 }

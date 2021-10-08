@@ -4,7 +4,8 @@ import {
   Drawer,
   IconButton,
   List,
-  ListItem, ListItemSecondaryAction,
+  ListItem,
+  ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
   makeStyles,
@@ -12,9 +13,9 @@ import {
 import { Add, MoreVert } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import TopMenu from '../../components/TopMenu';
-import { homeActions } from '../../state/slices/home';
+import { homeActions, homeSelectors } from '../../state/slices/home';
 import AddChannelDialog from './AddChannelDialog';
 import ChannelMoreMenu from './ChannelMoreMenu';
 
@@ -52,6 +53,7 @@ function HomeDrawer({ channels, children }) {
   const [channelDialogOpen, setChannelDialogOpen] = useState(false);
   const handleOpenAddChannel = () => setChannelDialogOpen(true);
   const handleCloseAddChannel = () => setChannelDialogOpen(false);
+  const selectedChannelIndex = useSelector(homeSelectors.selectSelectedChannelIndex);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [channelId, setChannelId] = useState(0);
@@ -66,10 +68,17 @@ function HomeDrawer({ channels, children }) {
   };
 
   const renderItem = (channel, index) => (
-    <ListItem key={channel.id} button onClick={() => handleClick(index)}>
+    <ListItem
+      key={channel.id}
+      button
+      selected={selectedChannelIndex === index}
+      onClick={() => handleClick(index)}
+    >
       <ListItemText primary={channel.id} />
       <ListItemSecondaryAction>
-        <IconButton onClick={(e) => handleOpenMenu(e, () => setChannelId(channel.id))}>
+        <IconButton
+          onClick={(e) => handleOpenMenu(e, () => setChannelId(channel.id))}
+        >
           <MoreVert />
         </IconButton>
       </ListItemSecondaryAction>
@@ -84,9 +93,7 @@ function HomeDrawer({ channels, children }) {
         paper: classes.drawerPaper,
       }}
     >
-      <TopMenu position="fixed">
-        {children}
-      </TopMenu>
+      <TopMenu position="fixed">{children}</TopMenu>
       <div className={classes.drawerContainer}>
         <List>
           <ListSubheader>
@@ -97,7 +104,7 @@ function HomeDrawer({ channels, children }) {
               </IconButton>
             </ListItemSecondaryAction>
           </ListSubheader>
-          { channels.map(renderItem) }
+          {channels.map(renderItem)}
         </List>
       </div>
       <AddChannelDialog
