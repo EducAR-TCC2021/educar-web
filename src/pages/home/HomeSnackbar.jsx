@@ -5,7 +5,6 @@ import { homeActions, homeSelectors } from '../../state/slices/home';
 
 function HomeSnackbar() {
   const snackbar = useSelector(homeSelectors.selectSnackbar);
-  console.log(snackbar);
 
   const dispatch = useDispatch();
 
