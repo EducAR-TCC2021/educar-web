@@ -1,11 +1,9 @@
 import { Snackbar } from '@material-ui/core';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { homeActions, homeSelectors } from '../../state/slices/home';
+import { useDispatch } from 'react-redux';
+import { homeActions } from '../../state/slices/home';
 
 function HomeSnackbar() {
-  const snackbar = useSelector(homeSelectors.selectSnackbar);
-
   const dispatch = useDispatch();
 
   const handleClose = () => {
