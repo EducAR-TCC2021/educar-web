@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import {
   Button,
   ButtonBase,
@@ -7,19 +6,20 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Grid, TextField, Typography,
+  CardActionArea,
+  Grid,
+  TextField,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Add } from '@material-ui/icons';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRequest } from 'redux-query-react';
-import { getScenes } from '../../state/queries/scenes';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions, editorSelectors } from '../../state/slices/editor';
-import { homeActions, homeSelectors } from '../../state/slices/home';
+import { homeSelectors } from '../../state/slices/home';
 import { spaceToDash } from '../../utils';
 
 const useStyles = makeStyles({
@@ -46,6 +46,13 @@ const useStyles = makeStyles({
   buttonBase: {
     display: 'block',
     flexGrow: 1,
+    height: '56.25%',
+  },
+  selectMarkerArea: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 });
 
@@ -60,8 +67,8 @@ function EditingCard({ setState, handleOpenMarker }) {
   const channels = useSelector(accountSelectors.selectChannelsMeta);
   const channelIndex = useSelector(homeSelectors.selectSelectedChannelIndex);
   const selectedChannel = channels[channelIndex];
-  const dispatch = useDispatch();
-  const [sceneName, setSceneName] = useState('');
+  const store = useStore();
+  const sceneName = useSelector(editorSelectors.selectSceneState).name;
 
   const handleSaveScene = () => {
     if (!validateSceneInsertion(sceneName, markerSrcValue)) return;
@@ -103,11 +110,11 @@ function EditingCard({ setState, handleOpenMarker }) {
               />
             )
             : (
-              <CardMedia>
+              <CardActionArea className={classes.selectMarkerArea} square>
                 <Typography>
-                  *Clique aqui para escolher uma imagem*
+                  Escolher Marcador
                 </Typography>
-              </CardMedia>
+              </CardActionArea>
             )
         }
       </ButtonBase>
@@ -115,15 +122,19 @@ function EditingCard({ setState, handleOpenMarker }) {
         <TextField
           value={sceneName}
           placeholder="Nome da cena"
-          onChange={(e) => setSceneName(spaceToDash(e.target.value))}
+          onChange={(e) => store.dispatch(editorActions.setName(spaceToDash(e.target.value)))}
         />
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={handleSaveScene}>
+        <Button
+          size="small"
+          onClick={handleSaveScene}
+          disabled={!sceneName || !markerSrcValue}
+        >
           Salvar
         </Button>
         <Button size="small" onClick={() => setState('blank')}>
-          Fechar
+          Cancelar
         </Button>
       </CardActions>
     </Card>
@@ -144,7 +155,7 @@ function BlankCard({ setState }) {
       className={classes.card}
       classes={{ root: classes.cardDesign }}
     >
-      <ButtonBase
+      <Button
         className={classes.buttonBase}
         onClick={handleEditNewScene}
       >
@@ -152,13 +163,12 @@ function BlankCard({ setState }) {
           Nova Cena
           <Add />
         </CardContent>
-      </ButtonBase>
+      </Button>
     </Card>
   );
 }
 
 function AddSceneCard({ handleOpenMarker }) {
-  const classes = useStyles();
   const [state, setState] = useState('blank');
 
   const CardSelector = ({ type }) => {

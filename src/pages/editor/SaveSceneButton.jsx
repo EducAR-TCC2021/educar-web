@@ -1,11 +1,12 @@
-import { Button } from '@material-ui/core';
+import React, { useState } from 'react';
 import axios from 'axios';
-import React from 'react';
+import { Button } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
 import { editorSelectors } from '../../state/slices/editor';
 import { homeSelectors } from '../../state/slices/home';
+import SnackbarAlert from '../../components/SnackbarAlert';
 
 function SaveSceneButton() {
   const accessToken = useSelector(accountSelectors.selectAccessToken);
@@ -19,19 +20,60 @@ function SaveSceneButton() {
     sceneId,
     scene: sceneInfo,
   });
+  const [success, setSuccess] = useState(false);
+  const [failure, setFailure] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isRequesting, setIsRequesting] = useState(false);
+
+  const onSuccessClose = () => setSuccess(false);
+  const onFailureClose = () => setFailure(false);
+
+  const snackbarAnchor = {
+    vertical: 'top',
+    horizontal: 'center',
+  };
 
   return (
     <>
       <Button
+        disabled={isRequesting}
         variant="contained"
         onClick={() => {
+          setIsRequesting(true);
           axios(request)
-            .then(() => {})
-            .catch(() => {});
+            .then((response) => {
+              setIsRequesting(false);
+              if (response.status === 200) {
+                setSuccess(true);
+              } else {
+                setFailure(true);
+              }
+            })
+            .catch((error) => {
+              setIsRequesting(false);
+              setFailure(true);
+              setErrorMsg(error.message);
+            });
         }}
       >
         Salvar Cena
       </Button>
+      <SnackbarAlert
+        open={success}
+        severity="success"
+        onClose={onSuccessClose}
+        anchorOrigin={snackbarAnchor}
+      >
+        Cena salva com sucesso.
+      </SnackbarAlert>
+      <SnackbarAlert
+        open={failure}
+        severity="error"
+        onClose={onFailureClose}
+        anchorOrigin={snackbarAnchor}
+      >
+        {`Erro: ${errorMsg}.`}
+      </SnackbarAlert>
     </>
   );
 }

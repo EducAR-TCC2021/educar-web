@@ -18,6 +18,15 @@ import MarkerSelection from './pages/marker';
 import Editor from './pages/editor';
 import { accountSelectors } from './state/slices/account';
 import { settingsSelectors } from './state/slices/settings';
+import { editorSelectors } from './state/slices/editor';
+
+function EditorRoute() {
+  const validMarker = useSelector(editorSelectors.selectMarkerIsValid);
+
+  return validMarker
+    ? <Editor />
+    : <Redirect to="/home" />;
+}
 
 function RestrictedRoute({ children, isLoggedIn, ...rest }) {
   return (
@@ -58,7 +67,7 @@ function Routes() {
       <LoginRoute isLoggedIn={isLoggedIn} path="/login" />
       <RestrictedRoute isLoggedIn={isLoggedIn} path="/home"><Home /></RestrictedRoute>
       <RestrictedRoute isLoggedIn={isLoggedIn} path="/marcador"><MarkerSelection /></RestrictedRoute>
-      <RestrictedRoute isLoggedIn={isLoggedIn} path="/editor"><Editor /></RestrictedRoute>
+      <RestrictedRoute isLoggedIn={isLoggedIn} path="/editor"><EditorRoute /></RestrictedRoute>
       <Route
         path="/"
         component={({ location }) => (

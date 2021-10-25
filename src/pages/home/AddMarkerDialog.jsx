@@ -3,8 +3,8 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { editorActions } from '../../state/slices/editor';
+import { useSelector, useDispatch } from 'react-redux';
+import { editorActions, editorSelectors } from '../../state/slices/editor';
 import MarkerSelectionContainer from '../marker/MarkerSelectionContainer';
 
 const useStyles = makeStyles({
@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 function AddMarkerDialog({ open, handleClose }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const isMarkerValid = useSelector(editorSelectors.selectMarkerIsValid);
 
   return (
     <Dialog
@@ -28,7 +29,12 @@ function AddMarkerDialog({ open, handleClose }) {
         <MarkerSelectionContainer />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Salvar</Button>
+        <Button
+          onClick={handleClose}
+          disabled={!isMarkerValid}
+        >
+          Salvar
+        </Button>
         <Button onClick={() => {
           handleClose();
           dispatch(editorActions.setMarkerSrc(''));
