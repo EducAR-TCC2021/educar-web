@@ -1,21 +1,18 @@
-/* eslint-disable no-unused-vars */
 import {
   CircularProgress,
   Container,
   CssBaseline,
   Grid,
   makeStyles,
-  Snackbar,
 } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useRequest } from 'redux-query-react';
-import NextPageButton from '../../components/NextPageButton';
 import PageTitle from '../../components/PageTitle';
 import PaletteTypeButton from '../../components/PaletteTypeButton';
 import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
-import { getScenes, scenesSelectors } from '../../state/queries/scenes';
+import { getScenes } from '../../state/queries/scenes';
 import { accountSelectors } from '../../state/slices/account';
 import { editorActions } from '../../state/slices/editor';
 import { homeActions, homeSelectors } from '../../state/slices/home';
@@ -48,8 +45,7 @@ const useStyles = makeStyles((theme) => ({
 function Home() {
   const classes = useStyles();
   const accessToken = useSelector(accountSelectors.selectAccessToken);
-  const scenes = useSelector(scenesSelectors.selectScenes);
-
+  const store = useStore();
   const channels = useSelector(accountSelectors.selectChannelsMeta);
   const channelIndex = useSelector(homeSelectors.selectSelectedChannelIndex);
   const selectedChannel = channels[channelIndex];
@@ -65,6 +61,10 @@ function Home() {
       dispatch(homeActions.setSelectedChannelIndex(index));
     }
   }, [isFinished]);
+
+  useEffect(() => {
+    store.dispatch(editorActions.clearEditorState());
+  }, []);
 
   const [markerDialogOpen, setMarkerDialogOpen] = useState(false);
   const handleOpenAddMarker = () => setMarkerDialogOpen(true);

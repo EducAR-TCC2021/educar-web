@@ -54,6 +54,7 @@ export default function AddOverlayModal() {
   const srcValue = useSelector(editorSelectors.selectAddOverlaySrc);
   const isValid = useSelector(editorSelectors.selectIsValidAddOverlay);
   const type = useSelector(editorSelectors.selectAddOverlayType);
+  const overlayQuantity = useSelector(editorSelectors.selectOverlays).length;
 
   const handleClose = () => store.dispatch(editorActions.setIsAddingOverlay(false));
 
@@ -66,6 +67,7 @@ export default function AddOverlayModal() {
       store.dispatch(editorActions.setAddOverlaySrc(parseSketchfabUrl(srcValue)));
     }
 
+    store.dispatch(editorActions.setOverlaySelection([overlayQuantity]));
     store.dispatch(editorActions.addOverlay());
   };
 

@@ -15,6 +15,7 @@ import SideSubMenu from './SideSubMenu';
 import SaveSceneButton from './SaveSceneButton';
 import Logo from '../../components/Logo';
 import InfoMenu from './InfoMenu';
+import PaletteTypeButton from '../../components/PaletteTypeButton';
 
 const useStyles = makeStyles(() => ({
   horizontal: {
@@ -81,6 +82,7 @@ export default function Editor() {
             <SceneTextField />
           </div>
           <div className={classes.toolbarRight}>
+            <PaletteTypeButton />
             <ProfileDropdown />
             <SaveSceneButton />
           </div>

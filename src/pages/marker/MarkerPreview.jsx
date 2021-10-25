@@ -6,14 +6,13 @@ import { useSelector, useStore } from 'react-redux';
 import {
   makeStyles,
   Paper,
-  Snackbar,
-  Slide,
 } from '@material-ui/core';
 
 import {
   editorActions,
   editorSelectors,
 } from '../../state/slices/editor';
+import SnackbarAlert from '../../components/SnackbarAlert';
 
 const useStyles = makeStyles((theme) => ({
   imgContainer: {
@@ -72,13 +71,13 @@ function MarkerPreview() {
         alt=""
         onLoad={handleValidImage}
       />
-      <Snackbar
+      <SnackbarAlert
         autoHideDuration={null}
         severity="error"
         open={alertUndownloadable}
-        TransitionComponent={Slide}
-        message="Não é possível utilizar esta imagem (possível erro de CORS)."
-      />
+      >
+        Não é possível utilizar esta imagem (possível erro de CORS).
+      </SnackbarAlert>
     </Paper>
   );
 }
