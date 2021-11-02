@@ -1,6 +1,4 @@
 import React, {
-  useEffect,
-  useState,
 } from 'react';
 import { useSelector, useStore } from 'react-redux';
 import {
@@ -12,7 +10,6 @@ import {
   editorActions,
   editorSelectors,
 } from '../../state/slices/editor';
-import SnackbarAlert from '../../components/SnackbarAlert';
 
 const useStyles = makeStyles((theme) => ({
   imgContainer: {
@@ -29,38 +26,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MarkerPreview() {
-  const [imgExists, setImgExists] = useState(false);
-  const [alertUndownloadable, setAlertUndownloadable] = useState(false);
   const classes = useStyles();
   const src = useSelector(editorSelectors.selectMarkerSrc);
   const store = useStore();
 
-  async function checkIfDownloadable() {
-    try {
-      const response = await fetch(src);
-      if (response.ok) {
-        setAlertUndownloadable(false);
-        store.dispatch(editorActions.setValidMarker());
-      }
-    } catch (e) {
-      setAlertUndownloadable(true);
-    }
-  }
-
-  useEffect(() => {
-    store.dispatch(editorActions.setInvalidMarker());
-    setAlertUndownloadable(false);
-    setImgExists(false);
-  }, [src]);
-
-  useEffect(() => {
-    if (imgExists) {
-      checkIfDownloadable();
-    }
-  }, [imgExists]);
-
   const handleValidImage = () => {
-    setImgExists(true);
+    store.dispatch(editorActions.setValidMarker());
+  };
+
+  const handleInvalidImage = () => {
+    store.dispatch(editorActions.setInvalidMarker());
   };
 
   return (
@@ -70,14 +45,8 @@ function MarkerPreview() {
         src={src}
         alt=""
         onLoad={handleValidImage}
+        onError={handleInvalidImage}
       />
-      <SnackbarAlert
-        autoHideDuration={null}
-        severity="error"
-        open={alertUndownloadable}
-      >
-        Não é possível utilizar esta imagem (possível erro de CORS).
-      </SnackbarAlert>
     </Paper>
   );
 }

@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable no-console */
 import React, { Suspense, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTexture } from '@react-three/drei';
@@ -12,7 +10,8 @@ const ImageObject = (props) => {
     initialRotation,
     initialScale,
   } = initialParam;
-  const texture = useTexture(url);
+
+  const texture = useTexture(`https://hd1y3043rd.execute-api.us-east-1.amazonaws.com/dev?url=${url}`);
 
   useEffect(() => {
     setRatio(texture.image.naturalHeight / texture.image.naturalWidth);
@@ -31,9 +30,20 @@ const ImageObject = (props) => {
     </Suspense>
   );
 };
+
+const xyz = PropTypes.shape({
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  z: PropTypes.number.isRequired,
+});
+
 ImageObject.propTypes = {
   url: PropTypes.string.isRequired,
-  initialParam: PropTypes.any.isRequired,
+  initialParam: PropTypes.shape({
+    initialPosition: xyz,
+    initialRotation: xyz,
+    initialScale: xyz,
+  }).isRequired,
 };
 
 export default ImageObject;
