@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 import { Cached, Height, OpenWith } from '@material-ui/icons';
 import { useStore } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook';
 import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
 import { editorActions, modesEnum } from '../../state/slices/editor';
@@ -55,6 +56,9 @@ export default function Editor() {
   const store = useStore();
   const classes = useStyles();
   const setControlMode = (mode) => store.dispatch(editorActions.setControlMode(mode));
+  useHotkeys('q', () => setControlMode(modesEnum.TRANSLATE));
+  useHotkeys('w', () => setControlMode(modesEnum.ROTATE));
+  useHotkeys('e', () => setControlMode(modesEnum.SCALE));
 
   return (
     <div>
