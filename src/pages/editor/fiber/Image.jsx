@@ -2,8 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTexture } from '@react-three/drei';
 
-const ImageObject = (props) => {
-  const { url, initialParam } = props;
+const ImageObject = ({ url, initialParam, onDoubleClick }) => {
   const [ratio, setRatio] = useState(undefined);
   const {
     initialPosition,
@@ -23,6 +22,7 @@ const ImageObject = (props) => {
         position={initialPosition}
         rotation={initialRotation}
         scale={initialScale}
+        onDoubleClick={onDoubleClick}
       >
         <boxBufferGeometry attach="geometry" args={[1, ratio, 0]} />
         <meshBasicMaterial attach="material" map={texture} />
@@ -36,7 +36,9 @@ const xyz = PropTypes.shape({
   y: PropTypes.number.isRequired,
   z: PropTypes.number.isRequired,
 });
-
+ImageObject.defaultProps = {
+  onDoubleClick: () => {},
+};
 ImageObject.propTypes = {
   url: PropTypes.string.isRequired,
   initialParam: PropTypes.shape({
@@ -44,6 +46,7 @@ ImageObject.propTypes = {
     initialRotation: xyz,
     initialScale: xyz,
   }).isRequired,
+  onDoubleClick: PropTypes.func,
 };
 
 export default ImageObject;

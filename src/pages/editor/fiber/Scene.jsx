@@ -6,17 +6,17 @@ import React, { useState, useRef, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, useContextBridge } from '@react-three/drei';
 import { useSelector, Provider, useStore } from 'react-redux';
-import { editorSelectors } from '../../../state/slices/editor';
+import { editorActions, editorSelectors } from '../../../state/slices/editor';
 import TransformController from './TransformController';
 import Image from './Image';
 import Overlay from './Overlay';
-import store from '../../../state/store';
 
 export default function Scene() {
   const overlays = useSelector(editorSelectors.selectOverlays);
   const overlaySelection = useSelector(editorSelectors.selectOverlaySelection);
   const controlMode = useSelector(editorSelectors.selectControlMode);
   const markerSrc = useSelector(editorSelectors.selectMarkerSrc);
+  const store = useStore();
 
   const selection = overlaySelection[0];
 
@@ -24,6 +24,10 @@ export default function Scene() {
   const camera = useRef();
   const orbitRef = useRef();
   const transformRef = useRef();
+
+  const overlayClicked = (index) => {
+    store.dispatch(editorActions.setOverlaySelection([index]));
+  };
 
   return (
     <Canvas>
@@ -47,6 +51,9 @@ export default function Scene() {
                       id={index}
                       type={type}
                       url={url}
+                      onDoubleClick={(e) => {
+                        e.stopPropagation();
+                      }}
                     />
                   </Suspense>
                 </TransformController>
@@ -58,6 +65,10 @@ export default function Scene() {
                     type={type}
                     ref={null}
                     url={url}
+                    onDoubleClick={(e) => {
+                      e.stopPropagation();
+                      overlayClicked(index);
+                    }}
                   />
                 </Suspense>
               )

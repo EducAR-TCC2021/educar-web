@@ -23,8 +23,7 @@ const Fallback = () => (
 );
 
 // Modelo 3D
-const GltfModel = (props) => {
-  const { url, initialParam } = props;
+const GltfModel = ({ url, initialParam, onDoubleClick }) => {
   const {
     initialPosition,
     initialRotation,
@@ -36,20 +35,26 @@ const GltfModel = (props) => {
   return (gltf)
     ? (
       <Suspense fallback={<div />}>
-        <primitive
-          position={initialPosition}
-          rotation={initialRotation}
-          scale={initialScale}
-          name="3dmodel"
-          object={gltf.scene}
-        />
+        <mesh onDoubleClick={onDoubleClick}>
+          <primitive
+            position={initialPosition}
+            rotation={initialRotation}
+            scale={initialScale}
+            name="3dmodel"
+            object={gltf.scene}
+          />
+        </mesh>
       </Suspense>
     )
     : <Fallback />;
 };
+GltfModel.defaultProps = {
+  onDoubleClick: () => {},
+};
 GltfModel.propTypes = {
   url: PropTypes.string.isRequired,
   initialParam: PropTypes.any.isRequired,
+  onDoubleClick: PropTypes.func,
 };
 
 function getExtension(filename) {
@@ -104,8 +109,7 @@ async function getDownloadUrl(modelId, token) {
   return metadata.gltf.url;
 }
 
-const SketchfabModel = (props) => {
-  const { modelId, initialParam } = props;
+const SketchfabModel = ({ modelId, initialParam, onDoubleClick }) => {
   const [blobUrl, setBlobUrl] = useState('');
   const token = useSelector(accountSelectors.selectAccessToken);
   const blobFiles = useSelector(editorSelectors.selectBlobFiles);
@@ -130,13 +134,18 @@ const SketchfabModel = (props) => {
       <GltfModel
         url={blobUrl}
         initialParam={initialParam}
+        onDoubleClick={onDoubleClick}
       />
     )
     : <Fallback />;
 };
+SketchfabModel.defaultProps = {
+  onDoubleClick: () => {},
+};
 SketchfabModel.propTypes = {
   modelId: PropTypes.string.isRequired,
   initialParam: PropTypes.any.isRequired,
+  onDoubleClick: PropTypes.func,
 };
 
 export default SketchfabModel;

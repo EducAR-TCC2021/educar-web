@@ -1,6 +1,7 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-console */
 /* eslint-disable react/forbid-prop-types */
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { editorSelectors, typeEnums } from '../../../state/slices/editor';
@@ -8,13 +9,7 @@ import { getInitialPosRotScale } from '../../../utils';
 import ImageObject from './Image';
 import SketchfabModel from './Model';
 
-const Overlay = (props) => {
-  const {
-    id,
-    type,
-    url,
-  } = props;
-
+const Overlay = ({ id, type, url, onDoubleClick }) => {
   const selection = useSelector(editorSelectors.selectOverlaySelection);
   const overlay = useSelector(editorSelectors.selectOverlays)[id];
   const isSelected = selection[0] === id;
@@ -28,16 +23,13 @@ const Overlay = (props) => {
   */
   const initialParam = getInitialPosRotScale(isSelected, overlay);
 
-  useEffect(() => {
-    console.log(initialParam);
-  }, [initialParam]);
-
   switch (type) {
     case typeEnums.IMAGE:
       return (
         <ImageObject
           initialParam={initialParam}
           url={url}
+          onDoubleClick={onDoubleClick}
         />
       );
     case typeEnums.MODEL:
@@ -45,6 +37,7 @@ const Overlay = (props) => {
         <SketchfabModel
           initialParam={initialParam}
           modelId={url}
+          onDoubleClick={onDoubleClick}
         />
       );
     case typeEnums.VIDEO:
@@ -53,10 +46,14 @@ const Overlay = (props) => {
       return null;
   }
 };
+Overlay.defaultProps = {
+  onDoubleClick: () => {},
+};
 Overlay.propTypes = {
   id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
+  onDoubleClick: PropTypes.func,
 };
 
 export default Overlay;
