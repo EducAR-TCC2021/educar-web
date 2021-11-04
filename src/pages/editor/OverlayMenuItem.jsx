@@ -8,11 +8,13 @@ import { editorActions, editorSelectors } from '../../state/slices/editor';
 const useStyles = makeStyles(() => ({
   selected: {
     marginTop: 4,
-    backgroundColor: '#7070A7',
+    backgroundColor: '#6565B0',
+    color: '#FFFFFF',
   },
   normal: {
     marginTop: 4,
     backgroundColor: '#505050',
+    color: '#FFFFFF',
   },
 }));
 

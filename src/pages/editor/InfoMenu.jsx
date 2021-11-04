@@ -23,9 +23,18 @@ const useStyles = makeStyles(() => ({
   },
   CustomInput: {
     padding: '8px 8px 8px 0',
+    fontSize: 'small',
   },
   CustomLabel: {
     fontSize: 'small',
+  },
+  box: {
+    backgroundColor: '#808080',
+    borderRadius: '4px',
+    boxShadow: '0 3px 3px rgb(0,0,0,0.3)',
+    margin: '0 3px',
+  },
+  title: {
   },
 }));
 
@@ -77,11 +86,15 @@ function InfoMenuRow({
 
   return (
     <>
-      <Typography variant="string">
+      <Typography
+        className={classes.title}
+        variant="button"
+      >
         {title}
       </Typography>
       <div className={classes.Inputs}>
         <TextField
+          className={classes.box}
           variant="outlined"
           size="small"
           value={getX()}
@@ -95,6 +108,7 @@ function InfoMenuRow({
           }}
         />
         <TextField
+          className={classes.box}
           variant="outlined"
           size="small"
           value={getY()}
@@ -108,6 +122,7 @@ function InfoMenuRow({
           }}
         />
         <TextField
+          className={classes.box}
           variant="outlined"
           size="small"
           value={getZ()}
@@ -128,6 +143,7 @@ function InfoMenuRow({
               className={classes.CustomCheckbox}
               control={(
                 <Checkbox
+                  color="__"
                   name="LockRatio"
                   icon={<CheckBoxOutlineBlank fontSize="small" />}
                   checkedIcon={<CheckBox fontSize="small" />}
