@@ -143,6 +143,7 @@ function InfoMenuRow({
               className={classes.CustomCheckbox}
               control={(
                 <Checkbox
+                  color="__"
                   name="LockRatio"
                   icon={<CheckBoxOutlineBlank fontSize="small" />}
                   checkedIcon={<CheckBox fontSize="small" />}
