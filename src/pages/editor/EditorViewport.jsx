@@ -6,6 +6,7 @@ const useStyles = makeStyles(() => ({
   viewport: {
     backgroundColor: '#282c34',
     flex: 3,
+    maxWidth: '100vw',
   },
 }));
 

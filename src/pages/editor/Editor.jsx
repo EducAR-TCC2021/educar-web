@@ -23,6 +23,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     height: 'calc(100vh - 48px)',
+    width: '100%',
   },
   toolbar: {
     flex: 1000,
@@ -93,12 +94,12 @@ export default function Editor() {
         </div>
       </TopMenu>
       <Box className={classes.horizontal}>
-        <SideMenu>
+        <SideMenu alignment="left">
           <OverlayMenu />
           <SideSubMenu title="Adicionar um Link" />
         </SideMenu>
         <EditorViewport />
-        <SideMenu>
+        <SideMenu alignment="right">
           <InfoMenu />
         </SideMenu>
       </Box>
