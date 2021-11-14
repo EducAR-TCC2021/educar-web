@@ -12,12 +12,12 @@ import IconTool from './IconTool';
 import OverlayMenu from './OverlayMenu';
 import SceneTextField from './SceneTextField';
 import SideMenu from './SideMenu';
-import SideSubMenu from './SideSubMenu';
 import SaveSceneButton from './SaveSceneButton';
 import Logo from '../../components/Logo';
 import InfoMenu from './InfoMenu';
 import PaletteTypeButton from '../../components/PaletteTypeButton';
 import AttributionMenu from './AttributionMenu';
+import ShortcutMenu from './ShortcutMenu';
 
 const useStyles = makeStyles(() => ({
   horizontal: {
@@ -104,7 +104,7 @@ export default function Editor() {
       <Box className={classes.horizontal}>
         <SideMenu alignment="left">
           <OverlayMenu />
-          <SideSubMenu title="Adicionar um Link" />
+          <ShortcutMenu />
         </SideMenu>
         <EditorViewport />
         <SideMenu alignment="right">
