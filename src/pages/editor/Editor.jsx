@@ -17,6 +17,7 @@ import SaveSceneButton from './SaveSceneButton';
 import Logo from '../../components/Logo';
 import InfoMenu from './InfoMenu';
 import PaletteTypeButton from '../../components/PaletteTypeButton';
+import AttributionMenu from './AttributionMenu';
 
 const useStyles = makeStyles(() => ({
   horizontal: {
@@ -101,6 +102,7 @@ export default function Editor() {
         <EditorViewport />
         <SideMenu alignment="right">
           <InfoMenu />
+          <AttributionMenu />
         </SideMenu>
       </Box>
       <AddOverlayModal />

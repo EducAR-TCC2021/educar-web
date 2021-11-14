@@ -51,24 +51,32 @@ export default function ModelPreview() {
         if (response.ok) {
           const metadata = await response.json();
           if (metadata.isDownloadable) {
-            return metadata.thumbnails.images[0].url;
+            return [
+              metadata.thumbnails.images[0].url,
+              {
+                license: { name: metadata.license.label, url: metadata.license.url },
+                user: { name: metadata.user.displayName, url: metadata.user.profileUrl },
+                model: { name: metadata.name, url: metadata.viewerUrl },
+              },
+            ];
           }
         }
       }
     }
-    return undefined;
+    return [undefined, undefined];
   }
 
   useEffect(async () => {
     store.dispatch(editorActions.setAddOverlayIsValid(false));
     setAlertAlreadyUsed(false);
     setThumbnail('');
-    const thumbnailUrl = await parseModelUrl(src);
+    const [thumbnailUrl, metadata] = await parseModelUrl(src);
     if (thumbnailUrl) {
       setThumbnail(thumbnailUrl);
       if (blobs[src]) {
         setAlertAlreadyUsed(true);
       } else {
+        store.dispatch(editorActions.setAddOverlayAttribution(metadata));
         store.dispatch(editorActions.setAddOverlayIsValid(true));
       }
     }

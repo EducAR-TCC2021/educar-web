@@ -195,7 +195,7 @@ function InfoMenu() {
 
   return (
     <SideSubMenu
-      title="Info"
+      title="Propriedades"
     >
       <InfoMenuRow title="Posição" values={position} onValueChange={onPositionChange} />
       <InfoMenuRow title="Rotação" values={rotation} onValueChange={onRotationChange} />
