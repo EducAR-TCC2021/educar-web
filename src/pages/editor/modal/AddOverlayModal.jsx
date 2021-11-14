@@ -11,6 +11,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Link,
 } from '@material-ui/core';
 import { useSelector, useStore } from 'react-redux';
 
@@ -41,7 +42,11 @@ const overlayPreview = (type) => {
     case typeEnums.IMAGE:
       return <ImagePreview />;
     case typeEnums.MODEL:
-      return <ModelPreview />;
+      return (
+        <>
+          <ModelPreview />
+        </>
+      );
     default:
       return null;
   }
@@ -97,6 +102,13 @@ export default function AddOverlayModal() {
             onChange={(e) => handleSrcChange(e.target.value)}
           />
         </FormControl>
+        {
+          (type === typeEnums.MODEL) ? (
+            <Link href="https://sketchfab.com/search?features=downloadable&licenses=322a749bcfa841b29dff1e8a1bb74b0b&licenses=b9ddc40b93e34cdca1fc152f39b9f375&licenses=72360ff1740d419791934298b8b6d270&licenses=bbfe3f7dbcdd4122b966b85b9786a989&licenses=2628dbe5140a4e9592126c8df566c0b7&licenses=34b725081a6a4184957efaec2cb84ed3&licenses=7c23a1ba438d4306920229c12afcb5f9&sort_by=-relevance&type=models" target="_blank">
+              https://sketchfab.com/
+            </Link>
+          ) : null
+        }
         <Paper variant="outlined" className={classes.previewContainer} square>
           {overlayPreview(type)}
         </Paper>
