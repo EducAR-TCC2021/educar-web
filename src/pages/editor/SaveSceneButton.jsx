@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
 import { useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { editorSelectors } from '../../state/slices/editor';
 import { homeSelectors } from '../../state/slices/home';
 import SnackbarAlert from '../../components/SnackbarAlert';
 
-function SaveSceneButton() {
+const SaveSceneButton = forwardRef((_props, ref) => {
   const accessToken = useSelector(accountSelectors.selectAccessToken);
   const channels = useSelector(accountSelectors.selectChannelsMeta);
   const channelIndex = useSelector(homeSelectors.selectSelectedChannelIndex);
@@ -27,6 +27,26 @@ function SaveSceneButton() {
 
   const onSuccessClose = () => setSuccess(false);
   const onFailureClose = () => setFailure(false);
+  const saveScene = () => {
+    if (isRequesting) return;
+    setIsRequesting(true);
+    axios(request)
+      .then((response) => {
+        setIsRequesting(false);
+        if (response.status === 200) {
+          setSuccess(true);
+        } else {
+          setFailure(true);
+        }
+      })
+      .catch((error) => {
+        setIsRequesting(false);
+        setFailure(true);
+        setErrorMsg(error.message);
+      });
+  };
+
+  useImperativeHandle(ref, () => ({ saveScene }));
 
   const snackbarAnchor = {
     vertical: 'top',
@@ -38,23 +58,7 @@ function SaveSceneButton() {
       <Button
         disabled={isRequesting}
         variant="contained"
-        onClick={() => {
-          setIsRequesting(true);
-          axios(request)
-            .then((response) => {
-              setIsRequesting(false);
-              if (response.status === 200) {
-                setSuccess(true);
-              } else {
-                setFailure(true);
-              }
-            })
-            .catch((error) => {
-              setIsRequesting(false);
-              setFailure(true);
-              setErrorMsg(error.message);
-            });
-        }}
+        onClick={saveScene}
       >
         Salvar Cena
       </Button>
@@ -76,6 +80,6 @@ function SaveSceneButton() {
       </SnackbarAlert>
     </>
   );
-}
+});
 
 export default SaveSceneButton;

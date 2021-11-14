@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 import { Cached, Height, OpenWith } from '@material-ui/icons';
 import { useStore } from 'react-redux';
@@ -58,9 +58,16 @@ export default function Editor() {
   const store = useStore();
   const classes = useStyles();
   const setControlMode = (mode) => store.dispatch(editorActions.setControlMode(mode));
+  const saveButtonRef = useRef();
+
   useHotkeys('q', () => setControlMode(modesEnum.TRANSLATE));
   useHotkeys('w', () => setControlMode(modesEnum.ROTATE));
   useHotkeys('e', () => setControlMode(modesEnum.SCALE));
+  useHotkeys('shift+s', () => {
+    if (saveButtonRef.current) {
+      saveButtonRef.current.saveScene();
+    }
+  });
 
   return (
     <div>
@@ -90,7 +97,7 @@ export default function Editor() {
           <div className={classes.toolbarRight}>
             <PaletteTypeButton />
             <ProfileDropdown />
-            <SaveSceneButton />
+            <SaveSceneButton ref={saveButtonRef} />
           </div>
         </div>
       </TopMenu>
