@@ -12,9 +12,10 @@ import {
   useStore,
 } from 'react-redux';
 
-import { editorActions, editorSelectors } from '../../../state/slices/editor';
 import { accountSelectors } from '../../../state/slices/account';
 import { parseSketchfabUrl } from '../../../utils';
+import { blobFilesSelectors } from '../../../state/slices/blobs';
+import { overlayModalActions, overlayModalSelectors } from '../../../state/slices/overlayModal';
 
 const useStyles = makeStyles({
   img: {
@@ -27,10 +28,10 @@ const modelsBaseUrl = 'https://sketchfab.com/3d-models/';
 
 export default function ModelPreview() {
   const classes = useStyles();
-  const src = useSelector(editorSelectors.selectAddOverlaySrc);
+  const src = useSelector(overlayModalSelectors.selectAddOverlaySrc);
   const store = useStore();
   const token = useSelector(accountSelectors.selectAccessToken);
-  const blobs = useSelector(editorSelectors.selectBlobFiles);
+  const blobs = useSelector(blobFilesSelectors.selectBlobFiles);
   const [thumbnail, setThumbnail] = useState('');
   const [alertAlreadyUsed, setAlertAlreadyUsed] = useState(false);
 
@@ -67,7 +68,7 @@ export default function ModelPreview() {
   }
 
   useEffect(async () => {
-    store.dispatch(editorActions.setAddOverlayIsValid(false));
+    store.dispatch(overlayModalActions.setAddOverlayIsValid(false));
     setAlertAlreadyUsed(false);
     setThumbnail('');
     const [thumbnailUrl, metadata] = await parseModelUrl(src);
@@ -76,8 +77,8 @@ export default function ModelPreview() {
       if (blobs[src]) {
         setAlertAlreadyUsed(true);
       } else {
-        store.dispatch(editorActions.setAddOverlayAttribution(metadata));
-        store.dispatch(editorActions.setAddOverlayIsValid(true));
+        store.dispatch(overlayModalActions.setAddOverlayAttribution(metadata));
+        store.dispatch(overlayModalActions.setAddOverlayIsValid(true));
       }
     }
   }, [src]);

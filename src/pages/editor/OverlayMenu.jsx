@@ -6,6 +6,7 @@ import { Add, Remove } from '@material-ui/icons';
 import SideSubMenu from './SideSubMenu';
 import { editorActions, editorSelectors } from '../../state/slices/editor';
 import OverlayMenuItem from './OverlayMenuItem';
+import { overlayModalActions } from '../../state/slices/overlayModal';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -20,7 +21,7 @@ function OverlayMenu() {
   const overlays = useSelector(editorSelectors.selectOverlays);
   const store = useStore();
 
-  const handleAdd = () => store.dispatch(editorActions.setIsAddingOverlay(true));
+  const handleAdd = () => store.dispatch(overlayModalActions.setIsAddingOverlay(true));
 
   const handleRemove = () => store.dispatch(editorActions.removeOverlay());
 

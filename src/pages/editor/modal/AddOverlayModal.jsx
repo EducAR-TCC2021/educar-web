@@ -19,6 +19,7 @@ import { editorActions, editorSelectors, typeEnums } from '../../../state/slices
 import ImagePreview from './ImagePreview';
 import ModelPreview from './ModelPreview';
 import { parseSketchfabUrl } from '../../../utils';
+import { overlayModalActions, overlayModalSelectors } from '../../../state/slices/overlayModal';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -54,26 +55,31 @@ const overlayPreview = (type) => {
 
 export default function AddOverlayModal() {
   const classes = useStyles();
-  const open = useSelector(editorSelectors.selectIsAddingOverlay);
+  const open = useSelector(overlayModalSelectors.selectIsAddingOverlay);
   const store = useStore();
-  const srcValue = useSelector(editorSelectors.selectAddOverlaySrc);
-  const isValid = useSelector(editorSelectors.selectIsValidAddOverlay);
-  const type = useSelector(editorSelectors.selectAddOverlayType);
+  const srcValue = useSelector(overlayModalSelectors.selectAddOverlaySrc);
+  const isValid = useSelector(overlayModalSelectors.selectIsValidAddOverlay);
+  const type = useSelector(overlayModalSelectors.selectAddOverlayType);
   const overlayQuantity = useSelector(editorSelectors.selectOverlays).length;
+  const attribution = useSelector(overlayModalSelectors.selectAddOverlayAttribution);
 
-  const handleClose = () => store.dispatch(editorActions.setIsAddingOverlay(false));
+  const handleClose = () => store.dispatch(overlayModalActions.setIsAddingOverlay(false));
 
-  const handleSrcChange = (src) => store.dispatch(editorActions.setAddOverlaySrc(src));
+  const handleSrcChange = (src) => store.dispatch(overlayModalActions.setAddOverlaySrc(src));
 
-  const handleTypeChange = (newType) => store.dispatch(editorActions.setAddOverlayType(newType));
+  const handleTypeChange = (newType) => store.dispatch(
+    overlayModalActions.setAddOverlayType(newType),
+  );
 
   const handleAddOverlay = () => {
-    if (type === typeEnums.MODEL) {
-      store.dispatch(editorActions.setAddOverlaySrc(parseSketchfabUrl(srcValue)));
-    }
+    const src = (type === typeEnums.MODEL) ? parseSketchfabUrl(srcValue) : srcValue;
 
     store.dispatch(editorActions.setOverlaySelection([overlayQuantity]));
-    store.dispatch(editorActions.addOverlay());
+    store.dispatch(editorActions.addOverlay({
+      type,
+      src,
+      attribution,
+    }));
   };
 
   return (

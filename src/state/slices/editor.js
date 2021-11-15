@@ -9,6 +9,7 @@ const modesEnum = {
   ROTATE: 'rotate',
   SCALE: 'scale',
 };
+
 const typeEnums = {
   MODEL: 'model',
   VIDEO: 'video',
@@ -25,14 +26,6 @@ const initialState = {
   overlays: [],
   isNewScene: true,
   name: '',
-  addOverlayModal: {
-    attribution: {},
-    isAddingOverlay: false,
-    src: '',
-    type: typeEnums.IMAGE,
-    isValid: false,
-  },
-  blobFiles: {},
 };
 
 // Slice
@@ -74,23 +67,7 @@ const editor = createSlice({
       state.overlays[action.payload.id].rotation = rotation;
       state.overlays[action.payload.id].scale = scale;
     },
-    setIsAddingOverlay(state, action) {
-      state.addOverlayModal.isAddingOverlay = action.payload;
-    },
-    setAddOverlaySrc(state, action) {
-      state.addOverlayModal.src = action.payload;
-    },
-    setAddOverlayIsValid(state, action) {
-      state.addOverlayModal.isValid = action.payload;
-    },
-    setAddOverlayType(state, action) {
-      state.addOverlayModal.type = action.payload;
-      state.addOverlayModal.src = initialState.addOverlayModal.src;
-    },
-    setAddOverlayAttribution(state, action) {
-      state.addOverlayModal.attribution = action.payload;
-    },
-    addOverlay(state) {
+    addOverlay(state, action) {
       state.overlays.push(
         {
           scale: {
@@ -103,24 +80,20 @@ const editor = createSlice({
             y: 0,
             z: 0,
           },
-          type: state.addOverlayModal.type,
-          url: state.addOverlayModal.src,
+          type: action.payload.type,
+          url: action.payload.src,
           rotation: {
             x: 0,
             y: 0,
             z: 0,
           },
-          attribution: state.addOverlayModal.attribution,
+          attribution: action.payload.attribution,
         },
       );
-      state.addOverlayModal = initialState.addOverlayModal;
     },
     removeOverlay(state) {
       state.overlays.splice(state.overlay_selection[0], 1);
       state.overlay_selection = [0];
-    },
-    setBlobFile(state, action) {
-      state.blobFiles[action.payload.key] = action.payload.value;
     },
     clearEditorState() {
       return initialState;
@@ -159,16 +132,6 @@ const selectScene = (state) => ({
     overlays: state.editor.present.overlays,
   },
 });
-
-const selectIsAddingOverlay = (state) => state.editor.present.addOverlayModal.isAddingOverlay;
-
-const selectIsValidAddOverlay = (state) => state.editor.present.addOverlayModal.isValid;
-
-const selectAddOverlaySrc = (state) => state.editor.present.addOverlayModal.src;
-
-const selectAddOverlayType = (state) => state.editor.present.addOverlayModal.type;
-
-const selectBlobFiles = (state) => state.editor.present.blobFiles;
 
 const selectSceneState = (state) => state.editor.present;
 
@@ -218,11 +181,6 @@ const editorSelectors = {
   selectOverlaySelection,
   selectControlMode,
   selectScene,
-  selectIsAddingOverlay,
-  selectIsValidAddOverlay,
-  selectAddOverlaySrc,
-  selectAddOverlayType,
-  selectBlobFiles,
   selectSceneState,
   selectTransform,
   selectAttribution,
@@ -240,4 +198,9 @@ const undoableActions = [
 // Exports
 export { editorActions, editorSelectors };
 export { modesEnum, typeEnums };
-export default undoable(editor.reducer, { filter: includeAction(undoableActions) });
+export default undoable(editor.reducer, {
+  filter: includeAction(undoableActions),
+  syncFilter: true,
+  limit: 20,
+  clearHistoryType: editorActions.clearEditorState.type,
+});

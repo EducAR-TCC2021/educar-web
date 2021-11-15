@@ -7,7 +7,7 @@ import {
   useStore,
 } from 'react-redux';
 
-import { editorActions, editorSelectors } from '../../../state/slices/editor';
+import { overlayModalActions, overlayModalSelectors } from '../../../state/slices/overlayModal';
 
 const useStyles = makeStyles({
   img: {
@@ -18,18 +18,18 @@ const useStyles = makeStyles({
 
 export default function ImagePreview() {
   const classes = useStyles();
-  const src = useSelector(editorSelectors.selectAddOverlaySrc);
+  const src = useSelector(overlayModalSelectors.selectAddOverlaySrc);
   const store = useStore();
 
   const handleImgValid = () => {
-    store.dispatch(editorActions.setAddOverlayAttribution({
+    store.dispatch(overlayModalActions.setAddOverlayAttribution({
       url: src,
     }));
-    store.dispatch(editorActions.setAddOverlayIsValid(true));
+    store.dispatch(overlayModalActions.setAddOverlayIsValid(true));
   };
 
   const handleImgInvalid = () => {
-    store.dispatch(editorActions.setAddOverlayIsValid(false));
+    store.dispatch(overlayModalActions.setAddOverlayIsValid(false));
   };
 
   return (
