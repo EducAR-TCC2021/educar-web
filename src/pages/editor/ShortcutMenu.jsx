@@ -39,6 +39,7 @@ function ShortcutMenu() {
     [['q'], 'Translação'],
     [['w'], 'Rotação'],
     [['e'], 'Escala'],
+    [['r'], 'Resetar Câmera'],
     [['shift', 's'], 'Salvar cena'],
     [['double click'], 'Selecionar overlay'],
   ];
