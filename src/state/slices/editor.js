@@ -25,6 +25,7 @@ const initialState = {
   isNewScene: true,
   name: '',
   addOverlayModal: {
+    attribution: {},
     isAddingOverlay: false,
     src: '',
     type: typeEnums.IMAGE,
@@ -85,6 +86,9 @@ const editor = createSlice({
       state.addOverlayModal.type = action.payload;
       state.addOverlayModal.src = initialState.addOverlayModal.src;
     },
+    setAddOverlayAttribution(state, action) {
+      state.addOverlayModal.attribution = action.payload;
+    },
     addOverlay(state) {
       state.overlays.push(
         {
@@ -105,6 +109,7 @@ const editor = createSlice({
             y: 0,
             z: 0,
           },
+          attribution: state.addOverlayModal.attribution,
         },
       );
       state.addOverlayModal = initialState.addOverlayModal;
@@ -182,12 +187,27 @@ const placeholderOverlay = {
     y: 1,
     z: 1,
   },
+  attribution: {},
+};
+
+const selectOverlay = (state) => {
+  const idx = state.editor.overlay_selection[0];
+  return state.editor.overlays[idx] || placeholderOverlay;
 };
 
 const selectTransform = (state) => {
-  const idx = state.editor.overlay_selection[0];
-  const overlay = state.editor.overlays[idx] || placeholderOverlay;
+  const overlay = selectOverlay(state);
   return [overlay.position, overlay.rotation, overlay.scale];
+};
+
+const selectAttribution = (state) => {
+  const overlay = selectOverlay(state);
+  return overlay.attribution;
+};
+
+const selectType = (state) => {
+  const overlay = selectOverlay(state);
+  return overlay.type;
 };
 
 const editorSelectors = {
@@ -204,6 +224,8 @@ const editorSelectors = {
   selectBlobFiles,
   selectSceneState,
   selectTransform,
+  selectAttribution,
+  selectType,
 };
 
 // Exports

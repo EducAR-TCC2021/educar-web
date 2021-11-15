@@ -22,6 +22,9 @@ export default function ImagePreview() {
   const store = useStore();
 
   const handleImgValid = () => {
+    store.dispatch(editorActions.setAddOverlayAttribution({
+      url: src,
+    }));
     store.dispatch(editorActions.setAddOverlayIsValid(true));
   };
 

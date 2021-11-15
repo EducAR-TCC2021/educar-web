@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 import { Cached, Height, OpenWith } from '@material-ui/icons';
 import { useStore } from 'react-redux';
@@ -12,17 +12,19 @@ import IconTool from './IconTool';
 import OverlayMenu from './OverlayMenu';
 import SceneTextField from './SceneTextField';
 import SideMenu from './SideMenu';
-import SideSubMenu from './SideSubMenu';
 import SaveSceneButton from './SaveSceneButton';
 import Logo from '../../components/Logo';
 import InfoMenu from './InfoMenu';
 import PaletteTypeButton from '../../components/PaletteTypeButton';
+import AttributionMenu from './AttributionMenu';
+import ShortcutMenu from './ShortcutMenu';
 
 const useStyles = makeStyles(() => ({
   horizontal: {
     display: 'flex',
     flexDirection: 'row',
     height: 'calc(100vh - 48px)',
+    width: '100%',
   },
   toolbar: {
     flex: 1000,
@@ -56,9 +58,16 @@ export default function Editor() {
   const store = useStore();
   const classes = useStyles();
   const setControlMode = (mode) => store.dispatch(editorActions.setControlMode(mode));
+  const saveButtonRef = useRef();
+
   useHotkeys('q', () => setControlMode(modesEnum.TRANSLATE));
   useHotkeys('w', () => setControlMode(modesEnum.ROTATE));
   useHotkeys('e', () => setControlMode(modesEnum.SCALE));
+  useHotkeys('shift+s', () => {
+    if (saveButtonRef.current) {
+      saveButtonRef.current.saveScene();
+    }
+  });
 
   return (
     <div>
@@ -88,18 +97,19 @@ export default function Editor() {
           <div className={classes.toolbarRight}>
             <PaletteTypeButton />
             <ProfileDropdown />
-            <SaveSceneButton />
+            <SaveSceneButton ref={saveButtonRef} />
           </div>
         </div>
       </TopMenu>
       <Box className={classes.horizontal}>
-        <SideMenu>
+        <SideMenu alignment="left">
           <OverlayMenu />
-          <SideSubMenu title="Adicionar um Link" />
+          <ShortcutMenu />
         </SideMenu>
         <EditorViewport />
-        <SideMenu>
+        <SideMenu alignment="right">
           <InfoMenu />
+          <AttributionMenu />
         </SideMenu>
       </Box>
       <AddOverlayModal />
