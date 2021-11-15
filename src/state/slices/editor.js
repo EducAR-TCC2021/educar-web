@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import { createSlice } from '@reduxjs/toolkit';
+import undoable, { includeAction } from 'redux-undo';
 
 // Enums
 const modesEnum = {
@@ -8,6 +9,7 @@ const modesEnum = {
   ROTATE: 'rotate',
   SCALE: 'scale',
 };
+
 const typeEnums = {
   MODEL: 'model',
   VIDEO: 'video',
@@ -24,14 +26,6 @@ const initialState = {
   overlays: [],
   isNewScene: true,
   name: '',
-  addOverlayModal: {
-    attribution: {},
-    isAddingOverlay: false,
-    src: '',
-    type: typeEnums.IMAGE,
-    isValid: false,
-  },
-  blobFiles: {},
 };
 
 // Slice
@@ -73,23 +67,7 @@ const editor = createSlice({
       state.overlays[action.payload.id].rotation = rotation;
       state.overlays[action.payload.id].scale = scale;
     },
-    setIsAddingOverlay(state, action) {
-      state.addOverlayModal.isAddingOverlay = action.payload;
-    },
-    setAddOverlaySrc(state, action) {
-      state.addOverlayModal.src = action.payload;
-    },
-    setAddOverlayIsValid(state, action) {
-      state.addOverlayModal.isValid = action.payload;
-    },
-    setAddOverlayType(state, action) {
-      state.addOverlayModal.type = action.payload;
-      state.addOverlayModal.src = initialState.addOverlayModal.src;
-    },
-    setAddOverlayAttribution(state, action) {
-      state.addOverlayModal.attribution = action.payload;
-    },
-    addOverlay(state) {
+    addOverlay(state, action) {
       state.overlays.push(
         {
           scale: {
@@ -102,24 +80,20 @@ const editor = createSlice({
             y: 0,
             z: 0,
           },
-          type: state.addOverlayModal.type,
-          url: state.addOverlayModal.src,
+          type: action.payload.type,
+          url: action.payload.src,
           rotation: {
             x: 0,
             y: 0,
             z: 0,
           },
-          attribution: state.addOverlayModal.attribution,
+          attribution: action.payload.attribution,
         },
       );
-      state.addOverlayModal = initialState.addOverlayModal;
     },
     removeOverlay(state) {
       state.overlays.splice(state.overlay_selection[0], 1);
       state.overlay_selection = [0];
-    },
-    setBlobFile(state, action) {
-      state.blobFiles[action.payload.key] = action.payload.value;
     },
     clearEditorState() {
       return initialState;
@@ -141,35 +115,25 @@ const editor = createSlice({
 const editorActions = Object(editor.actions);
 
 // Selectors
-const selectMarkerSrc = (state) => state.editor.trigger.src;
+const selectMarkerSrc = (state) => state.editor.present.trigger.src;
 
-const selectMarkerIsValid = (state) => state.editor.trigger.isValid;
+const selectMarkerIsValid = (state) => state.editor.present.trigger.isValid;
 
-const selectOverlays = (state) => state.editor.overlays;
+const selectOverlays = (state) => state.editor.present.overlays;
 
-const selectOverlaySelection = (state) => state.editor.overlay_selection;
+const selectOverlaySelection = (state) => state.editor.present.overlay_selection;
 
-const selectControlMode = (state) => state.editor.controlMode;
+const selectControlMode = (state) => state.editor.present.controlMode;
 
 const selectScene = (state) => ({
-  sceneId: state.editor.name,
+  sceneId: state.editor.present.name,
   sceneInfo: {
-    trigger: state.editor.trigger.src,
-    overlays: state.editor.overlays,
+    trigger: state.editor.present.trigger.src,
+    overlays: state.editor.present.overlays,
   },
 });
 
-const selectIsAddingOverlay = (state) => state.editor.addOverlayModal.isAddingOverlay;
-
-const selectIsValidAddOverlay = (state) => state.editor.addOverlayModal.isValid;
-
-const selectAddOverlaySrc = (state) => state.editor.addOverlayModal.src;
-
-const selectAddOverlayType = (state) => state.editor.addOverlayModal.type;
-
-const selectBlobFiles = (state) => state.editor.blobFiles;
-
-const selectSceneState = (state) => state.editor;
+const selectSceneState = (state) => state.editor.present;
 
 const placeholderOverlay = {
   position: {
@@ -191,8 +155,8 @@ const placeholderOverlay = {
 };
 
 const selectOverlay = (state) => {
-  const idx = state.editor.overlay_selection[0];
-  return state.editor.overlays[idx] || placeholderOverlay;
+  const idx = state.editor.present.overlay_selection[0];
+  return state.editor.present.overlays[idx] || placeholderOverlay;
 };
 
 const selectTransform = (state) => {
@@ -217,18 +181,26 @@ const editorSelectors = {
   selectOverlaySelection,
   selectControlMode,
   selectScene,
-  selectIsAddingOverlay,
-  selectIsValidAddOverlay,
-  selectAddOverlaySrc,
-  selectAddOverlayType,
-  selectBlobFiles,
   selectSceneState,
   selectTransform,
   selectAttribution,
   selectType,
 };
 
+// Undoable Actions
+const undoableActions = [
+  editorActions.setOverlayTransform.type,
+  editorActions.addOverlay.type,
+  editorActions.removeOverlay.type,
+  editorActions.setTransform.type,
+];
+
 // Exports
 export { editorActions, editorSelectors };
 export { modesEnum, typeEnums };
-export default editor.reducer;
+export default undoable(editor.reducer, {
+  filter: includeAction(undoableActions),
+  syncFilter: true,
+  limit: 20,
+  clearHistoryType: editorActions.clearEditorState.type,
+});

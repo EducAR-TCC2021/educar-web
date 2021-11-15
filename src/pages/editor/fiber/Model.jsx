@@ -14,6 +14,7 @@ import JSZip from 'jszip';
 
 import { accountSelectors } from '../../../state/slices/account';
 import { editorActions, editorSelectors } from '../../../state/slices/editor';
+import { blobFilesActions, blobFilesSelectors } from '../../../state/slices/blobs';
 
 // Esfera rosa representando que o modelo está carregando.
 const Fallback = () => (
@@ -112,15 +113,17 @@ async function getDownloadUrl(modelId, token) {
 const SketchfabModel = ({ modelId, initialParam, onDoubleClick }) => {
   const [blobUrl, setBlobUrl] = useState('');
   const token = useSelector(accountSelectors.selectAccessToken);
-  const blobFiles = useSelector(editorSelectors.selectBlobFiles);
+  const blobFiles = useSelector(blobFilesSelectors.selectBlobFiles);
   const store = useStore();
 
   useEffect(async () => {
     if (!blobFiles[modelId]) {
-      store.dispatch(editorActions.setBlobFile({ key: modelId, value: { isDownloading: true } }));
+      store.dispatch(blobFilesActions.setBlobFile({
+        key: modelId, value: { isDownloading: true },
+      }));
       const downloadUrl = await getDownloadUrl(modelId, token);
       const fileUrl = await readGltfFromZipUrl(downloadUrl);
-      store.dispatch(editorActions.setBlobFile(
+      store.dispatch(blobFilesActions.setBlobFile(
         { key: modelId, value: { isDownloading: false, fileUrl } },
       ));
       setBlobUrl(fileUrl);
