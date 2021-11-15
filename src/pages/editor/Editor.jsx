@@ -3,6 +3,7 @@ import { Box, makeStyles } from '@material-ui/core';
 import { Cached, Height, OpenWith } from '@material-ui/icons';
 import { useStore } from 'react-redux';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { ActionCreators } from 'redux-undo';
 import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
 import { editorActions, modesEnum } from '../../state/slices/editor';
@@ -62,6 +63,9 @@ export default function Editor() {
 
   useHotkeys('q', () => setControlMode(modesEnum.TRANSLATE));
   useHotkeys('w', () => setControlMode(modesEnum.ROTATE));
+  useHotkeys('e', () => setControlMode(modesEnum.SCALE));
+  useHotkeys('ctrl+z', () => store.dispatch(ActionCreators.undo()));
+  useHotkeys('ctrl+y', () => store.dispatch(ActionCreators.redo()));
   useHotkeys('e', () => setControlMode(modesEnum.SCALE));
   useHotkeys('shift+s', () => {
     if (saveButtonRef.current) {

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import { createSlice } from '@reduxjs/toolkit';
+import undoable, { includeAction } from 'redux-undo';
 
 // Enums
 const modesEnum = {
@@ -141,35 +142,35 @@ const editor = createSlice({
 const editorActions = Object(editor.actions);
 
 // Selectors
-const selectMarkerSrc = (state) => state.editor.trigger.src;
+const selectMarkerSrc = (state) => state.editor.present.trigger.src;
 
-const selectMarkerIsValid = (state) => state.editor.trigger.isValid;
+const selectMarkerIsValid = (state) => state.editor.present.trigger.isValid;
 
-const selectOverlays = (state) => state.editor.overlays;
+const selectOverlays = (state) => state.editor.present.overlays;
 
-const selectOverlaySelection = (state) => state.editor.overlay_selection;
+const selectOverlaySelection = (state) => state.editor.present.overlay_selection;
 
-const selectControlMode = (state) => state.editor.controlMode;
+const selectControlMode = (state) => state.editor.present.controlMode;
 
 const selectScene = (state) => ({
-  sceneId: state.editor.name,
+  sceneId: state.editor.present.name,
   sceneInfo: {
-    trigger: state.editor.trigger.src,
-    overlays: state.editor.overlays,
+    trigger: state.editor.present.trigger.src,
+    overlays: state.editor.present.overlays,
   },
 });
 
-const selectIsAddingOverlay = (state) => state.editor.addOverlayModal.isAddingOverlay;
+const selectIsAddingOverlay = (state) => state.editor.present.addOverlayModal.isAddingOverlay;
 
-const selectIsValidAddOverlay = (state) => state.editor.addOverlayModal.isValid;
+const selectIsValidAddOverlay = (state) => state.editor.present.addOverlayModal.isValid;
 
-const selectAddOverlaySrc = (state) => state.editor.addOverlayModal.src;
+const selectAddOverlaySrc = (state) => state.editor.present.addOverlayModal.src;
 
-const selectAddOverlayType = (state) => state.editor.addOverlayModal.type;
+const selectAddOverlayType = (state) => state.editor.present.addOverlayModal.type;
 
-const selectBlobFiles = (state) => state.editor.blobFiles;
+const selectBlobFiles = (state) => state.editor.present.blobFiles;
 
-const selectSceneState = (state) => state.editor;
+const selectSceneState = (state) => state.editor.present;
 
 const placeholderOverlay = {
   position: {
@@ -191,8 +192,8 @@ const placeholderOverlay = {
 };
 
 const selectOverlay = (state) => {
-  const idx = state.editor.overlay_selection[0];
-  return state.editor.overlays[idx] || placeholderOverlay;
+  const idx = state.editor.present.overlay_selection[0];
+  return state.editor.present.overlays[idx] || placeholderOverlay;
 };
 
 const selectTransform = (state) => {
@@ -228,7 +229,15 @@ const editorSelectors = {
   selectType,
 };
 
+// Undoable Actions
+const undoableActions = [
+  editorActions.setOverlayTransform.type,
+  editorActions.addOverlay.type,
+  editorActions.removeOverlay.type,
+  editorActions.setTransform.type,
+];
+
 // Exports
 export { editorActions, editorSelectors };
 export { modesEnum, typeEnums };
-export default editor.reducer;
+export default undoable(editor.reducer, { filter: includeAction(undoableActions) });
