@@ -18,7 +18,7 @@ export default function AttributionMenu() {
           switch (overlayType) {
             case typeEnums.MODEL:
               return (
-                <div>
+                <div style={{ wordWrap: true }}>
                   Modelo <a href={attribution.model.url} target="_blank" rel="noreferrer noopener">{attribution.model.name}</a>,
                   do autor <a href={attribution.user.url} target="_blank" rel="noreferrer noopener">{attribution.user.name}</a>,
                   distribuído sob a licensa <a href={attribution.license.url} target="_blank" rel="noreferrer noopener">{attribution.license.name}</a>
@@ -26,7 +26,9 @@ export default function AttributionMenu() {
               );
             case typeEnums.IMAGE:
               return (
-                <div> Imagem disponível em <a href={attribution.url}>{attribution.url}</a></div>
+                <div>
+                  Imagem disponível em <a href={attribution.url} style={{ wordBreak: 'break-all' }}>{attribution.url}</a>
+                </div>
               );
             default:
               return (
