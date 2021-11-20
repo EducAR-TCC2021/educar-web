@@ -8,7 +8,7 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   pageTitle: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(6),
     marginBottom: theme.spacing(4),
     padding: '0',
   },
