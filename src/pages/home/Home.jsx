@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import {
   CircularProgress,
   Container,
@@ -80,26 +81,28 @@ function Home() {
         <ProfileDropdown />
       </HomeDrawer>
       <div className={classes.content}>
-        <PageTitle title={`Canal ― ${channelName}`} />
+        <PageTitle title={isFinished && channels.length ? channelName : 'Nenhum canal registrado.'} />
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            {!selectedChannel ? (
-              <div className={classes.loading}>
-                <CircularProgress />
-              </div>
-            ) : (
-              <>
-                <AddSceneCard handleOpenMarker={handleOpenAddMarker} />
-                {Object.keys(selectedChannel.scenes).map((key, idx) => (
-                  <SceneCard
-                    key={key}
-                    name={key}
-                    scene={selectedChannel.scenes[key]}
-                    id={idx}
-                  />
-                ))}
-              </>
-            )}
+            {
+              !isFinished ? (
+                <div className={classes.loading}>
+                  <CircularProgress />
+                </div>
+              ) : channels.length ? (
+                <>
+                  <AddSceneCard handleOpenMarker={handleOpenAddMarker} />
+                  {Object.keys(selectedChannel.scenes).map((key, idx) => (
+                    <SceneCard
+                      key={key}
+                      name={key}
+                      scene={selectedChannel.scenes[key]}
+                      id={idx}
+                    />
+                  ))}
+                </>
+              ) : null
+            }
           </Grid>
         </Container>
       </div>
