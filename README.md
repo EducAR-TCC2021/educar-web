@@ -1,8 +1,8 @@
 ## Steps
 
-Fork github
-Clone repository
-Yarn (Install dependencies)
+Fork github,
+Clone repository,
+Yarn (Install dependencies),
 Yarn start
 
 ## Available Scripts
