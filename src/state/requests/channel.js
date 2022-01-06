@@ -1,4 +1,4 @@
-const BASE_URL = 'https://4wu9au10o7.execute-api.us-east-1.amazonaws.com/dev/';
+const BASE_URL = 'https://fcdw7nbyud.execute-api.sa-east-1.amazonaws.com/qa/';
 
 /**
  * Atualiza ou Cria o conteúdo da cena em um canal.

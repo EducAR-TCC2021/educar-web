@@ -2,7 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 
 // query config for retrieving current user's scenes
 const getScenes = (accessToken) => ({
-  url: 'https://4wu9au10o7.execute-api.us-east-1.amazonaws.com/dev/channels/',
+  url: 'https://fcdw7nbyud.execute-api.sa-east-1.amazonaws.com/qa/channels/',
   transform: (body) => ({ channels: body.Items }),
   update: {
     channels: (prev, next) => next,

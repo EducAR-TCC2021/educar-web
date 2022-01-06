@@ -16,7 +16,6 @@ import SideMenu from './SideMenu';
 import SaveSceneButton from './SaveSceneButton';
 import Logo from '../../components/Logo';
 import InfoMenu from './InfoMenu';
-import PaletteTypeButton from '../../components/PaletteTypeButton';
 import AttributionMenu from './AttributionMenu';
 import ShortcutMenu from './ShortcutMenu';
 
@@ -99,7 +98,6 @@ export default function Editor() {
             <SceneTextField />
           </div>
           <div className={classes.toolbarRight}>
-            <PaletteTypeButton />
             <ProfileDropdown />
             <SaveSceneButton ref={saveButtonRef} />
           </div>

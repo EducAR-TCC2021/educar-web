@@ -10,7 +10,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useRequest } from 'redux-query-react';
 import PageTitle from '../../components/PageTitle';
-import PaletteTypeButton from '../../components/PaletteTypeButton';
 import ProfileDropdown from '../../components/ProfileDropdown';
 import TopMenu from '../../components/TopMenu';
 import { getScenes } from '../../state/queries/scenes';
@@ -77,7 +76,6 @@ function Home() {
       <CssBaseline />
       <TopMenu position="fixed" />
       <HomeDrawer channels={channels}>
-        <PaletteTypeButton />
         <ProfileDropdown />
       </HomeDrawer>
       <div className={classes.content}>
@@ -92,7 +90,7 @@ function Home() {
               ) : channels.length ? (
                 <>
                   <AddSceneCard handleOpenMarker={handleOpenAddMarker} />
-                  {Object.keys(selectedChannel.scenes).map((key, idx) => (
+                  {selectedChannel && Object.keys(selectedChannel.scenes).map((key, idx) => (
                     <SceneCard
                       key={key}
                       name={key}
