@@ -10,7 +10,7 @@ const ImageObject = ({ url, initialParam, onDoubleClick }) => {
     initialScale,
   } = initialParam;
 
-  const texture = useTexture(`https://hd1y3043rd.execute-api.us-east-1.amazonaws.com/dev?url=${url}`);
+  const texture = useTexture(`https://pzvyi9cp9i.execute-api.sa-east-1.amazonaws.com/qa?url=${url.split(/[?#]/)[0]}`);
 
   useEffect(() => {
     setRatio(texture.image.naturalHeight / texture.image.naturalWidth);

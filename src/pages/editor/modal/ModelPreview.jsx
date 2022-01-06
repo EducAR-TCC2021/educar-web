@@ -4,8 +4,6 @@ import React, {
 } from 'react';
 import {
   makeStyles,
-  Snackbar,
-  Slide,
 } from '@material-ui/core';
 import {
   useSelector,
@@ -16,6 +14,7 @@ import { accountSelectors } from '../../../state/slices/account';
 import { parseSketchfabUrl } from '../../../utils';
 import { blobFilesSelectors } from '../../../state/slices/blobs';
 import { overlayModalActions, overlayModalSelectors } from '../../../state/slices/overlayModal';
+import SnackbarAlert from '../../../components/SnackbarAlert';
 
 const useStyles = makeStyles({
   img: {
@@ -34,6 +33,11 @@ export default function ModelPreview() {
   const blobs = useSelector(blobFilesSelectors.selectBlobFiles);
   const [thumbnail, setThumbnail] = useState('');
   const [alertAlreadyUsed, setAlertAlreadyUsed] = useState(false);
+
+  const snackbarAnchor = {
+    vertical: 'top',
+    horizontal: 'center',
+  };
 
   async function parseModelUrl(url) {
     if (url) {
@@ -90,13 +94,14 @@ export default function ModelPreview() {
         src={thumbnail}
         alt=""
       />
-      <Snackbar
-        autoHideDuration={null}
-        severity="error"
-        TransitionComponent={Slide}
+      <SnackbarAlert
         open={alertAlreadyUsed}
-        message="Modelo já adicionado."
-      />
+        severity="error"
+        onClose={() => setAlertAlreadyUsed(false)}
+        anchorOrigin={snackbarAnchor}
+      >
+        Modelo já adicionado.
+      </SnackbarAlert>
     </>
   );
 }

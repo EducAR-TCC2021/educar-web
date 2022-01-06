@@ -1,12 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
 // Slice
 const settings = createSlice({
   name: 'settings',
   initialState: {
-    paletteType: prefersDarkMode ? 'dark' : 'light',
+    paletteType: 'dark',
   },
   reducers: {
     setPaletteType(state, action) {

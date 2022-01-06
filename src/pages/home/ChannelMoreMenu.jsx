@@ -3,18 +3,20 @@ import { Menu, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import channelRequests from '../../state/requests/channel';
 import { accountSelectors } from '../../state/slices/account';
-import { homeActions } from '../../state/slices/home';
-import store from '../../state/store';
+import { homeActions, homeSelectors } from '../../state/slices/home';
 
 function ChannelMoreMenu({ channelId, anchorEl, handleClose }) {
   const accessToken = useSelector(accountSelectors.selectAccessToken);
+  const idx = useSelector(homeSelectors.selectSelectedChannelIndex);
   const deleteRequest = channelRequests.deleteChannel({
     accessToken,
     channelId,
   });
+
+  const dispatch = useDispatch();
 
   return (
     <Menu
@@ -36,6 +38,8 @@ function ChannelMoreMenu({ channelId, anchorEl, handleClose }) {
       <MenuItem onClick={() => {
         axios(deleteRequest)
           .then(() => {
+            const newIdx = idx ? idx - 1 : 0;
+            dispatch(homeActions.setSelectedChannelIndex(newIdx));
             window.location.reload();
           })
           .catch();
